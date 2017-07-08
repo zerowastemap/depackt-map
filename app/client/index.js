@@ -38,7 +38,7 @@ if (module.parent) {
   app.route('/resources', Layout(ResourcesView))
   app.route('/:bounds/*', Layout(NotFound))
 
-  module.exports = { app }
+  module.exports = { app, store }
 } else {
   const app = choo()
 
