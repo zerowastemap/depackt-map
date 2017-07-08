@@ -6,6 +6,10 @@ const search = Search()
 const icon = require('../elements/icon.js')
 
 module.exports = (state, emit) => {
+  leaflet.on('popupopen', (message) => {
+    emit('leaflet:popupopen', message)
+  })
+
   return html`
     <main>
       <div id="searchbox">

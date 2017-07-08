@@ -85,7 +85,9 @@ function store (state, emitter) {
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
-    emitter.on('select:item', selectItem)
+    emitter.on('leaflet:popupopen', (message) => {
+      console.log(message)
+    })
 
     emitter.emit('get:locations', {})
   })
@@ -123,11 +125,6 @@ function store (state, emitter) {
 
       emitter.emit('render')
     })
-  }
-
-  function selectItem (item) {
-    // const index = _findIndex(state.items, { _id: state.items[0]._id })
-    leaflet.emit('zoomToSelected', 0)
   }
 
   function setCoords (options) {
