@@ -1,0 +1,53 @@
+{
+  "name": "depackt-map",
+  "version": "1.0.0",
+  "description": "Zero Waste Map",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "start": "node index.js"
+  },
+  "author": "Augustin Godiscal <hello@auggod.tech>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "bankai": "^8.1.1",
+    "bel": "^5.0.2",
+    "choo": "^6.0.0-2",
+    "choo-log": "^6.1.2",
+    "dotenv": "^4.0.0",
+    "from2": "^2.3.0",
+    "hyperstream": "^1.2.2",
+    "leaflet": "^1.0.3",
+    "leaflet.markercluster": "^1.0.6",
+    "merry": "^4.7.2",
+    "microbounce": "^1.0.0",
+    "microcomponent": "^3.1.6",
+    "morphdom": "^2.3.2",
+    "nanobounce": "^1.0.1",
+    "nanocomponent": "^5.0.3",
+    "nanologger": "^1.1.0",
+    "nodemailer": "^4.0.1",
+    "on-idle": "^3.1.0",
+    "postcss-color-function": "^3.0.0",
+    "postcss-cssnext": "^2.10.0",
+    "postcss-csso": "^2.0.0",
+    "pump": "^1.0.2",
+    "rev-path": "^1.0.0",
+    "sheetify": "^6.0.2",
+    "sheetify-cssnext": "^1.0.7",
+    "sheetify-postcss": "^1.1.0",
+    "slug": "^0.9.1",
+    "xhr": "^2.4.0"
+  },
+  "devDependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-latest": "^6.22.0",
+    "babelify": "^7.3.0",
+    "envify": "^4.0.0",
+    "spok": "^0.8.1",
+    "tape": "^4.7.0",
+    "yo-yoify": "^3.7.3"
+  }
+}
