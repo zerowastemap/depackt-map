@@ -1,35 +1,25 @@
-var EventEmitter = require('events').EventEmitter
-var spok = require('spok')
-var tape = require('tape')
+const tape = require('tape')
 
-var app = require('./app/client')
-var appStore = app.appStore
+const client = require('./app/client')
 
-var html = require('choo/html')
-var choo = require('choo')
+tape('page should render on the server', function (t) {
+  const state = {}
 
-tape('should render on the server', function (t) {
-  var app = choo()
-  app.route('/', function (state, emit) {
-    return html`
-      <p>Hello filthy planet</p>
-    `
-  })
-  var res = app.toString('/')
-  var exp = '<p>Hello filthy planet</p>'
-  t.equal(res.toString(), exp, 'result was OK')
+  t.plan(1)
+
+  const res = client.app.toString('/about', state)
+
+  t.equal(typeof res, 'string')
+
   t.end()
 })
 
-tape('should initialize empty state', function (t) {
-  var emitter = new EventEmitter()
-  var state = {}
-  appStore(state, emitter)
-  spok(t, state, {
-    form: {
-      email: '',
-      text: ''
-    }
-  })
+tape('store should be a function', function (t) {
+  t.plan(1)
+
+  const store = client.store
+
+  t.equal(typeof store, 'function')
+
   t.end()
 })
