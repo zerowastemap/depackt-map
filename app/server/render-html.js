@@ -38,17 +38,6 @@ function renderHtml (hash) {
         _prependHtml: inner,
         _appendHtml: `
           <script type="text/javascript" src="${revPath('/bundle.js', hash)}" crossorigin="anonymous"></script>
-          <script>
-            if('serviceWorker' in navigator) {
-              navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                .then(function(registration) {
-                      console.log('Service Worker Registered');
-                });
-              navigator.serviceWorker.ready.then(function(registration) {
-                console.log('Service Worker Ready');
-              });
-            }
-          </script>
         `
       }
     })
