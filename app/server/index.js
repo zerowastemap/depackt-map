@@ -7,6 +7,7 @@ const revPath = require('rev-path')
 const hash = Date.now()
 const from = require('from2')
 const nodemailer = require('nodemailer')
+const fs = require('fs')
 
 const renderHtml = require('./render-html')
 
@@ -94,6 +95,50 @@ function initialize (callback) {
     [revPath('/bundle.js', hash), render('js')],
     [revPath('/bundle.css', hash), render('css')],
     ['/:partial', renderHtml(hash)],
+    ['/manifest.json', (req, res, ctx, done) => {
+      res.setHeader('Content-Type', 'application/json')
+      const stream = fs.readFileSync(path.join(__dirname, '../manifest.json'))
+      done(null, stream.toString())
+    }],
+    ['/sw.js', (req, res, ctx, done) => {
+      res.setHeader('Content-Type', 'application/javascript')
+      done(null, `
+        self.addEventListener('install', function(event) {
+          // Perform install steps
+        });
+
+        var CACHE_NAME = 'depackt-cache-v1';
+        var urlsToCache = [
+          '${revPath('/bundle.js', hash)}',
+          '${revPath('/bundle.css', hash)}'
+        ];
+
+        self.addEventListener('install', function(event) {
+          // Perform install steps
+          event.waitUntil(
+            caches.open(CACHE_NAME)
+              .then(function(cache) {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+              })
+          );
+        });
+
+        self.addEventListener('fetch', function(event) {
+          event.respondWith(
+            caches.match(event.request)
+              .then(function(response) {
+                // Cache hit - return response
+                if (response) {
+                  return response;
+                }
+                return fetch(event.request);
+              }
+            )
+          );
+        });
+      `)
+    }],
     ['/assets/:file', render('static')],
     ['/assets/icons/:file', render('static')],
     [ '/new', {
@@ -130,4 +175,4 @@ function start (done) {
   })
 }
 
-module.exports = { start }
+module.exports = { start, sendMail }
