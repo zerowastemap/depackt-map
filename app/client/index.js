@@ -47,7 +47,10 @@ if (module.parent) {
   if (process.env.APP_ENV !== 'production') {
     app.use(logger())
     app.use(expose())
+    app.use(require('choo-service-worker/clear')())
   }
+
+  app.use(require('choo-service-worker')())
 
   app.use(store)
 
