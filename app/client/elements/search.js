@@ -3,17 +3,25 @@ const html = require('choo/html')
 const morph = require('nanomorph')
 const css = require('sheetify')
 // const _flow = require('lodash/fp/flow')
+const _isEmpty = require('lodash/isEmpty')
 const _filter = require('lodash/filter')
 const slug = require('slug/slug-browser')
 const icon = require('./icon.js')
 
 const prefix = css`
-  :host li {
+  :host ul li {
     list-style: none;
+    margin: 0;
+  }
+  :host li {
     cursor: pointer;
     line-height: 48px;
     position: relative;
     padding-left: 1rem;
+  }
+  :host li:focus {
+    outline: none;
+    background: #f0f0f0;
   }
   :host li .list-icon {
     height: 48px;
@@ -34,16 +42,20 @@ const prefix = css`
   }
   :host input[type="search"] {
     appearance: none;
+    background: #333;
     border: none;
     box-shadow: none;
+    color: #fff;
     font-size: 1rem;
+    padding-left: 1rem;
     width: 100%;
     z-index: 1;
-    background: #fff;
-    padding-left: 1rem;
+  }
+  :host input[type="search"]:focus {
+    outline: none;
   }
   :host input[type="search"]::-webkit-input-placeholder {
-    color: #808080;
+    color: #f6f6f6;
     font-size: .8rem;
   }
   :host input[type="search"]::-webkit-search-cancel-button {
@@ -54,7 +66,7 @@ const prefix = css`
     cursor: pointer;
     margin-right: 18px;
     background-size: 12px 12px;
-    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMDBweCIgaGVpZ2h0PSIxMDBweCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+ICAgICAgICA8dGl0bGU+QXJ0Ym9hcmQ8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGZpbGw9IiMwMDAwMDAiPiAgICAgICAgICAgIDxwYXRoIGQ9Ik01OS42MDIyMjUsNDkuOTk5ODg3NSBMOTguMDExMjI1LDExLjU5MTAxMjMgQzEwMC42NjI2MjUsOC45Mzk2MjA5NCAxMDAuNjYzMjI1LDQuNjQwMjM0OTIgOTguMDExMjI1LDEuOTg4ODQzNTQgQzk1LjM1OTgyNSwtMC42NjI5NDc4NDUgOTEuMDYwNjI1LC0wLjY2MjU0Nzg0NyA4OC40MDkwMjUsMS45ODg4NDM1NCBMNTAuMDAwMDI1LDQwLjM5NzkxODcgTDExLjU5MTIyNSwxLjk4ODg0MzU0IEM4LjkzOTIyNSwtMC42NjI5NDc4NDUgNC42NDA0MjUsLTAuNjYyOTQ3ODQ1IDEuOTg4ODI1LDEuOTg4ODQzNTQgQy0wLjY2Mjk3NDk5OSw0LjY0MDIzNDkyIC0wLjY2Mjk3NDk5OSw4LjkzOTIyMDk1IDEuOTg5MDI1LDExLjU5MTAxMjMgTDQwLjM5ODAyNSw0OS45OTk4ODc1IEwxLjk4ODgyNSw4OC40MDg1NjI3IEMtMC42NjI5NzQ5OTksOTEuMDYwOTU0IC0wLjY2Mjc3NDk5OSw5NS4zNTkzNDAxIDEuOTg5MDI1LDk4LjAxMTczMTQgQzQuNjQwNDI1LDEwMC42NjI5MjMgOC45MzkwMjUsMTAwLjY2MjkyMyAxMS41OTA4MjUsOTguMDEwNzMxNCBMNTAuMDAwMDI1LDU5LjYwMjI1NjMgTDg4LjQwOTAyNSw5OC4wMTA3MzE0IEM5MS4wNjA2MjUsMTAwLjY2MjEyMyA5NS4zNTk4MjUsMTAwLjY2MjkyMyA5OC4wMTEyMjUsOTguMDEwNzMxNCBDMTAwLjY2MzIyNSw5NS4zNTkzNDAxIDEwMC42NjI2MjUsOTEuMDYwMTU0IDk4LjAxMTIyNSw4OC40MDg1NjI3IEw1OS42MDIyMjUsNDkuOTk5ODg3NSBaIj48L3BhdGg+ICAgICAgICA8L2c+ICAgIDwvZz48L3N2Zz4=);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGcgZmlsbD0ibm9uZSI+PGcgZmlsbD0iI0ZGRiI+PHBhdGggZD0iTTU5LjYgNTBMOTggMTEuNkMxMDAuNyA4LjkgMTAwLjcgNC42IDk4IDIgOTUuNC0wLjcgOTEtMC43IDg4LjQgMkw1MCA0MC40IDExLjYgMkM5LTAuNyA0LjYtMC43IDIgMiAtMC43IDQuNi0wLjcgOSAyIDExLjZMNDAuNCA1MCAyIDg4LjRDLTAuNyA5MS0wLjcgOTUuNCAyIDk4IDQuNiAxMDAuNyA5IDEwMC43IDExLjYgOThMNTAgNTkuNiA4OC40IDk4QzkxLjEgMTAwLjcgOTUuNCAxMDAuNyA5OCA5OCAxMDAuNyA5NS40IDEwMC43IDkxIDk4IDg4LjRMNTkuNiA1MFoiLz48L2c+PC9nPjwvc3ZnPg==);
   }
 `
 
@@ -64,12 +76,16 @@ function Search () {
   const component = microcomponent({
     input: '',
     data: [],
+    city: '',
     state: {
       search: {
         input: '',
         filtred: []
       },
-      data: []
+      city: 'Bruxelles',
+      data: [],
+      selected: {},
+      prevSelected: null
     }
   })
 
@@ -90,6 +106,7 @@ function Search () {
       <div class="${prefix}">
         <input
           autoFocus
+          aria-label="search"
           autocomplete="false"
           id="searchinput"
           class="sticky"
@@ -99,7 +116,6 @@ function Search () {
           type="search"
           value=${state.search.input}
         />
-        ${renderValue()}
         ${renderResults()}
       </div>
     `
@@ -109,24 +125,15 @@ function Search () {
       const newValue = e.target.value
       state.search.input = newValue
 
-      // if (newValue.length < 3) { return }
-
       if (oldValue !== newValue) {
         morph(self._element.querySelector('.value'), renderValue(newValue))
         morph(self._element.querySelector('.results'), renderResults(newValue))
       }
     }
 
-    function renderValue (value) {
-      return html`
-        <span class="value">
-          ${value}
-        </span>
-      `
-    }
-
     function renderResults (value = state.search.input) {
       const { data } = component.props
+      const { selected } = state
       const filtred = _filter(data, (item) => {
         const { title } = item
         const { zip, city } = item.address
@@ -137,26 +144,69 @@ function Search () {
 
       state.search.filtred = filtred
 
-      const items = filtred.map((item) => {
-        return html`
-          <li tabindex="0">
-            ${item.title}
-            <div class="layout list-icon">
-              ${icon(item.featured ? 'marker-star' : 'marker', {'class': 'icon icon-medium icon-marker'})}
-            </div>
-          </li>
-        `
-      })
-
       return html`
         <div class="results ${prefix}">
-          ${items}
-          ${state.search.filtred.length === 0 ? html`
-            <div>
-              Aucune correspondance pour ${value}
-            </div>
-          ` : ''
-          }
+          ${renderValue(value, filtred)}
+          ${renderFiltred(selected)}
+        </div>
+      `
+
+      function renderFiltred (selected) {
+        return html`
+          <ul class="filtred">
+            ${filtred.map((item, index) => {
+              const { title, featured } = item
+              return html`
+                <li tabindex="0" class="${isSelected(item, selected) ? 'selected' : ''}" onkeydown=${(e) => select(e, item)} onclick=${(e) => select(e, item)}>
+                  ${title}
+                  ${isSelected(item, selected) ? renderIcon(featured) : ''}
+                </li>
+              `
+            })}
+          </ul>
+        `
+      }
+
+      function renderIcon (featured) {
+        return html`
+          <div class="layout list-icon">
+            ${icon(featured ? 'marker-star' : 'marker', {'class': 'icon icon-medium icon-marker'})}
+          </div>
+        `
+      }
+
+      function isSelected (item, selected) {
+        return item._id === selected._id
+      }
+
+      function select (e, item) {
+        if (item._id !== component.state.selected) {
+          morph(self._element.querySelector('.filtred'), renderFiltred(item))
+        }
+        component.state.selected = item
+        component.emit('itemselected', item)
+      }
+    }
+
+    function renderValue (value, filtred = state.filtred) {
+      const val = html`<b class="bold">${value}</b>`
+      const range = html`<b class="bold">1000km</b>`
+      const city = html`<b class="bold">${state.city}</b>`
+      return html`
+        <span class="value">
+          ${!_isEmpty(filtred) && value
+            ? message(html`<span class="text">Résultats pour '${val}' dans un rayon de ${range} autour de ${city}</span>`)
+            : ''}
+          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">Epiceries zéro déchet dans un rayon de ${range} autour de ${city}</span>`) : ''}
+          ${_isEmpty(filtred) && value ? message(html`<span class="text">Aucun résultat pour '${val}'. <a href="/new">Ajouter un point</a> à la carte.</span>`) : ''}
+        </span>
+      `
+    }
+
+    function message (text) {
+      return html`
+        <div class="message">
+          ${text}
         </div>
       `
     }

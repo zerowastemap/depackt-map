@@ -11,8 +11,9 @@ const L = require('leaflet')
 require('leaflet.markercluster')
 const onIdle = require('on-idle')
 const html = require('choo/html')
-const _map = require('lodash/fp/map').convert({ 'cap': false })
+const _map = require('lodash/fp/map')
 const _flow = require('lodash/fp/flow')
+const _find = require('lodash/find')
 
 module.exports = Leaflet
 
@@ -39,8 +40,9 @@ function Leaflet () {
   component.on('load', load)
   component.on('unload', unload)
 
-  component.on('zoomToSelected', (index) => {
-    const selected = component.state.markers[index]
+  component.on('zoomtoselected', (item) => {
+    const { _id } = item // get objectid
+    const selected = _find(component.state.markers, (o) => o.item._id === _id)
     markersLayer.zoomToShowLayer(selected.marker, () => {
       selected.marker.openPopup()
     })
@@ -116,10 +118,9 @@ function Leaflet () {
     })
 
     const markers = _flow(
-      _map((item, index) => {
+      _map((item) => {
         const { lat, lng } = item.address.location
         const marker = L.marker([lat, lng], { icon: item.featured ? featuredIcon : defaultIcon })
-        marker._index = index
         marker.bindPopup(_customPopup(item), customOptions)
         markersLayer.addLayer(marker)
         return {
@@ -174,7 +175,7 @@ function Leaflet () {
     const map = L.map(element, options)
 
     const tileLayer = L.tileLayer(tiles, {
-      attribution: '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
+      attribution: '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank" rel="noopener noreferrer">Improve this map</a></strong>'
     })
 
     tileLayer.addTo(map)

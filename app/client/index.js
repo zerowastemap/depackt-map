@@ -7,10 +7,12 @@ require('babel-polyfill')
 
 const choo = require('choo')
 const logger = require('choo-log')
+const expose = require('choo-expose')
 const html = require('choo/html')
 const css = require('sheetify')
 const xhr = require('xhr')
 const _findIndex = require('lodash/findIndex')
+const Nanobounce = require('nanobounce')
 
 css('./styles/reset.css')
 css('./styles/leaflet.css')
@@ -44,6 +46,7 @@ if (module.parent) {
 
   if (process.env.APP_ENV !== 'production') {
     app.use(logger())
+    app.use(expose())
   }
 
   app.use(store)
@@ -81,6 +84,8 @@ function store (state, emitter) {
   state.coords = [50.850340, 4.351710]
   state.zoom = 13
   state.locations = []
+  state.tab = 'search'
+  state.isMobile = !window.matchMedia('(min-width:960px)').matches
 
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)
@@ -88,8 +93,29 @@ function store (state, emitter) {
     emitter.on('leaflet:popupopen', (message) => {
       console.log(message)
     })
+    emitter.on('toggle:tab', (tab) => {
+      const opened = state.tab === tab
+      state.tab = opened ? '' : tab
+      emitter.emit('render')
+    })
 
     emitter.emit('get:locations', {})
+
+    const nanobounce = Nanobounce()
+
+    window.onresize = callback
+
+    function callback () {
+      const prev = Object.assign({}, state)
+      nanobounce(() => {
+        emitter.emit('log:debug', 'Called onResize event')
+        state.isMobile = !window.matchMedia('(min-width:960px)').matches
+        if (prev.isMobile !== state.isMobile) {
+          state.header = !state.isMobile
+        }
+        emitter.emit('render')
+      })
+    }
   })
 
   function getLocations (payload) {
