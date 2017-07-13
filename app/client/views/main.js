@@ -75,9 +75,11 @@ module.exports = (state, emit) => {
         coords: state.coords,
         zoom: state.zoom,
         items: state.locations,
+        tiles: state.tiles, // undefined by default
         selectedIndex: state.selectedIndex,
         mapbox: {
-          accessToken: 'pk.eyJ1IjoiYXVnZ29kIiwiYSI6ImNqMmt0emtuaDAwMDAyd2szNmp4ajR0M3gifQ._b3_qqaa1urKCkXhDE5_Qg'
+          accessToken: 'pk.eyJ1IjoiYXVnZ29kIiwiYSI6ImNqMmt0emtuaDAwMDAyd2szNmp4ajR0M3gifQ._b3_qqaa1urKCkXhDE5_Qg',
+          background: state.mapBackground
         }
       })}
     </main>
