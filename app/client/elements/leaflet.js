@@ -22,7 +22,6 @@ function Leaflet () {
     coords: [50.850340, 4.351710],
     zoom: 15,
     items: [], // data items used to create markers and popups
-    tiles: null,
     selectedIndex: 0,
     mapbox: {
       accessToken: '',
@@ -164,7 +163,9 @@ function Leaflet () {
     const { coords, zoom } = component.props
     const { background = 'light', accessToken } = component.props.mapbox
     const defaultTiles = `https://api.mapbox.com/styles/v1/mapbox/${background}-v9/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`
-    const { tiles = defaultTiles } = component.props
+    const defaultTilesAttribution = '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a>'
+    const { tiles = defaultTiles, tilesAttribution = defaultTilesAttribution } = component.props
+    const mapboxFeedback = '<strong><a href="https://www.mapbox.com/map-feedback/" target="_blank" rel="noopener noreferrer">Improve this map</a></strong>'
 
     const options = {
       center: coords,
@@ -176,7 +177,7 @@ function Leaflet () {
     const map = L.map(element, options)
 
     const tileLayer = L.tileLayer(tiles, {
-      attribution: '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank" rel="noopener noreferrer">Improve this map</a></strong>',
+      attribution: `${tilesAttribution} &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ${!component.props.tiles ? mapboxFeedback : ''}`,
       minZoom: 0,
       maxZoom: 20,
       ext: 'png'
