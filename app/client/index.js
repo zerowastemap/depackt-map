@@ -89,6 +89,9 @@ function store (state, emitter) {
   state.locations = []
   state.tab = 'search'
   state.isMobile = !window.matchMedia('(min-width:960px)').matches
+  state.tiles = state.tiles || undefined
+  state.tilesAttribution = state.tilesAttribution || undefined
+  state.mapBackground = state.mapBackground || 'light'
 
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)

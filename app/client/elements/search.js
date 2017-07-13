@@ -32,26 +32,34 @@ const prefix = css`
     right: 0;
     top: 0;
   }
-  :host input.sticky {
+  :host .input-outer {
+    padding: 6px;
+    background: #333;
+  }
+  :host .sticky {
     top: 60px;
+    z-index: 500;
   }
   @media(min-width: 960px) {
-    :host input.sticky {
+    :host .sticky {
       top: 100px;
     }
   }
   :host input[type="search"] {
     appearance: none;
-    background: #333;
     border: none;
+    position: relative;
+    background: transparent;
+    border-radius: 48px;
     box-shadow: none;
     color: #fff;
     font-size: 1rem;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
     width: 100%;
     z-index: 1;
   }
   :host input[type="search"]:focus {
+    background: rgba(200, 200, 200, .1);
     outline: none;
   }
   :host input[type="search"]::-webkit-input-placeholder {
@@ -64,7 +72,10 @@ const prefix = css`
     width: 12px;
     color: #333;
     cursor: pointer;
-    margin-right: 18px;
+    right: 1.5rem;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background-size: 12px 12px;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGcgZmlsbD0ibm9uZSI+PGcgZmlsbD0iI0ZGRiI+PHBhdGggZD0iTTU5LjYgNTBMOTggMTEuNkMxMDAuNyA4LjkgMTAwLjcgNC42IDk4IDIgOTUuNC0wLjcgOTEtMC43IDg4LjQgMkw1MCA0MC40IDExLjYgMkM5LTAuNyA0LjYtMC43IDIgMiAtMC43IDQuNi0wLjcgOSAyIDExLjZMNDAuNCA1MCAyIDg4LjRDLTAuNyA5MS0wLjcgOTUuNCAyIDk4IDQuNiAxMDAuNyA5IDEwMC43IDExLjYgOThMNTAgNTkuNiA4OC40IDk4QzkxLjEgMTAwLjcgOTUuNCAxMDAuNyA5OCA5OCAxMDAuNyA5NS40IDEwMC43IDkxIDk4IDg4LjRMNTkuNiA1MFoiLz48L2c+PC9nPjwvc3ZnPg==);
   }
@@ -104,18 +115,19 @@ function Search () {
 
     return html`
       <div class="${prefix}">
-        <input
-          autoFocus
-          aria-label="search"
-          autocomplete="false"
-          id="searchinput"
-          class="sticky"
-          name="search"
-          oninput=${handleInput}
-          placeholder="Filtrer par nom, code postal, commune"
-          type="search"
-          value=${state.search.input}
-        />
+        <div class="input-outer sticky">
+          <input
+            autoFocus
+            aria-label="search"
+            autocomplete="false"
+            id="searchinput"
+            name="search"
+            oninput=${handleInput}
+            placeholder="Filtrer par nom, code postal, commune"
+            type="search"
+            value=${state.search.input}
+          />
+        </div>
         ${renderResults()}
       </div>
     `
