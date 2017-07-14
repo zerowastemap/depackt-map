@@ -1,10 +1,9 @@
-const server = require('./app/server')
+import { start } from './app/server'
+import { log, error } from 'winston'
 
 require('dotenv').config()
 
-server.start((err, message) => {
-  if (err) {
-    throw err
-  }
-  console.log(message)
+start((err, message) => {
+  if (err) return error(err)
+  log('info', message)
 })

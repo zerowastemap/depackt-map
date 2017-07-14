@@ -1,16 +1,17 @@
-const hyperstream = require('hyperstream')
-const path = require('path')
-const fs = require('fs')
-const from = require('from2')
-const pump = require('pump')
-const revPath = require('rev-path')
-const client = require('../client')
+import hyperstream from 'hyperstream'
+import path from 'path'
+import fs from 'fs'
+import from from 'from2'
+import pump from 'pump'
+import revPath from 'rev-path'
+import client from './render-client'
+import { log, error } from 'winston'
 
 function createHyperStream (options) {
   return hyperstream(options)
 }
 
-function renderHtml (hash) {
+export default (hash) => {
   return (req, res, ctx, done) => {
     if (res) res.setHeader('Content-Type', 'text/html; charset=utf-8')
 
@@ -51,9 +52,8 @@ function renderHtml (hash) {
     const dest = res
 
     done(null, from(pump(source, transform, transform2, dest, (err) => {
-      console.log('pipe finished', err)
+      if (err) return error(err)
+      log('info', 'pipe finished')
     })))
   }
 }
-
-module.exports = renderHtml

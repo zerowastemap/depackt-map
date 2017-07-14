@@ -4,11 +4,28 @@
   "description": "Zero Waste Map",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
-    "start": "node index.js"
+    "standard": "standard --parser babel-eslint",
+    "test": "babel-node ./test.js",
+    "start": "babel-node ./index.js"
   },
   "author": "Augustin Godiscal <hello@auggod.tech>",
   "license": "MIT",
+  "babel": {
+    "plugins": [
+      "lodash",
+      "add-module-exports"
+    ],
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "bankai": "^8.1.1",
@@ -20,6 +37,7 @@
     "dotenv": "^4.0.0",
     "from2": "^2.3.0",
     "hyperstream": "^1.2.2",
+    "is-server": "0.0.2",
     "leaflet": "^1.0.3",
     "leaflet.markercluster": "^1.0.6",
     "merry": "^4.7.2",
@@ -40,12 +58,16 @@
     "sheetify-cssnext": "^1.0.7",
     "sheetify-postcss": "^1.1.0",
     "slug": "^0.9.1",
+    "winston": "^2.3.1",
     "xhr": "^2.4.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-latest": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
     "babelify": "^7.3.0",
     "envify": "^4.0.0",
     "spok": "^0.8.1",
