@@ -8,7 +8,6 @@
 const choo = require('choo')
 const logger = require('choo-log')
 const expose = require('choo-expose')
-const html = require('choo/html')
 const css = require('sheetify')
 const xhr = require('xhr')
 const _findIndex = require('lodash/findIndex')
@@ -25,63 +24,32 @@ css('./styles/icons.css')
 
 const apiUrl = 'https://api.depackt.be'
 
+const Layout = require('./views/layout')
+const NotFound = require('./views/404')
 const AboutView = require('./views/about')
 const ResourcesView = require('./views/resources')
-const noop = () => {}
 
-// we export this so tests can run
-if (module.parent) {
-  const app = choo()
-  app.route('/', Layout(noop))
-  app.route('/:bounds', Layout(noop))
-  app.route('/about', Layout(AboutView))
-  app.route('/about/:hash', Layout(AboutView))
-  app.route('/about/:hash/*', Layout(NotFound))
-  app.route('/resources', Layout(ResourcesView))
-  app.route('/:bounds/*', Layout(NotFound))
+const app = choo()
 
-  module.exports = { app, store }
-} else {
-  const app = choo()
-
-  if (process.env.APP_ENV !== 'production') {
-    app.use(logger())
-    app.use(expose())
-    app.use(require('choo-service-worker/clear')())
-  }
-
-  app.use(require('choo-service-worker')())
-
-  app.use(store)
-
-  app.route('/', Layout(require('./views/main')))
-  app.route('/:bounds', Layout(require('./views/main')))
-  app.route('/about', Layout(AboutView))
-  app.route('/about/:hash', Layout(AboutView))
-  app.route('/about/:hash/*', Layout(NotFound))
-  app.route('/resources', Layout(ResourcesView))
-  app.route('/:bounds/*', Layout(NotFound))
-
-  app.mount('#app')
+if (process.env.APP_ENV !== 'production') {
+  app.use(logger())
+  app.use(expose())
+  app.use(require('choo-service-worker/clear')())
 }
 
-function NotFound (state, emit) {
-  return html`
-    <div>
-      <h1>Cette page n'existe pas</h1>
-    </div>
-  `
-}
+app.use(require('choo-service-worker')())
 
-function Layout (View) {
-  return (state, emit) => {
-    return html`
-      <div id="app">
-        ${View(state, emit)}
-      </div>
-    `
-  }
-}
+app.use(store)
+
+app.route('/', Layout(require('./views/main')))
+app.route('/:bounds', Layout(require('./views/main')))
+app.route('/about', Layout(AboutView))
+app.route('/about/:hash', Layout(AboutView))
+app.route('/about/:hash/*', Layout(NotFound))
+app.route('/resources', Layout(ResourcesView))
+app.route('/:bounds/*', Layout(NotFound))
+
+app.mount('#app')
 
 function store (state, emitter) {
   state.coords = [50.850340, 4.351710]

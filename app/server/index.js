@@ -7,6 +7,7 @@ import revPath from 'rev-path'
 import from from 'from2'
 import nodemailer from 'nodemailer'
 import fs from 'fs'
+import { log } from 'winston'
 
 import renderHtml from './render-html'
 
@@ -145,6 +146,7 @@ function initialize (callback) {
           if (err) return done(err)
           sendMail(body, (err, response) => {
             if (err) return done(err)
+            log('info', 'Message sent')
             done(null, { message: response })
           })
         })

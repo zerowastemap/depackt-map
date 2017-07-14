@@ -4,7 +4,8 @@ import fs from 'fs'
 import from from 'from2'
 import pump from 'pump'
 import revPath from 'rev-path'
-import client from '../client'
+import client from './render-client'
+import { log, error } from 'winston'
 
 function createHyperStream (options) {
   return hyperstream(options)
@@ -51,7 +52,8 @@ export default (hash) => {
     const dest = res
 
     done(null, from(pump(source, transform, transform2, dest, (err) => {
-      console.log('pipe finished', err)
+      if (err) return error(err)
+      log('info', 'pipe finished')
     })))
   }
 }

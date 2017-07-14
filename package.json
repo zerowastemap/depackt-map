@@ -4,7 +4,8 @@
   "description": "Zero Waste Map",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js",
+    "standard": "standard --parser babel-eslint",
+    "test": "babel-node ./test.js",
     "start": "babel-node ./index.js"
   },
   "author": "Augustin Godiscal <hello@auggod.tech>",
@@ -57,6 +58,7 @@
     "sheetify-cssnext": "^1.0.7",
     "sheetify-postcss": "^1.1.0",
     "slug": "^0.9.1",
+    "winston": "^2.3.1",
     "xhr": "^2.4.0"
   },
   "devDependencies": {
