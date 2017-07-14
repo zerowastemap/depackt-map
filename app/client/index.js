@@ -9,9 +9,9 @@ const choo = require('choo')
 const logger = require('choo-log')
 const expose = require('choo-expose')
 const css = require('sheetify')
-const xhr = require('xhr')
 const _findIndex = require('lodash/findIndex')
 const Nanobounce = require('nanobounce')
+const dpckt = require('./lib/depackt-api')
 
 css('./styles/reset.css')
 css('./styles/leaflet.css')
@@ -21,8 +21,6 @@ css('./styles/github-markdown.css')
 css('./styles/flex.css')
 css('./styles/layout.css')
 css('./styles/icons.css')
-
-const apiUrl = 'https://api.depackt.be'
 
 const Layout = require('./views/layout')
 const NotFound = require('./views/404')
@@ -99,24 +97,12 @@ function store (state, emitter) {
       distanceKm = 1000
     } = payload
 
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'max-age=1000'
-      },
-      json: true,
-      url: `${apiUrl}/locations?latitude=${lat}&longitude=${lng}&distanceKm=${distanceKm}`
-    }
-
-    xhr(options, (err, res, body) => {
-      if (err) { return }
-      const { data } = body
-
+    dpckt.getLocations({lat, lng, distanceKm}).then((response) => {
+      const { data } = response
       if (!data.length) return
 
       const selected = data[0]
       const {lat, lng} = selected.address.location
-
       state.coords = [lat, lng]
       state.locations = data
 
@@ -124,6 +110,8 @@ function store (state, emitter) {
       state.selectedIndex = index
 
       emitter.emit('render')
+    }).catch((err) => {
+      if (err) console.log(err)
     })
   }
 
