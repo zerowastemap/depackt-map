@@ -3,17 +3,14 @@
 <div align="center">
   <strong>Zero Waste Map</strong>
 </div>
+
 <div align="center">
-  A <code>4kb</code> framework for creating sturdy frontend applications
+  :world_map: :mag: :sparkles:
 </div>
 
 <br />
 
 <div align="center">
-  <!-- Choo -->
-  <a href="https://github.com/choojs/choo">
-    :steam_locomotive::train::train::train::train::train:
-  </a>
   <!-- Stability -->
   <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
     <img src="https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square"
