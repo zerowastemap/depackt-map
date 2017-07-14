@@ -1,14 +1,30 @@
-# Repo for maps.depackt.be
+<h1 align="center">Depackt</h1>
 
-## Stack
+<div align="center">
+  <strong>Zero Waste Map</strong>
+</div>
+<div align="center">
+  A <code>4kb</code> framework for creating sturdy frontend applications
+</div>
 
-- Choo
-- Leaflet
+<br />
 
-## Guidelines
-
-- JS Standard
-- Uses spaces! (1 tab = 2 spaces) Please configure your editor to automatically convert tabs to spaces.
+<div align="center">
+  <!-- Choo -->
+  <a href="https://github.com/choojs/choo">
+    :steam_locomotive::train::train::train::train::train:
+  </a>
+  <!-- Stability -->
+  <a href="https://nodejs.org/api/documentation.html#documentation_stability_index">
+    <img src="https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square"
+      alt="API stability" />
+  </a>
+  <!-- Standard -->
+  <a href="https://standardjs.com">
+    <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square"
+      alt="Standard" />
+  </a>
+</div>
 
 ## Installation
 
@@ -16,13 +32,17 @@
 
     $ npm start
 
+    or with pm2
+
+    pm2 start index.js --interpreter ./node_modules/.bin/babel-node --name depackt-map
+
 ## Testing
 
     $ npm test
 
 ## API
 
-API repo is <https://bitbucket.org/depackt/depackt-api>
+API repo is <https://github.com/depackt/depackt-api>
 
 ## REST API
 
