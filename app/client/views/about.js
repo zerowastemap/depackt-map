@@ -49,7 +49,7 @@ module.exports = (state, emit) => {
         <a class="logo" title="logo" href="/">
           ${icon('logo', {'class': 'icon icon-logo'})}
         </a>
-        ${module.parent ? '' : nav.render({items: hashes})}
+        ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
       </div>
       <section id="page" class="layout flex">
         <article role="article" class="flex2 markdown-body">

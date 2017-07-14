@@ -62,10 +62,7 @@ function store (state, emitter) {
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
-    emitter.on('leaflet:popupopen', (message) => {
-      console.log(message)
-    })
-    emitter.on('toggle:tab', (tab) => {
+    emitter.on('toggletab', (tab) => {
       const opened = state.tab === tab
       state.tab = opened ? '' : tab
       emitter.emit('render')
