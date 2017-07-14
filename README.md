@@ -27,11 +27,13 @@
 
     $ npm install
 
+## Development
+
     $ npm start
 
     or with pm2
 
-    $ pm2 start index.js --interpreter ./node_modules/.bin/babel-node --name depackt-map
+    $ pm2 start index.js --interpreter ./node_modules/.bin/babel-node --name depackt-map --watch
 
 ## Testing
 
