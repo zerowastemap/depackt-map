@@ -9,6 +9,7 @@
 const microcomponent = require('microcomponent')
 const L = require('leaflet')
 require('leaflet.markercluster')
+require('../lib/leaflet.zoomhome')
 const onIdle = require('on-idle')
 const html = require('choo/html')
 const _map = require('lodash/fp/map')
@@ -135,6 +136,21 @@ function Leaflet () {
     return markers
   }
 
+  function _addControlPlaceholders (map) {
+    const corners = map._controlCorners
+    const l = 'leaflet-'
+    const container = map._controlContainer
+
+    function createCorner (vSide, hSide) {
+      const className = l + vSide + ' ' + l + hSide
+
+      corners[vSide + hSide] = L.DomUtil.create('div', className, container)
+    }
+
+    createCorner('verticalcenter', 'left')
+    createCorner('verticalcenter', 'right')
+  }
+
   function _customPopup (item) {
     const { url, title, cover } = item
     const { streetName, streetNumber, zip, city } = item.address
@@ -185,7 +201,7 @@ function Leaflet () {
 
     tileLayer.addTo(map)
 
-    map.on('home', (e) => {
+    map.on('zoomhome', (e) => {
       _updateMap()
     })
 
@@ -215,22 +231,9 @@ function Leaflet () {
      * @link https://stackoverflow.com/questions/33614912/how-to-locate-leaflet-zoom-control-in-a-desired-position
      */
 
-    function addControlPlaceholders (map) {
-      const corners = map._controlCorners
-      const l = 'leaflet-'
-      const container = map._controlContainer
+    _addControlPlaceholders(map) // How to locate leaflet zoom control in a desired position
 
-      function createCorner (vSide, hSide) {
-        const className = l + vSide + ' ' + l + hSide
-
-        corners[vSide + hSide] = L.DomUtil.create('div', className, container)
-      }
-
-      createCorner('verticalcenter', 'left')
-      createCorner('verticalcenter', 'right')
-    }
-
-    addControlPlaceholders(map)
+    L.control.scale({position: 'verticalcenterright'}).addTo(map)
 
     /**
      * Center leaflet popup AND marker to the map
@@ -245,93 +248,13 @@ function Leaflet () {
       map.panTo(map.unproject(px), {animate: true}) //
     })
 
-    L.control.scale({position: 'verticalcenterright'}).addTo(map)
-
-    /**
-     * Adapted Leaflet-plugin that provides a zoom control with a "Home" button to reset the view
-     * @link https://github.com/torfsen/leaflet.zoomhome
-     */
-
-    L.Control.ZoomHome = L.Control.extend({
-      options: {
-        position: 'verticalcenterright',
-        zoomInText: '+',
-        zoomInTitle: 'Zoom in',
-        zoomOutText: '-',
-        zoomOutTitle: 'Zoom out',
-        zoomHomeText: `
-          <svg viewBox="0 0 16 16" class="icon icon-mini icon-home">
-            <use xlink:href="#icon-home" />
-          </svg>
-        `,
-        zoomHomeTitle: 'Zoom home'
-      },
-
-      onAdd: function (map) {
-        const controlName = 'gin-control-zoom'
-        const container = L.DomUtil.create('div', controlName + ' leaflet-bar')
-        const options = this.options
-
-        this._zoomInButton = this._createButton(options.zoomInText, options.zoomInTitle,
-          controlName + '-in', container, this._zoomIn)
-        this._zoomHomeButton = this._createButton(options.zoomHomeText, options.zoomHomeTitle,
-          controlName + '-home', container, this._zoomHome)
-        this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-          controlName + '-out', container, this._zoomOut)
-
-        this._updateDisabled()
-        map.on('zoomend zoomlevelschange', this._updateDisabled, this)
-
-        return container
-      },
-
-      onRemove: function (map) {
-        map.off('zoomend zoomlevelschange', this._updateDisabled, this)
-      },
-
-      _zoomIn: function (e) {
-        this._map.zoomIn(e.shiftKey ? 3 : 1)
-      },
-
-      _zoomOut: function (e) {
-        this._map.zoomOut(e.shiftKey ? 3 : 1)
-      },
-
-      _zoomHome: function (e) {
-        map.fire('home')
-      },
-
-      _createButton: function (html, title, className, container, fn) {
-        const link = L.DomUtil.create('a', className, container)
-        link.innerHTML = html
-        link.href = '#'
-        link.title = title
-
-        L.DomEvent.on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
-          .on(link, 'click', L.DomEvent.stop)
-          .on(link, 'click', fn, this)
-          .on(link, 'click', this._refocusOnMap, this)
-
-        return link
-      },
-
-      _updateDisabled: function () {
-        const map = this._map
-        const className = 'leaflet-disabled'
-
-        L.DomUtil.removeClass(this._zoomInButton, className)
-        L.DomUtil.removeClass(this._zoomOutButton, className)
-
-        if (map._zoom === map.getMinZoom()) {
-          L.DomUtil.addClass(this._zoomOutButton, className)
-        }
-        if (map._zoom === map.getMaxZoom()) {
-          L.DomUtil.addClass(this._zoomInButton, className)
-        }
-      }
+    const zoomHome = new L.Control.ZoomHome({
+      zoomHomeText: `
+        <svg viewBox="0 0 16 16" class="icon icon-mini icon-home">
+          <use xlink:href="#icon-home" />
+        </svg>
+      `
     })
-
-    const zoomHome = new L.Control.ZoomHome()
 
     zoomHome.addTo(map)
 
