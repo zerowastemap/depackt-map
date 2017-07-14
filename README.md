@@ -49,5 +49,13 @@ API repo is <https://github.com/depackt/depackt-api>
 
 - Augustin Godiscal <hello@auggod.tech>
 
+## See Also
+- [choo](https://github.com/choojs/choo) - sturdy 4kb frontend framework
+- [bankai](https://github.com/yoshuawuyts/bankai) - streaming asset compiler
+- [bel](https://github.com/shama/bel) - composable DOM elements using template
+  strings
+- [sheetify](https://github.com/stackcss/sheetify) - modular CSS bundler for
+  `browserify`
+
 ## License
 [MIT](https://tldrlegal.com/license/mit-license)
