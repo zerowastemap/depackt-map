@@ -31,7 +31,7 @@
 
     or with pm2
 
-    pm2 start index.js --interpreter ./node_modules/.bin/babel-node --name depackt-map
+    $ pm2 start index.js --interpreter ./node_modules/.bin/babel-node --name depackt-map
 
 ## Testing
 
@@ -39,11 +39,37 @@
 
 ## API
 
-API repo is <https://github.com/depackt/depackt-api>
+API repo is also available on github <https://github.com/depackt/depackt-api>
 
-## REST API
+## REST API ENDPOINTS
 
-    [GET] https://api.depackt.be/?longitude<lng>&latitude=<lat>&distanceKm=<number>&limit=<number>
+**Get locations**
+----
+  Returns json data for locations 
+
+* **URL**
+
+  https://api.depackt.be/locations
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Optional:**
+
+   `longitude=[integer]`
+
+   `latitude=[integer]`
+
+   `distanceKm=[integer]`
+
+   `limit=[integer]`
+
+* **Data Params**
+
+  None
 
 ## Contributors
 
