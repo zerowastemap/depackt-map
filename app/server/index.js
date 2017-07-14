@@ -1,16 +1,16 @@
-const assert = require('assert')
-const bankai = require('bankai')
-const http = require('http')
-const merry = require('merry')
-const path = require('path')
-const revPath = require('rev-path')
+import assert from 'assert'
+import bankai from 'bankai'
+import http from 'http'
+import merry from 'merry'
+import path from 'path'
+import revPath from 'rev-path'
+import from from 'from2'
+import nodemailer from 'nodemailer'
+import fs from 'fs'
+
+import renderHtml from './render-html'
+
 const hash = Date.now()
-const from = require('from2')
-const nodemailer = require('nodemailer')
-const fs = require('fs')
-
-const renderHtml = require('./render-html')
-
 const clientPath = path.join(__dirname, '../client/index.js')
 
 const assets = bankai(clientPath, {
@@ -40,7 +40,11 @@ const assets = bankai(clientPath, {
       ['yo-yoify'],
       ['babelify', {
         presets: [
-          ['latest']
+          ['env', {
+            'targets': {
+              'browsers': ['last 2 versions', 'safari >= 7']
+            }
+          }]
         ],
         plugins: [
           'add-module-exports',
@@ -56,10 +60,10 @@ const assets = bankai(clientPath, {
 function sendMail (body, callback) {
   const { email, text } = body
 
-  if (!email) return callback('Missing email field')
+  if (!email) return callback(new Error('Missing required parameter email'), null)
 
   const transporter = nodemailer.createTransport({
-    host: 'mail.gandi.net',
+    host: process.env.APP_MAIL_HOST,
     port: 465,
     secure: true, // secure:true for port 465, secure:false for port 587
     auth: {
@@ -68,22 +72,16 @@ function sendMail (body, callback) {
     }
   })
 
-  // setup email data with unicode symbols
-  const mailOptions = {
-    from: `"${email}" <${email}>`, // sender address
+  transporter.sendMail({
+    from: `"${email}" <${email}>`,
     to: 'hello@depackt.be',
-    subject: 'New submission on depackt', // Subject line
+    subject: 'New submission on depackt',
     html: `
       <li>Email: ${email}</li>
       <p>${text}</p>
     `
-  }
-
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error)
-    }
+  }, (err, info) => {
+    if (err) return callback(err, null)
     callback(null, 'Message %s sent: %s', info.messageId, info.response)
   })
 }
@@ -146,7 +144,7 @@ function initialize (callback) {
         merry.parse.json(req, (err, body) => {
           if (err) return done(err)
           sendMail(body, (err, response) => {
-            if (err) { return done(err) }
+            if (err) return done(err)
             done(null, { message: response })
           })
         })
@@ -162,7 +160,7 @@ function initialize (callback) {
   callback(app)
 }
 
-function start (done) {
+export const start = (done) => {
   const host = process.env.APP_HOST || '127.0.0.1'
   const port = process.env.APP_PORT || 8084
   const environment = process.env.APP_ENV || 'development'
@@ -174,5 +172,3 @@ function start (done) {
     })
   })
 }
-
-module.exports = { start, sendMail }

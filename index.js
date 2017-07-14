@@ -1,8 +1,8 @@
-const server = require('./app/server')
+import { start } from './app/server'
 
 require('dotenv').config()
 
-server.start((err, message) => {
+start((err, message) => {
   if (err) {
     throw err
   }

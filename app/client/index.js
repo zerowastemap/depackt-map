@@ -3,7 +3,7 @@
  * @link https://github.com/stackcss/sheetify
  */
 
-require('babel-polyfill')
+// require('babel-polyfill')
 
 const choo = require('choo')
 const logger = require('choo-log')
