@@ -62,6 +62,11 @@ function store (state, emitter) {
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
+    emitter.on('sw:installed', (registration) => {
+      if (registration.active) {
+        console.log(registration)
+      }
+    })
     emitter.on('toggletab', (tab) => {
       const opened = state.tab === tab
       state.tab = opened ? '' : tab
