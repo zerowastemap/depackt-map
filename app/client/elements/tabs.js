@@ -35,7 +35,7 @@ function Tabs () {
         <div style=${tab.opened ? '' : 'display:none'}">
           ${tab.el}
         </div>
-      ` : isTabopen(tab.name) ? tab.el : ''
+      ` : tab.opened ? tab.el : ''
     })
 
     return html`
@@ -43,10 +43,6 @@ function Tabs () {
         ${tabItems}
       </div>
     `
-  }
-
-  function isTabopen (tab) {
-    return component.props.tab === tab
   }
 
   function render () {
