@@ -5,13 +5,13 @@
 
 // require('babel-polyfill')
 
-const choo = require('choo')
-const logger = require('choo-log')
-const expose = require('choo-expose')
-const css = require('sheetify')
-const _findIndex = require('lodash/findIndex')
-const Nanobounce = require('nanobounce')
-const dpckt = require('./lib/depackt-api')
+import choo from 'choo'
+import logger from 'choo-log'
+import expose from 'choo-expose'
+import css from 'sheetify'
+import _findIndex from 'lodash/findIndex'
+import Nanobounce from 'nanobounce'
+import dpckt from './lib/depackt-api'
 
 css('./styles/reset.css')
 css('./styles/leaflet.css')
@@ -123,3 +123,5 @@ function store (state, emitter) {
     emitter.emit('render')
   }
 }
+
+export default { app }
