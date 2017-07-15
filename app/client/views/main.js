@@ -7,14 +7,14 @@ const icon = require('../elements/icon.js')
 const Tabs = require('../elements/tabs.js')
 const tabs = Tabs()
 
-module.exports = (state, emit) => {
-  search.on('itemselected', (item) => {
-    leaflet.emit('zoomtoselected', item)
-    if (window.matchMedia('(max-width: 960px)').matches) {
-      emit('toggletab', state.tab)
-    }
-  })
+search.on('itemselected', (item) => {
+  leaflet.emit('zoomtoselected', item)
+  if (window.matchMedia('(max-width: 960px)').matches) {
+    window.choo.emit('toggletab', window.choo.state.tab)
+  }
+})
 
+module.exports = (state, emit) => {
   return html`
     <main role="main">
       ${!state.isMobile ? header() : ''}
