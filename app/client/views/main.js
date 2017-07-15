@@ -7,18 +7,14 @@ const icon = require('../elements/icon.js')
 const Tabs = require('../elements/tabs.js')
 const tabs = Tabs()
 
+search.on('itemselected', (item) => {
+  leaflet.emit('zoomtoselected', item)
+  if (window.matchMedia('(max-width: 960px)').matches) {
+    window.choo.emit('toggletab', window.choo.state.tab)
+  }
+})
+
 module.exports = (state, emit) => {
-  leaflet.on('popupopen', (message) => {
-    emit('leaflet:popupopen', message)
-  })
-
-  search.on('itemselected', (item) => {
-    leaflet.emit('zoomtoselected', item)
-    if (window.matchMedia('(max-width: 960px)').matches) {
-      emit('toggle:tab', state.tab)
-    }
-  })
-
   return html`
     <main role="main">
       ${!state.isMobile ? header() : ''}
@@ -30,17 +26,17 @@ module.exports = (state, emit) => {
             </a>
             <ul class="layout flex space-around">
               <li>
-                <button class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
+                <button class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggletab', 'search')}>
                   ${icon('search', {'class': 'icon icon-large icon-search'})}
                 </button>
               </li>
               <li>
-                <button class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
+                <button class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggletab', 'countries')}>
                   ${icon('world-search', {'class': 'icon icon-large icon-search'})}
                 </b>
               </li>
               <li>
-                <button class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
+                <button class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggletab', 'info')}>
                   ${icon('book', {'class': 'icon icon-large icon-book'})}
                 </button>
               </li>
@@ -48,11 +44,12 @@ module.exports = (state, emit) => {
           </div>
           <div class="layout column">
             ${tabs.render({
-              tab: 'search',
+              tab: state.tab,
               tabs: [
                 {
                   name: 'search',
                   isComponent: true,
+                  opened: state.tab === 'search',
                   el: search.render({
                     input: '',
                     data: state.locations
@@ -60,10 +57,12 @@ module.exports = (state, emit) => {
                 },
                 {
                   name: 'countries',
+                  opened: state.tab === 'countries',
                   el: html`<div>Countries</div>`
                 },
                 {
                   name: 'info',
+                  opened: state.tab === 'info',
                   el: html`<div>Info</div>`
                 }
               ]

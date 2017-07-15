@@ -83,10 +83,6 @@ body {
   }
 }
 
-* {
-  text-rendering: optimizeLegibility;
-}
-
 body {
   background: #fff;
   color: #333;

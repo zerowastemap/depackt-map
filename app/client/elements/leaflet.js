@@ -41,15 +41,17 @@ function Leaflet () {
   component.on('load', load)
   component.on('unload', unload)
 
-  component.on('zoomtoselected', (item) => {
+  component.on('zoomtoselected', _zoomtoselected)
+
+  return component
+
+  function _zoomtoselected (item) {
     const { _id } = item // get objectid
     const selected = _find(component.state.markers, (o) => o.item._id === _id)
     markersLayer.zoomToShowLayer(selected.marker, () => {
       selected.marker.openPopup()
     })
-  })
-
-  return component
+  }
 
   function render () {
     if (!component.state.map) {
@@ -241,8 +243,6 @@ function Leaflet () {
      */
 
     map.on('popupopen', (e) => {
-      component.emit('popupopen', 'Popup opened')
-
       const px = map.project(e.popup._latlng) // find the pixel location on the map where the popup anchor is
       px.y -= e.popup._container.clientHeight / 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
       map.panTo(map.unproject(px), {animate: true}) //

@@ -6,6 +6,7 @@ module.exports = Nav
 function Nav () {
   const component = microcomponent({
     items: [],
+    hash: '',
     state: {
       items: [],
       hash: null
@@ -23,7 +24,7 @@ function Nav () {
     // const self = this
     const state = this.state
     state.items = this.props.items
-    state.hash = window.choo.state.params.hash
+    state.hash = this.props.hash
 
     return html`
       <nav id="docnav" class="layout column sticky">
@@ -43,7 +44,7 @@ function Nav () {
     }
 
     function isActive (hash) {
-      return window.choo.state.params.hash === hash
+      return component.state.hash === hash
     }
   }
 
@@ -58,6 +59,6 @@ function Nav () {
 
   function update (props) {
     return props.items.length !== component.state.items.length ||
-      window.choo.state.params.hash !== component.state.hash
+      props.hash !== component.state.hash
   }
 }
