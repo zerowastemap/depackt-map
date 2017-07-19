@@ -23,7 +23,7 @@ function request (path = '/') {
 
 module.exports = {
   getLocations: (params) => {
-    const {lat, lng, distanceKm, limit = 100} = params
-    return request(`/locations?latitude=${lat}&longitude=${lng}&distanceKm=${distanceKm}&limit=${limit}`)
+    const {lat, lng, distanceKm} = params
+    return request(`/locations?latitude=${lat}&longitude=${lng}&distanceKm=${distanceKm}`)
   }
 }
