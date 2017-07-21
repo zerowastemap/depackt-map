@@ -27,7 +27,7 @@ export default (hash) => {
       'html': {
         'lang': 'fr' // here you can update default lang
       },
-      'title': {
+      'head title': {
         _text: `Depackt - Carte du zéro déchet` // change default title
       },
       'head': {
