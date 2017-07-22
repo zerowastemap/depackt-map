@@ -54,7 +54,9 @@ node_modules
 bower_components
 vendor
 
-assets
+assets/**/*.jpg
+assets/**/*.png
+assets/**/*.jpeg
 
 ### grunt ###
 # Grunt usually compiles files inside this directory
