@@ -94,15 +94,6 @@ function initialize (callback) {
     [revPath('/bundle.js', hash), render('js')],
     [revPath('/bundle.css', hash), render('css')],
     ['/:partial', renderHtml(hash)],
-    ['/translations/:lang', (req, res, ctx, done) => {
-      const { lang = 'fr' } = ctx.params
-
-      assert(['fr', 'de', 'en', 'nl'].includes(lang), 'lang should be in the form of fr|de|en|nl')
-
-      const translations = fs.readFileSync(path.join(__dirname, `../lang/${lang}.json`))
-
-      done(null, translations.toString())
-    }],
     ['/manifest.json', (req, res, ctx, done) => {
       res.setHeader('Content-Type', 'application/json')
       const stream = fs.readFileSync(path.join(__dirname, '../manifest.json'))
@@ -148,7 +139,8 @@ function initialize (callback) {
       `)
     }],
     ['/assets/:file', render('static')],
-    ['/assets/icons/:file', render('static')],
+    ['/assets/icons/:icon', render('static')],
+    ['/assets/lang/:lang', render('static')],
     [ '/new', {
       post: (req, res, ctx, done) => {
         merry.parse.json(req, (err, body) => {

@@ -2,9 +2,9 @@ const xhr = require('xhr')
 
 module.exports = translations
 
-function translations () {
+function translations (defaultLang = 'fr') {
   return function (state, emitter) {
-    const { lang = 'fr' } = state
+    const { lang = defaultLang } = state
 
     emitter.on('DOMContentLoaded', function () {
       console.log('Dom content loaded')
@@ -20,7 +20,7 @@ function translations () {
           'Cache-Control': 'max-age=1000'
         },
         json: true,
-        url: `/translations/${lang}`
+        url: `/assets/lang/${lang}.json`
       }, (err, res, body) => {
         if (err) return new Error('Xhr failed')
         state.translations = body
