@@ -1,0 +1,111 @@
+{
+  "data": [
+    {
+      "name": "Belgique",
+      "cities": [
+        {
+          "name": "Arlon",
+          "location": {
+            "lat": 49.6851364,
+            "lng": 5.810480399999999
+          }
+        },
+        {
+          "name": "Bruxelles",
+          "location": {
+            "lat": 50.8476954, 
+            "lng": 4.3477324
+          }
+        },
+        {
+          "name": "Liège",
+          "location": {
+            "lat": 50.6325574,
+            "lng": 5.5796662
+          }
+        },
+        {
+          "name": "Mons",
+          "location": {
+            "lat": 50.4542408,
+            "lng": 3.956659,
+            "distanceKm": 40
+          }
+        },
+        {
+          "name": "Namur",
+          "location": {
+            "lat": 50.4673883,
+            "lng": 4.8719854
+          }
+        },
+        {
+          "name": "Wavre",
+          "location": {
+            "lat": 50.7158956,
+            "lng": 4.6128075
+          }
+        }
+      ]
+    },
+    {
+      "name": "Deutschland",
+      "cities": [
+        {
+          "name": "Berlin",
+          "location": {
+            "lat": 52.520007, 
+            "lng": 13.404954
+          }
+        },
+        {
+          "name": "Kiel",
+          "location": {
+            "lat": 54.3232927,
+            "lng": 10.1227652
+          }
+        },
+        {
+          "name": "Konstanz",
+          "location": {
+            "lat": 47.6779496,
+            "lng": 9.173238399999999
+          }
+        }
+      ]
+    },
+    {
+      "name": "France",
+      "cities": [
+        {
+          "name": "Bordeaux",
+          "location": {
+            "lat": 44.837789,
+            "lng": -0.57918
+          }
+        },
+        {
+          "name": "Marseille",
+          "location": {
+            "lat": 43.296482,
+            "lng": 5.36978
+          }
+        },
+        {
+          "name": "Nantes",
+          "location": {
+            "lat": 47.218371, 
+            "lng": -1.553621
+          }
+        },
+        {
+          "name": "Toulouse",
+          "location": {
+            "lat": 43.604652,
+            "lng": 1.444209
+          }
+        }
+      ]
+    }
+  ]
+}
