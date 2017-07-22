@@ -36,6 +36,7 @@ if (process.env.APP_ENV !== 'production') {
 }
 
 app.use(require('choo-service-worker')())
+app.use(require('./lib/translations')())
 
 app.use(store)
 
@@ -50,6 +51,8 @@ app.route('/:bounds/*', Layout(NotFound))
 app.mount('#app')
 
 function store (state, emitter) {
+  state.lang = state.lang || 'fr'
+  state.translations = state.translations || {}
   state.coords = [50.850340, 4.351710]
   state.zoom = 13
   state.locations = []

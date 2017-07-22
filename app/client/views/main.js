@@ -6,6 +6,7 @@ const search = Search()
 const icon = require('../elements/icon.js')
 const Tabs = require('../elements/tabs.js')
 const tabs = Tabs()
+const translate = require('../elements/translate.js')
 
 search.on('itemselected', (item) => {
   leaflet.emit('zoomtoselected', item)
@@ -52,6 +53,7 @@ module.exports = (state, emit) => {
                   opened: state.tab === 'search',
                   el: search.render({
                     input: '',
+                    placeholder: translate(state.translations, { term: 'SEARCH_PLACEHOLDER' }),
                     data: state.locations
                   })
                 },

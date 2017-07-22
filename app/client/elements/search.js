@@ -123,7 +123,7 @@ function Search () {
             id="searchinput"
             name="search"
             oninput=${handleInput}
-            placeholder="Filtrer par nom, code postal, commune"
+            placeholder=${this.props.placeholder}
             type="search"
             value=${state.search.input}
           />
