@@ -2,13 +2,13 @@ const xhr = require('xhr')
 
 module.exports = translations
 
-function translations (defaultLang = 'fr') {
+function translations () {
   return function (state, emitter) {
-    const { lang = defaultLang } = state
+    const { lang } = state
 
     emitter.on('DOMContentLoaded', function () {
       console.log('Dom content loaded')
-      getTranslations(lang)
+      if (lang) getTranslations(lang)
     })
 
     emitter.on('load:translations', getTranslations) // ex: to change translations use emit('load:translations', 'de')

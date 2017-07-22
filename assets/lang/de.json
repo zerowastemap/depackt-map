@@ -6,7 +6,14 @@
   "SEARCH_NO_RESULTS": "Aucun résultats pour {value}. ",
   "ABOUT": "Über",
   "RESOURCES": "Ressourcen",
-  "ZERO_WASTE": "Zéro déchet",
+  "ZERO_WASTE": "Zero Waste",
   "UNPACKED": "Unverpackt",
-  "MARKET": "Markt"
+  "MARKET": "Markt",
+  "WHAT_IS_DEPACKT": "Qu'est-ce que depackt?",
+  "METHOD": "Méthode",
+  "CONTACT": "Contact",
+  "SOURCES": "Sources",
+  "IMPRESSUM": "Impressum",
+  "PRIVACY": "Datenschutzerklärung",
+  "CREDITS": "Crédits"
 }

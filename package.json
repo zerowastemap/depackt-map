@@ -33,6 +33,7 @@
     "choo": "^6.0.0-3",
     "choo-expose": "^1.2.0",
     "choo-log": "^6.1.2",
+    "choo-persist": "^3.0.2",
     "choo-service-worker": "^2.1.4",
     "dotenv": "^4.0.0",
     "format-unicorn": "^1.1.0",

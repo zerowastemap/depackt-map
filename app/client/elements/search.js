@@ -2,13 +2,11 @@ const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const morph = require('nanomorph')
 const css = require('sheetify')
-// const _flow = require('lodash/fp/flow')
 const _isEmpty = require('lodash/isEmpty')
 const _filter = require('lodash/filter')
 const slug = require('slug/slug-browser')
 const icon = require('./icon.js')
-
-const translate = require('../elements/translate.js')
+const translate = require('./translate.js')
 
 const prefix = css`
   :host ul li {
@@ -97,7 +95,6 @@ function Search () {
         filtred: []
       },
       translations: {},
-      feedback: '',
       city: 'Bruxelles',
       data: [],
       selected: {},
