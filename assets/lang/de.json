@@ -1,9 +1,11 @@
 {
   "SEARCH": "Suchen",
   "SEARCH_PLACEHOLDER": "Filtrer par nom, code postal, commune",
-  "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {1}km autour de {2}",
-  "ABOUT": "A propos",
-  "RESOURCES": "Resources",
+  "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {distance} autour de {city}",
+  "SEARCH_RESULTS": "Résultats pour {value} dans un rayon de {distance} autour de {city}",
+  "SEARCH_NO_RESULTS": "Aucun résultats pour {value}. ",
+  "ABOUT": "Über",
+  "RESOURCES": "Ressourcen",
   "ZERO_WASTE": "Zéro déchet",
   "UNPACKED": "Unverpackt",
   "MARKET": "Markt"

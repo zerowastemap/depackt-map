@@ -24,6 +24,7 @@ function translations (defaultLang = 'fr') {
       }, (err, res, body) => {
         if (err) return new Error('Xhr failed')
         state.translations = body
+        state.lang = lang
         emitter.emit('render')
       })
     }

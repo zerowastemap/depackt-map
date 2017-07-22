@@ -8,6 +8,8 @@ const _filter = require('lodash/filter')
 const slug = require('slug/slug-browser')
 const icon = require('./icon.js')
 
+const translate = require('../elements/translate.js')
+
 const prefix = css`
   :host ul li {
     list-style: none;
@@ -87,12 +89,15 @@ function Search () {
   const component = microcomponent({
     input: '',
     data: [],
+    translations: {},
     city: '',
     state: {
       search: {
         input: '',
         filtred: []
       },
+      translations: {},
+      feedback: '',
       city: 'Bruxelles',
       data: [],
       selected: {},
@@ -111,6 +116,7 @@ function Search () {
     const self = this
     const state = this.state
 
+    state.translations = this.props.translations
     state.data = component.props.data
 
     return html`
@@ -123,7 +129,7 @@ function Search () {
             id="searchinput"
             name="search"
             oninput=${handleInput}
-            placeholder=${this.props.placeholder}
+            placeholder=${translate(state.translations, { term: 'SEARCH_PLACEHOLDER' })}
             type="search"
             value=${state.search.input}
           />
@@ -201,16 +207,19 @@ function Search () {
     }
 
     function renderValue (value, filtred = state.filtred) {
-      const val = html`<b class="bold">${value}</b>`
-      const range = html`<b class="bold">1000km</b>`
-      const city = html`<b class="bold">${state.city}</b>`
+      const distance = '1000km'
+      const city = state.city
       return html`
         <span class="value">
           ${!_isEmpty(filtred) && value
-            ? message(html`<span class="text">Résultats pour '${val}' dans un rayon de ${range} autour de ${city}</span>`)
+            ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } })}</span>`)
             : ''}
-          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">Epiceries zéro déchet dans un rayon de ${range} autour de ${city}</span>`) : ''}
-          ${_isEmpty(filtred) && value ? message(html`<span class="text">Aucun résultat pour '${val}'. <a href="/new">Ajouter un point</a> à la carte.</span>`) : ''}
+          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } })}</span>`) : ''}
+          ${_isEmpty(filtred) && value ? message(html`
+            <span class="text">
+              ${translate(state.translations, { term: 'SEARCH_NO_RESULTS', format: { value } })}
+              <a href="/new">Ajouter un point</a> à la carte.</span>`
+          ) : ''}
         </span>
       `
     }
@@ -235,6 +244,7 @@ function Search () {
 
   function update (props) {
     return props.input !== component.state.search.input ||
-      props.data.length !== component.state.data.length
+      props.data.length !== component.state.data.length ||
+      props.translations !== component.state.translations
   }
 }

@@ -52,6 +52,7 @@ app.mount('#app')
 
 function store (state, emitter) {
   state.lang = state.lang || 'fr'
+  state.dropdownOpen = state.dropdownOpen || false
   state.translations = state.translations || {}
   state.coords = [50.850340, 4.351710]
   state.zoom = 13
@@ -65,6 +66,10 @@ function store (state, emitter) {
   emitter.on('DOMContentLoaded', () => {
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
+    emitter.on('toggle:lang', () => {
+      state.dropdownOpen = !state.dropdownOpen
+      emitter.emit('render')
+    })
     emitter.on('sw:installed', (registration) => {
       if (registration.active) {
         console.log(registration)
