@@ -112,7 +112,7 @@ main > header {
   }
 }
 
-header .btn, footer .btn {
+a.btn, button.btn {
   line-height: 60px;
   margin-left: 1rem;
   height: 60px;
@@ -136,7 +136,7 @@ header .btn {
   align-items: center;
 }
 
-header .btn-default {
+.btn-default {
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
@@ -182,7 +182,12 @@ section#page aside {
 section#page aside .box {
   margin: .5rem;
   padding: 1rem;
-  background: #ccc;
+  background: #323232;
+  color: #fff;
+}
+
+section#page aside .box a {
+  color: #fff;
 }
 
 section#page article {
@@ -232,4 +237,77 @@ ul.no-style, ul.no-style li {
 
 .dropdown-menu button {
   width: 100%;
+}
+
+.btn-dropdown {
+  position: relative;
+}
+
+.btn-dropdown:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 3px 0 3px;
+  border-color: #000000 transparent transparent transparent;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn-dropdown.open:after {
+  border-width: 0 3px 6px 3px;
+  border-color: transparent transparent #000000 transparent;
+}
+
+.btn-social:hover .icon {
+  transform: scale(1.25);
+  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+.btn-social:active .icon {
+  transform: scale(1);
+  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+ul.social-icons li {
+  margin-right: 1rem;
+}
+
+/**
+ * Forms
+ */
+
+.form-group {
+  padding: .5rem 0;
+}
+
+input[type="text"], input[type="email"] {
+  height: 60px;
+}
+
+input[type="text"], input[type="email"], textarea {
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  font-size: 1rem;
+  padding-right: 24px;
+  outline: 2px solid;
+  outline-color: #bbb;
+  outline-offset: -2px;
+  padding: 1rem;
+  width: 100%;
+}
+
+input:focus, textarea:focus {
+  border: none;
+  box-shadow: none;
+  outline-color: #333;
+  z-index: 1;
+}
+
+button[disabled] {
+  color: #ddd;
+  cursor: not-allowed;
 }

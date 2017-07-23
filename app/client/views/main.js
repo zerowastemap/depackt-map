@@ -1,4 +1,5 @@
 const html = require('choo/html')
+const css = require('sheetify')
 const Leaflet = require('../elements/leaflet.js')
 const Search = require('../elements/search.js')
 const leaflet = Leaflet()
@@ -26,6 +27,61 @@ const langs = [
     lang: 'Nederlands'
   }
 ]
+
+const prefix = css`
+  :host {
+    padding: 1rem 2rem;
+  }
+  :host blockquote {
+    font-size: 1rem;
+  }
+`
+
+const info = html`
+  <div class=${prefix}>
+    <article role="article" class="markdown-body">
+      <blockquote>
+        Depackt est une carte des initiatives zéro déchet (épiceries et marchés bio) en Belgique et ailleurs. <a href="/about">En savoir plus</a>
+    </blockquote>
+      <h2>Liens</h2>
+
+      <li>
+        <a href="/resources">Resources</a>
+      </li>
+      <li>
+        <a href="/legal">Legal</a>
+      </li>
+      <li>
+        <a href="/privacy">Privacy</a>
+      </li>
+
+    <h2>Ailleurs</h2>
+
+    <ul class="layout no-style social-icons">
+      <li>
+        <a class="btn btn-social" href="https://www.facebook.com/depackt" title="facebook" rel="noopener" target="_blank">
+          ${icon('facebook', {'class': 'icon icon-large icon-social'})}
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-social" href="https://twitter.com/depackt_" title="tweets" rel="noopener" target="_blank">
+          ${icon('twitter', {'class': 'icon icon-large icon-social'})}
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-social" href="https://github.com/depackt" title="contribute" rel="noopener" target="_blank">
+          ${icon('github', {'class': 'icon icon-large icon-social'})}
+        </a>
+      </li>
+      <li>
+        <a class="btn btn-social" href="https://keybase.io/auggod" title="crypto" rel="noopener" target="_blank">
+          ${icon('keybase', {'class': 'icon icon-large icon-social'})}
+        </a>
+      </li>
+    </ul>
+    </article>
+  </div>
+`
 
 search.on('itemselected', (item) => {
   leaflet.emit('zoomtoselected', item)
@@ -84,7 +140,7 @@ module.exports = (state, emit) => {
                 {
                   name: 'info',
                   opened: state.tab === 'info',
-                  el: html`<div>Info</div>`
+                  el: info
                 }
               ]
             })}
@@ -112,17 +168,27 @@ module.exports = (state, emit) => {
         <nav role="navigation" class="layout">
           <ul class="layout no-style">
             <li>
-              <a class="btn btn-social" title="depackt sur facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
+              <a class="btn btn-social" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
                 ${icon('facebook', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <a class="btn btn-social" title="depackt sur twitter" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
+              <a class="btn btn-social" title="tweets" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
                 ${icon('twitter', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <button class="btn btn-default" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
+              <a class="btn btn-social" title="contribute" href="https://github.com/depackt" rel="noopener noreferrer" target="_blank">
+                ${icon('github', {'class': 'icon icon-small icon-social'})}
+              </a>
+            </li>
+            <li>
+              <a class="btn btn-social" title="crypto" href="https://keybase.io/auggod" rel="noopener noreferrer" target="_blank">
+                ${icon('keybase', {'class': 'icon icon-small icon-social'})}
+              </a>
+            </li>
+            <li>
+              <button class="btn btn-default btn-dropdown${state.dropdownOpen ? ' open' : ''}" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
               ${state.dropdownOpen ? html`
                 <ul class="dropdown-menu">
                   ${langs.map(langItem)}
