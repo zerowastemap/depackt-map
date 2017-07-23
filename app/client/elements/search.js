@@ -209,9 +209,9 @@ function Search () {
       return html`
         <span class="value">
           ${!_isEmpty(filtred) && value
-            ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } })}</span>`)
+            ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } })}</span>`)
             : ''}
-          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } })}</span>`) : ''}
+          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } })}</span>`) : ''}
           ${_isEmpty(filtred) && value ? message(html`
             <span class="text">
               ${translate(state.translations, { term: 'SEARCH_NO_RESULTS', format: { value } })}
