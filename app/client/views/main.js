@@ -8,6 +8,25 @@ const Tabs = require('../elements/tabs.js')
 const tabs = Tabs()
 const translate = require('../elements/translate.js')
 
+const langs = [
+  {
+    code: 'fr',
+    lang: 'Français'
+  },
+  {
+    code: 'en',
+    lang: 'English'
+  },
+  {
+    code: 'de',
+    lang: 'Deutsch'
+  },
+  {
+    code: 'nl',
+    lang: 'Nederlands'
+  }
+]
+
 search.on('itemselected', (item) => {
   leaflet.emit('zoomtoselected', item)
   if (window.matchMedia('(max-width: 960px)').matches) {
@@ -103,21 +122,10 @@ module.exports = (state, emit) => {
               </a>
             </li>
             <li>
-              <button class="btn btn-default" onclick=${(e) => emit('toggle:lang')}>${state.lang}</button>
+              <button class="btn btn-default" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
               ${state.dropdownOpen ? html`
                 <ul class="dropdown-menu">
-                  <li>
-                    <button class="btn btn-default" onclick=${(e) => lang('fr')}>Français</button>
-                  </li>
-                  <li>
-                    <button class="btn btn-default" onclick=${(e) => lang('en')}>English</button>
-                  </li>
-                  <li>
-                    <button class="btn btn-default" onclick=${(e) => lang('nl')}>Nederlands</button>
-                  </li>
-                  <li>
-                    <button class="btn btn-default" onclick=${(e) => lang('de')}>Deutsch</button>
-                  </li>
+                  ${langs.map(langItem)}
                 </ul>
               ` : ''}
             </li>
@@ -131,6 +139,16 @@ module.exports = (state, emit) => {
         </nav>
       </header>
     `
+
+    function langItem (item) {
+      if (state.lang !== item.code) {
+        return html`
+          <li>
+            <button class="btn btn-default" onclick=${(e) => lang(item.code)}>${item.lang}</button>
+          </li>
+        `
+      }
+    }
 
     function lang (lang) {
       emit('load:translations', lang)
