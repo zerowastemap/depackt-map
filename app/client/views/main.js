@@ -112,17 +112,27 @@ module.exports = (state, emit) => {
         <nav role="navigation" class="layout">
           <ul class="layout no-style">
             <li>
-              <a class="btn btn-social" title="depackt sur facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
+              <a class="btn btn-social" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
                 ${icon('facebook', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <a class="btn btn-social" title="depackt sur twitter" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
+              <a class="btn btn-social" title="tweets" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
                 ${icon('twitter', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <button class="btn btn-default" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
+              <a class="btn btn-social" title="contribute" href="https://github.com/depackt" rel="noopener noreferrer" target="_blank">
+                ${icon('github', {'class': 'icon icon-small icon-social'})}
+              </a>
+            </li>
+            <li>
+              <a class="btn btn-social" title="crypto" href="https://keybase.io/auggod" rel="noopener noreferrer" target="_blank">
+                ${icon('keybase', {'class': 'icon icon-small icon-social'})}
+              </a>
+            </li>
+            <li>
+              <button class="btn btn-default btn-dropdown${state.dropdownOpen ? ' open' : ''}" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
               ${state.dropdownOpen ? html`
                 <ul class="dropdown-menu">
                   ${langs.map(langItem)}
