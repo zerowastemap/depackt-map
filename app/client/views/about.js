@@ -21,6 +21,10 @@ const hashes = [
     hash: 'roadmap'
   },
   {
+    text: 'Collaborer',
+    hash: 'contributing'
+  },
+  {
     text: 'API',
     hash: 'api'
   },
@@ -95,6 +99,12 @@ module.exports = (state, emit) => {
               <li>Ouverture d'un blog</li>
               <li>Ouverture de mon propre point de vente zéro déchet (rêve)</li>
             </ul>
+
+            <h3 id="contributing">
+              <a href="/about#contributing">Collaborer</a>
+            </h3>
+
+            <p>Depackt est open source! Rendez-vous sur <a href="https://github.com/depackt/" target="_blank" rel="noopener noreferrer">github</a> pour en savoir plus!</p>
 
             <h3 id="api">
               <a href="/about#api">API</a>
