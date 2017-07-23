@@ -7,6 +7,7 @@
 
 const choo = require('choo')
 const logger = require('choo-log')
+const persist = require('choo-persist')
 const expose = require('choo-expose')
 const css = require('sheetify')
 const _findIndex = require('lodash/findIndex')
@@ -36,7 +37,9 @@ if (process.env.APP_ENV !== 'production') {
 }
 
 app.use(require('choo-service-worker')())
+app.use(require('./lib/translations')())
 
+app.use(persist())
 app.use(store)
 
 app.route('/', Layout(require('./views/main')))
@@ -50,6 +53,10 @@ app.route('/:bounds/*', Layout(NotFound))
 app.mount('#app')
 
 function store (state, emitter) {
+  state.lang = state.lang || 'fr'
+
+  state.dropdownOpen = state.dropdownOpen || false
+  state.translations = state.translations || {}
   state.coords = [50.850340, 4.351710]
   state.zoom = 13
   state.locations = []
@@ -60,8 +67,13 @@ function store (state, emitter) {
   state.mapBackground = state.mapBackground || 'light'
 
   emitter.on('DOMContentLoaded', () => {
+    emitter.emit('load:translations', state.lang)
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
+    emitter.on('toggle:lang', () => {
+      state.dropdownOpen = !state.dropdownOpen
+      emitter.emit('render')
+    })
     emitter.on('sw:installed', (registration) => {
       if (registration.active) {
         console.log(registration)

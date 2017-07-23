@@ -6,6 +6,7 @@ const search = Search()
 const icon = require('../elements/icon.js')
 const Tabs = require('../elements/tabs.js')
 const tabs = Tabs()
+const translate = require('../elements/translate.js')
 
 search.on('itemselected', (item) => {
   leaflet.emit('zoomtoselected', item)
@@ -52,6 +53,7 @@ module.exports = (state, emit) => {
                   opened: state.tab === 'search',
                   el: search.render({
                     input: '',
+                    translations: state.translations,
                     data: state.locations
                   })
                 },
@@ -101,14 +103,38 @@ module.exports = (state, emit) => {
               </a>
             </li>
             <li>
-              <a class="btn btn-default" href="/about">A propos</a>
+              <button class="btn btn-default" onclick=${(e) => emit('toggle:lang')}>${state.lang}</button>
+              ${state.dropdownOpen ? html`
+                <ul class="dropdown-menu">
+                  <li>
+                    <button class="btn btn-default" onclick=${(e) => lang('fr')}>Français</button>
+                  </li>
+                  <li>
+                    <button class="btn btn-default" onclick=${(e) => lang('en')}>English</button>
+                  </li>
+                  <li>
+                    <button class="btn btn-default" onclick=${(e) => lang('nl')}>Nederlands</button>
+                  </li>
+                  <li>
+                    <button class="btn btn-default" onclick=${(e) => lang('de')}>Deutsch</button>
+                  </li>
+                </ul>
+              ` : ''}
             </li>
             <li>
-              <a class="btn btn-default" href="/resources">Resources</a>
+              <a class="btn btn-default" href="/about">${translate(state.translations, {term: 'ABOUT'})}</a>
+            </li>
+            <li>
+              <a class="btn btn-default" href="/resources">${translate(state.translations, {term: 'RESOURCES'})}</a>
             </li>
           </ul>
         </nav>
       </header>
     `
+
+    function lang (lang) {
+      emit('load:translations', lang)
+      emit('toggle:lang', lang)
+    }
   }
 }

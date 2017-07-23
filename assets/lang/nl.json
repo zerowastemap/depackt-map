@@ -1,0 +1,19 @@
+{
+  "SEARCH": "Zoeken",
+  "SEARCH_PLACEHOLDER": "Filtrer par nom, code postal, commune",
+  "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {distance} autour de {city}",
+  "SEARCH_RESULTS": "Résultats pour {value} dans un rayon de {distance} autour de {city}",
+  "SEARCH_NO_RESULTS": "Aucun résultats pour {value}. ",
+  "ABOUT": "Over",
+  "RESOURCES": "Middelen",
+  "ZERO_WASTE": "Zero Waste",
+  "UNPACKED": "Unpacked",
+  "MARKET": "Market",
+  "WHAT_IS_DEPACKT": "Qu'est-ce que depackt?",
+  "METHOD": "Méthode",
+  "CONTACT": "Contact",
+  "SOURCES": "Sources",
+  "IMPRESSUM": "Impressum",
+  "PRIVACY": "Confidentialité",
+  "CREDITS": "Crédits"
+}

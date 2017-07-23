@@ -223,3 +223,13 @@ ul.no-style, ul.no-style li {
   margin: 0;
   padding: 0;
 }
+
+.dropdown-menu {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+  position: absolute;
+}
+
+.dropdown-menu button {
+  width: 100%;
+}

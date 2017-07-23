@@ -1,0 +1,19 @@
+{
+  "SEARCH": "Chercher",
+  "SEARCH_PLACEHOLDER": "Filtrer par nom, code postal, commune",
+  "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {distance} autour de {city}",
+  "SEARCH_RESULTS": "Résultats pour {value} dans un rayon de {distance} autour de {city}",
+  "SEARCH_NO_RESULTS": "Aucun résultats pour {value}. ",
+  "ABOUT": "A propos",
+  "RESOURCES": "Resources",
+  "ZERO_WASTE": "Zéro déchet",
+  "UNPACKED": "Sans emballage",
+  "MARKET": "Marché",
+  "WHAT_IS_DEPACKT": "Qu'est-ce que depackt?",
+  "METHOD": "Méthode",
+  "CONTACT": "Contact",
+  "SOURCES": "Sources",
+  "IMPRESSUM": "Impressum",
+  "PRIVACY": "Confidentialité",
+  "CREDITS": "Crédits"
+}

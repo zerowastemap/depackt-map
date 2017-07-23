@@ -139,7 +139,8 @@ function initialize (callback) {
       `)
     }],
     ['/assets/:file', render('static')],
-    ['/assets/icons/:file', render('static')],
+    ['/assets/icons/:icon', render('static')],
+    ['/assets/lang/:lang', render('static')],
     [ '/new', {
       post: (req, res, ctx, done) => {
         merry.parse.json(req, (err, body) => {
