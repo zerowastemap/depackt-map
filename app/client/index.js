@@ -44,16 +44,24 @@ app.use(store)
 
 app.route('/', Layout(require('./views/main')))
 app.route('/:bounds', Layout(require('./views/main')))
+app.route('/new', Layout(require('./views/new')))
 app.route('/about', Layout(AboutView))
 app.route('/about/:hash', Layout(AboutView))
 app.route('/about/:hash/*', Layout(NotFound))
 app.route('/resources', Layout(ResourcesView))
+app.route('/resources/:hash', Layout(ResourcesView))
+app.route('/resources/:hash/*', Layout(NotFound))
 app.route('/:bounds/*', Layout(NotFound))
 
 app.mount('#app')
 
 function store (state, emitter) {
   state.lang = state.lang || 'fr'
+
+  state.form = {
+    email: '',
+    text: ''
+  }
 
   state.dropdownOpen = state.dropdownOpen || false
   state.translations = state.translations || {}

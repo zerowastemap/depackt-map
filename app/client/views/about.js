@@ -1,52 +1,50 @@
 const html = require('choo/html')
 const icon = require('../elements/icon.js')
 const Nav = require('../elements/nav')
-const nav = Nav()
-
-const hashes = [
-  {
-    text: 'Qu\'est ce que depackt?',
-    hash: 'depackt'
-  },
-  {
-    text: 'Méthode',
-    hash: 'methodology'
-  },
-  {
-    text: 'Contact',
-    hash: 'contact'
-  },
-  {
-    text: 'Road map',
-    hash: 'roadmap'
-  },
-  {
-    text: 'Collaborer',
-    hash: 'contributing'
-  },
-  {
-    text: 'API',
-    hash: 'api'
-  },
-  {
-    text: 'Sources',
-    hash: 'sources'
-  },
-  {
-    text: 'Hébergeur',
-    hash: 'hosting'
-  },
-  {
-    text: 'Impressum',
-    hash: 'impressum'
-  },
-  {
-    text: 'Crédits',
-    hash: 'credits'
-  }
-]
+const Card = require('../elements/card')
 
 module.exports = (state, emit) => {
+  const card = Card()
+  const nav = Nav()
+
+  const hashes = [
+    {
+      text: 'Qu\'est ce que depackt?',
+      hash: 'depackt'
+    },
+    {
+      text: 'Méthode',
+      hash: 'methodology'
+    },
+    {
+      text: 'Road map',
+      hash: 'roadmap'
+    },
+    {
+      text: 'Collaborer',
+      hash: 'contributing'
+    },
+    {
+      text: 'API',
+      hash: 'api'
+    },
+    {
+      text: 'Sources',
+      hash: 'sources'
+    },
+    {
+      text: 'Hébergeur',
+      hash: 'hosting'
+    },
+    {
+      text: 'Impressum',
+      hash: 'impressum'
+    },
+    {
+      text: 'Crédits',
+      hash: 'credits'
+    }
+  ]
   return html`
     <div class="layout">
       <div class="flex25">
@@ -60,11 +58,15 @@ module.exports = (state, emit) => {
           <header class="layout">
             <h1>A-propos</h1>
           </header>
+          <blockquote>
+            Note: La traduction du site n'est pas encore terminée. Le site sera entièrement traduit en Anglais, Allemand et Néerlandais de manière progressive. Les contenus non traduits en Allemand et Néerlandais seront proposés en Français ou en Anglais.
+          </blockquote>
           <section id="content">
             <h3 id="depackt">
               <a href="/about#depackt">Qu'est ce que depackt?</a>
             </h3>
-            <p>Mon nom est Augustin Godiscal et je suis un développeur freelance Belge installé à Berlin. Mon objectif est de passer le plus de temps possible sur des projets chargés de sens dont les raisons ne sont pas guidées par le profit.</p>
+
+            <p>Mon nom est Augustin Godiscal et je suis développeur freelance à Berlin. Mon objectif est de passer le plus de temps possible sur des projets chargés de sens dont les raisons ne sont pas guidées par le profit.</p>
 
             <p>J'ai créé une carte des initiatives zéro déchet (épiceries et marchés bio) en Belgique et ailleurs. Cette carte a pour but de répertorier tous les lieux où il est possible d'acheter des aliments et produits bio en vrac.</p>
 
@@ -76,19 +78,12 @@ module.exports = (state, emit) => {
 
             <p>J'ai encore énormément de travail concernant l'ajout de points sur la carte, compléter la documentation et la mise en place d'un blog!</p>
 
-            <img alt="depackt map screenshot" src="https://www.tipeee.com/uploads/cache/3/5/3/5/a/3535ac9096e5b1648cce1ca9191f965f56a3daa8.jpg" />
             <h3 id="methodology">
               <a href="/about#methodology">Méthode</a>
             </h3>
             <p>En déplacement, j'en profite pour parcourir les rues de Bruxelles, Berlin et à l'occasion, d'autres villes. Pour les autres, je m'en remet à vous et aux blogs sur le sujet. Sans cesse, de nouvelles initiatives dans le domaine du zero déchets apparaissent dans nos villes. Il faut leur donner la visibilité qu'elles méritent!</p>
             <p>Avant d'ajouter un lieu sur la carte, je vérifie que ce lieu propose bien du vrac de manière permanente ou occasionelle (marchés).</p>
             <p>Proposer du vrac en bio est donc la seule contrainte à ce jour. J'espère que cette carte donnera des idées à de nombreuses personnes pour soit ouvrir un nouveau magasin de vrac ou militer pour une prise de conscience des grandes enseignes.</p>
-            <h3 id="contact">
-              <a href="/about#contact">Contact</a>
-            </h3>
-            <p>
-              Pour toute question, vous pouvez m'écrire à <a href="mailto:hello@depackt.be">hello@depackt.be</a>.
-            </p>
             <h3 id="roadmap">
               <a href="/about#roadmap">Road map</a>
             </h3>
@@ -156,10 +151,35 @@ module.exports = (state, emit) => {
             </ul>
           </section>
         </article>
-        <aside class="flex">
-          <div class="box sticky">
-            <h4>More content</h4>
-            <a href="/resources">Resources</a>
+        <aside class="layout column flex">
+          <div class="box-container" style="height: 100%;">
+            <div class="sticky">
+              <div class="box">
+                <nav>
+                  <ul class="layout column no-style">
+                    <li>
+                      <a href="/">Map</a>
+                    </li>
+                    <li>
+                      <a href="/resources">Resources</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <div class="box">
+                <p>
+                  Pour toute question, vous pouvez m'écrire à <a href="mailto:hello@depackt.be">hello@depackt.be</a>.
+                </p>
+              </div>
+              <div class="box">
+                ${!module.parent ? card.render({
+                  src: 'https://www.auggod.io/assets/auggod2.jpg',
+                  href: 'https://www.auggod.io',
+                  title: '@auggod',
+                  name: 'Augustin Godiscal'
+                }) : ''}
+              </div>
+            </div>
           </div>
         </aside>
       </section>

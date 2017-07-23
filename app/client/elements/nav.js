@@ -25,6 +25,7 @@ function Nav () {
     const state = this.state
     state.items = this.props.items
     state.hash = this.props.hash
+    state.pathname = window.location.pathname
 
     return html`
       <nav id="docnav" class="layout column sticky">
@@ -38,7 +39,7 @@ function Nav () {
       const { hash, text } = item
       return html`
         <li class="navitem${isActive(hash) ? ' active' : ''}">
-          <a href="/about#${hash}">${text}</a>
+          <a href="${state.pathname}#${hash}">${text}</a>
         </li>
       `
     }
