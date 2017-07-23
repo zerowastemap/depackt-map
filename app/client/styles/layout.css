@@ -233,3 +233,35 @@ ul.no-style, ul.no-style li {
 .dropdown-menu button {
   width: 100%;
 }
+
+.btn-dropdown {
+  position: relative;
+}
+
+.btn-dropdown:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 3px 0 3px;
+  border-color: #000000 transparent transparent transparent;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn-dropdown.open:after {
+  border-width: 0 3px 6px 3px;
+  border-color: transparent transparent #000000 transparent;
+}
+
+.btn-social:hover .icon {
+  transform: scale(1.25);
+  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+.btn-social:active .icon {
+  transform: scale(1);
+  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
