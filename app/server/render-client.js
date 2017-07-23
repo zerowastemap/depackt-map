@@ -13,6 +13,8 @@ app.route('/about', Layout(AboutView))
 app.route('/about/:hash', Layout(AboutView))
 app.route('/about/:hash/*', Layout(NotFound))
 app.route('/resources', Layout(ResourcesView))
+app.route('/resources/:hash', Layout(ResourcesView))
+app.route('/resources/:hash/*', Layout(NotFound))
 app.route('/:bounds/*', Layout(NotFound))
 
 export default { app }

@@ -10,6 +10,7 @@ import fs from 'fs'
 import { log } from 'winston'
 
 import renderHtml from './render-html'
+import renderPage from './render-page'
 
 const hash = Date.now()
 const clientPath = path.join(__dirname, '../client/index.js')
@@ -141,6 +142,7 @@ function initialize (callback) {
     ['/assets/:file', render('static')],
     ['/assets/icons/:icon', render('static')],
     ['/assets/lang/:lang', render('static')],
+    ['/assets/markdown/:file', renderPage()],
     [ '/new', {
       post: (req, res, ctx, done) => {
         merry.parse.json(req, (err, body) => {
