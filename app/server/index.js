@@ -28,11 +28,15 @@ const assets = bankai(clientPath, {
               'plugins': [
                 [
                   'postcss-cssnext', {
+                    'warnForDuplicates': false,
                     'browsers': [
                       '> 1%',
                       'last 2 versions'
                     ]
                   }
+                ],
+                [
+                  'cssnano'
                 ]
               ]
             }

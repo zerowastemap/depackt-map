@@ -7,6 +7,8 @@ import revPath from 'rev-path'
 import client from './render-client'
 import { log, error } from 'winston'
 
+const Minifier = require('minify-html-stream').Minifier
+
 function createHyperStream (options) {
   return hyperstream(options)
 }
@@ -51,7 +53,7 @@ export default (hash) => {
 
     const dest = res
 
-    done(null, from(pump(source, transform, transform2, dest, (err) => {
+    done(null, from(pump(source, transform, transform2, new Minifier(), dest, (err) => {
       if (err) return error(err)
       log('info', 'pipe finished')
     })))
