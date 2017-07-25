@@ -24,7 +24,7 @@ module.exports = (state, emit) => {
     }
   ]
   return html`
-    <div class="layout">
+    <main role="main" class="layout">
       <div class="flex25">
         <a class="logo" title="logo" href="/">
           ${icon('logo', {'class': 'icon icon-logo'})}
@@ -111,6 +111,6 @@ module.exports = (state, emit) => {
 
         </aside>
       </section>
-    </div>
+    </main>
   `
 }

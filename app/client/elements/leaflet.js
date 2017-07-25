@@ -12,9 +12,6 @@ require('leaflet.markercluster')
 require('../lib/leaflet.zoomhome')
 const onIdle = require('on-idle')
 const html = require('choo/html')
-const _map = require('lodash/fp/map')
-const _flow = require('lodash/fp/flow')
-const _find = require('lodash/find')
 
 module.exports = Leaflet
 
@@ -47,7 +44,7 @@ function Leaflet () {
 
   function _zoomtoselected (item) {
     const { _id } = item // get objectid
-    const selected = _find(component.state.markers, (o) => o.item._id === _id)
+    const selected = component.state.markers.find((o) => o.item._id === _id)
     markersLayer.zoomToShowLayer(selected.marker, () => {
       selected.marker.openPopup()
     })
@@ -120,18 +117,16 @@ function Leaflet () {
       popupAnchor: [0, -36]
     })
 
-    const markers = _flow(
-      _map((item) => {
-        const { lat, lng } = item.address.location
-        const marker = L.marker([lat, lng], { icon: item.featured ? featuredIcon : defaultIcon })
-        marker.bindPopup(_customPopup(item), customOptions)
-        markersLayer.addLayer(marker)
-        return {
-          item,
-          marker
-        }
-      })
-    )(items)
+    const markers = items.map((item) => {
+      const { lat, lng } = item.address.location
+      const marker = L.marker([lat, lng], { icon: item.featured ? featuredIcon : defaultIcon })
+      marker.bindPopup(_customPopup(item), customOptions)
+      markersLayer.addLayer(marker)
+      return {
+        item,
+        marker
+      }
+    })
 
     component.state.markers = markers
 

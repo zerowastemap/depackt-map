@@ -86,7 +86,7 @@ const info = html`
 search.on('itemselected', (item) => {
   leaflet.emit('zoomtoselected', item)
   if (window.matchMedia('(max-width: 960px)').matches) {
-    window.choo.emit('toggletab', window.choo.state.tab)
+    window.choo.emit('toggle:tab', window.choo.state.tab)
   }
 })
 
@@ -102,17 +102,17 @@ module.exports = (state, emit) => {
             </a>
             <ul class="layout flex space-around">
               <li>
-                <button class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggletab', 'search')}>
+                <button class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
                   ${icon('search', {'class': 'icon icon-large icon-search'})}
                 </button>
               </li>
               <li>
-                <button class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggletab', 'countries')}>
+                <button class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
                   ${icon('world-search', {'class': 'icon icon-large icon-search'})}
                 </b>
               </li>
               <li>
-                <button class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggletab', 'info')}>
+                <button class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
                   ${icon('book', {'class': 'icon icon-large icon-book'})}
                 </button>
               </li>

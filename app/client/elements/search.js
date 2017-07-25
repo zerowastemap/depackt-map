@@ -2,8 +2,7 @@ const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const morph = require('nanomorph')
 const css = require('sheetify')
-const _isEmpty = require('lodash/isEmpty')
-const _filter = require('lodash/filter')
+const isEmpty = require('lodash/isEmpty')
 const slug = require('slug/slug-browser')
 const icon = require('./icon.js')
 const translate = require('./translate.js')
@@ -149,7 +148,7 @@ function Search () {
     function renderResults (value = state.search.input) {
       const { data } = component.props
       const { selected } = state
-      const filtred = _filter(data, (item) => {
+      const filtred = data.filter((item) => {
         const { title } = item
         const { zip, city } = item.address
         const s1 = slug(`${title} ${city} ${zip}`, {replacement: ' ', lower: true})
@@ -196,35 +195,42 @@ function Search () {
 
       function select (e, item) {
         if (item._id !== component.state.selected) {
-          morph(self._element.querySelector('.filtred'), renderFiltred(item))
+          let el = self._element
+          morph(el.querySelector('.filtred'), renderFiltred(item))
         }
         component.state.selected = item
         component.emit('itemselected', item)
       }
     }
 
-    function renderValue (value, filtred = state.filtred) {
+    function renderValue (value, filtred = state.search.filtred) {
       const distance = '1000km'
-      const city = state.city
+      const { translations, city } = state
+
       return html`
         <span class="value">
-          ${!_isEmpty(filtred) && value
-            ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } })}</span>`)
-            : ''}
-          ${!_isEmpty(filtred) && !value ? message(html`<span class="text">${translate(state.translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } })}</span>`) : ''}
-          ${_isEmpty(filtred) && value ? message(html`
-            <span class="text">
-              ${translate(state.translations, { term: 'SEARCH_NO_RESULTS', format: { value } })}
-              <a href="/new">Ajouter un point</a> à la carte.</span>`
-          ) : ''}
+          ${getMessage()}
         </span>
       `
+
+      function getMessage () {
+        switch (false) {
+          case !(!isEmpty(filtred) && value):
+            return message(translate(translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } }))
+          case !(!isEmpty(filtred) && !value):
+            return message(translate(translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } }))
+          case !(isEmpty(filtred) && value):
+            return message(translate(translations, { term: 'SEARCH_NO_RESULTS', format: { value } }))
+        }
+      }
     }
 
     function message (text) {
       return html`
         <div class="message">
-          ${text}
+          <span class="text">
+            ${text}
+          </span>
         </div>
       `
     }

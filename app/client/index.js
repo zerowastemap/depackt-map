@@ -45,6 +45,7 @@ app.use(store)
 app.route('/', Layout(require('./views/main')))
 app.route('/:bounds', Layout(require('./views/main')))
 app.route('/new', Layout(require('./views/new')))
+app.route('/directory', Layout(require('./views/directory')))
 app.route('/about', Layout(AboutView))
 app.route('/about/:hash', Layout(AboutView))
 app.route('/about/:hash/*', Layout(NotFound))
@@ -82,18 +83,12 @@ function store (state, emitter) {
       state.dropdownOpen = !state.dropdownOpen
       emitter.emit('render')
     })
-    emitter.on('sw:installed', (registration) => {
-      if (registration.active) {
-        console.log(registration)
-      }
-    })
-    emitter.on('toggletab', (tab) => {
-      const opened = state.tab === tab
-      state.tab = opened ? '' : tab
-      emitter.emit('render')
-    })
 
-    emitter.emit('get:locations', {})
+    emitter.on('sw:installed', sw)
+
+    emitter.on('toggle:tab', toggleTab)
+
+    getLocations({})
 
     const nanobounce = Nanobounce()
 
@@ -111,6 +106,18 @@ function store (state, emitter) {
       })
     }
   })
+
+  function toggleTab (tab) {
+    const opened = state.tab === tab
+    state.tab = opened ? '' : tab
+    emitter.emit('render')
+  }
+
+  function sw (registration) {
+    if (registration.active) {
+      console.log(registration)
+    }
+  }
 
   function getLocations (payload) {
     const {
