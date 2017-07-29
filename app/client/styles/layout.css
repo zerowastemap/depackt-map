@@ -74,6 +74,15 @@ a.logo:focus {
   outline: none;
 }
 
+header.top-bar {
+  background: #161616;
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  top: 0;
+  z-index: 99999;
+}
+
 #topbar {
   align-items: center;
   justify-content: space-around;
@@ -318,8 +327,13 @@ button[disabled] {
  */
 
 ul.image-grid {
-  max-height: 100vh; 
-  position: absolute;
+  max-height: 100%; 
+  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
   overflow: hidden;
 }
 
@@ -341,7 +355,7 @@ li.image-grid-item .image:hover::after {
 li.image-grid-item .image::after {
   content: "";
   transition: background 200ms ease;
-  background: rgba(0, 0, 0, 0);
+  background: rgba(0, 0, 0, .75);
   top: 0;
   left: 0;
   right: 0;

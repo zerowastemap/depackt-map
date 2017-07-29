@@ -197,6 +197,9 @@ module.exports = (state, emit) => {
               ` : ''}
             </li>
             <li>
+              <a class="btn btn-default" href="/directory">Directory</a>
+            </li>
+            <li>
               <a class="btn btn-default" href="/about">${translate(state.translations, {term: 'ABOUT'})}</a>
             </li>
             <li>

@@ -4,7 +4,9 @@ const searchTypeahead = SearchTypeahead()
 
 module.exports = (state, emit) => {
   return html`
-    <main role="main" class="layout column">
+    <main role="main" class="layout">
+      <header class="top-bar">
+      </header>
       <ul class="layout row-wrap no-style image-grid">
          ${state.locations.map((item) => {
            return html`

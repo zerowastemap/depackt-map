@@ -9,6 +9,43 @@ const translate = require('./translate.js')
 // const api = require('../lib/depackt-api.js')
 
 const prefix = css`
+  :host {
+    flex: 0 90%;
+    display: flex;
+    margin: 50vh auto;
+    flex-direction: column;
+  }
+  @media(min-width:960px) {
+    :host {
+      flex: 0 50%;
+    }
+  }
+  :host form {
+    margin-bottom: 2rem;
+    box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  }
+  :host form button {
+    background: #333;
+    font-size: 1rem;
+    padding: 0 1rem;
+    margin: 0;
+    text-transform: initial;
+    color: #fff;
+  }
+  :host .results {
+    z-index: 2;
+  }
+  :host .search-list li.search-list-item {
+    background: #fff;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    box-shadow: 0 3px 14px rgba(0,0,0,.4);
+  }
+  @media(min-width: 960px) {
+    :host .search-list li.search-list-item {
+      flex-direction: row;
+    }
+  }
   :host ul li {
     list-style: none;
     margin: 0;
@@ -23,47 +60,29 @@ const prefix = css`
     outline: none;
     background: #f0f0f0;
   }
-  :host li .list-icon {
-    height: 48px;
-    width: 48px;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  :host .input-outer {
-    padding: 6px;
-    background: #333;
-  }
   :host .sticky {
+    position: sticky;
     top: 60px;
-    z-index: 500;
+    z-index: 100;
   }
-  @media(min-width: 960px) {
-    :host .sticky {
-      top: 100px;
-    }
-  }
-  :host input[type="search"] {
+  :host form input[type="search"] {
     appearance: none;
     border: none;
+    height: 60px;
     position: relative;
-    background: transparent;
-    border-radius: 48px;
+    background: #fff;
     box-shadow: none;
-    color: #fff;
+    color: #323232;
     font-size: 1rem;
     padding-left: 1.5rem;
     width: 100%;
-    z-index: 1;
   }
-  :host input[type="search"]:focus {
-    background: rgba(200, 200, 200, .1);
+  :host form input[type="search"]:focus {
     outline: none;
+    z-index: 500;
   }
   :host input[type="search"]::-webkit-input-placeholder {
-    color: #f6f6f6;
+    color: #555;
     font-size: .8rem;
   }
   :host input[type="search"]::-webkit-search-cancel-button {
@@ -78,6 +97,20 @@ const prefix = css`
     transform: translateY(-50%);
     background-size: 12px 12px;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGcgZmlsbD0ibm9uZSI+PGcgZmlsbD0iI0ZGRiI+PHBhdGggZD0iTTU5LjYgNTBMOTggMTEuNkMxMDAuNyA4LjkgMTAwLjcgNC42IDk4IDIgOTUuNC0wLjcgOTEtMC43IDg4LjQgMkw1MCA0MC40IDExLjYgMkM5LTAuNyA0LjYtMC43IDIgMiAtMC43IDQuNi0wLjcgOSAyIDExLjZMNDAuNCA1MCAyIDg4LjRDLTAuNyA5MS0wLjcgOTUuNCAyIDk4IDQuNiAxMDAuNyA5IDEwMC43IDExLjYgOThMNTAgNTkuNiA4OC40IDk4QzkxLjEgMTAwLjcgOTUuNCAxMDAuNyA5OCA5OCAxMDAuNyA5NS40IDEwMC43IDkxIDk4IDg4LjRMNTkuNiA1MFoiLz48L2c+PC9nPjwvc3ZnPg==);
+  }
+  :host .content {
+    flex: 0 60%;
+  }
+  :host .cover {
+    position: relative;
+    flex: 1;
+    min-height: 400px;
+  }
+  :host .cover > .image {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 `
 
@@ -117,20 +150,22 @@ function Search () {
     state.data = component.props.data
 
     return html`
-      <div class="${prefix} ${state.name}">
-        <div class="input-outer sticky">
+      <div class="layout column ${prefix} ${state.name}">
+        <form class="layout sticky" onsubmit=${(e) => {
+          e.preventDefault()
+        }}>
           <input
             autoFocus
             aria-label="search"
             autocomplete="false"
-            id="searchinput"
             name="search"
             oninput=${handleInput}
-            placeholder=${translate(state.translations, { term: 'SEARCH_PLACEHOLDER' })}
+            placeholder=${translate(state.translations, { term: 'DIRECTORY_SEARCH_PLACEHOLDER' })}
             type="search"
             value=${state.search.input}
           />
-        </div>
+          <button class="btn btn-default" type="submit">Search</button>
+        </form>
         ${renderResults()}
       </div>
     `
@@ -146,11 +181,32 @@ function Search () {
       }
     }
 
+    function renderList () {
+      return html`
+        <ul class="search-list no-style">
+          ${state.data.map((item, index) => {
+            const { title } = item
+            return html`
+              <li class="layout search-list-item" tabindex="0">
+                <div class="cover">
+                  <div class="image" style="background: url(${item.cover.src}) 50% 50% / cover no-repeat rgb(255, 255, 255);"></div>
+                </div>
+                <div class="content">
+                  ${title}
+                </div>
+              </li>
+            `
+          })}
+        </ul>
+      `
+    }
+
     function renderResults (value = state.search.input) {
       console.log(value)
 
       return html`
-        <div class="results ${prefix}">
+        <div class="layout column results">
+          ${renderList()}
         </div>
       `
     }
