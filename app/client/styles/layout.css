@@ -312,3 +312,46 @@ button[disabled] {
   color: #ddd;
   cursor: not-allowed;
 }
+
+/*
+ * Image grid
+ */
+
+ul.image-grid {
+  max-height: 100vh; 
+  position: absolute;
+  overflow: hidden;
+}
+
+li.image-grid-item {
+  list-style: none;
+  position: relative;
+}
+
+li.image-grid-item .image {
+  height: calc(100vw / 4);
+  width: calc(100vw / 4);
+}
+
+li.image-grid-item .image:hover::after {
+  background: rgba(0, 0, 0, 0);
+  transition: background 200ms ease;
+}
+
+li.image-grid-item .image::after {
+  content: "";
+  transition: background 200ms ease;
+  background: rgba(0, 0, 0, 0);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+}
+
+@media(min-width:960px) {
+  li.image-grid-item .image {
+    height: calc(100vw / 6);
+    width: calc(100vw / 6);
+  }
+}

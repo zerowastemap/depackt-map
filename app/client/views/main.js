@@ -128,6 +128,7 @@ module.exports = (state, emit) => {
                   opened: state.tab === 'search',
                   el: search.render({
                     input: '',
+                    name: 'search-filter-component',
                     translations: state.translations,
                     data: state.locations
                   })

@@ -2,10 +2,11 @@ const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const morph = require('nanomorph')
 const css = require('sheetify')
-const isEmpty = require('lodash/isEmpty')
-const slug = require('slug/slug-browser')
-const icon = require('./icon.js')
+// const isEmpty = require('lodash/isEmpty')
+// const slug = require('slug/slug-browser')
+// const icon = require('./icon.js')
 const translate = require('./translate.js')
+// const api = require('../lib/depackt-api.js')
 
 const prefix = css`
   :host ul li {
@@ -85,21 +86,18 @@ module.exports = Search
 function Search () {
   const component = microcomponent({
     input: '',
-    name: 'search', // component name used to set a css class
+    name: 'search-typeahead', // component name used to set a css class
     data: [],
     translations: {},
-    city: '',
     state: {
       search: {
         input: '',
         filtred: []
       },
-      name: 'search',
+      name: 'search-typeahead',
       translations: {},
-      city: 'Bruxelles',
       data: [],
-      selected: {},
-      prevSelected: null
+      selected: {}
     }
   })
 
@@ -143,97 +141,16 @@ function Search () {
       state.search.input = newValue
 
       if (oldValue !== newValue) {
-        morph(self._element.querySelector('.value'), renderValue(newValue))
+        // morph(self._element.querySelector('.value'), renderValue(newValue))
         morph(self._element.querySelector('.results'), renderResults(newValue))
       }
     }
 
     function renderResults (value = state.search.input) {
-      const { data } = component.props
-      const { selected } = state
-      const filtred = data.filter((item) => {
-        const { title } = item
-        const { zip, city } = item.address
-        const s1 = slug(`${title} ${city} ${zip}`, {replacement: ' ', lower: true})
-        const s2 = slug(value, {replacement: ' ', lower: true})
-        return s1.includes(s2)
-      })
-
-      state.search.filtred = filtred
+      console.log(value)
 
       return html`
         <div class="results ${prefix}">
-          ${renderValue(value, filtred)}
-          ${renderFiltred(selected)}
-        </div>
-      `
-
-      function renderFiltred (selected) {
-        return html`
-          <ul class="filtred">
-            ${filtred.map((item, index) => {
-              const { title, featured } = item
-              return html`
-                <li tabindex="0" class="${isSelected(item, selected) ? 'selected' : ''}" onkeydown=${(e) => select(e, item)} onclick=${(e) => select(e, item)}>
-                  ${title}
-                  ${isSelected(item, selected) ? renderIcon(featured) : ''}
-                </li>
-              `
-            })}
-          </ul>
-        `
-      }
-
-      function renderIcon (featured) {
-        return html`
-          <div class="layout list-icon">
-            ${icon(featured ? 'marker-star' : 'marker', {'class': 'icon icon-medium icon-marker'})}
-          </div>
-        `
-      }
-
-      function isSelected (item, selected) {
-        return item._id === selected._id
-      }
-
-      function select (e, item) {
-        if (item._id !== component.state.selected) {
-          let el = self._element
-          morph(el.querySelector('.filtred'), renderFiltred(item))
-        }
-        component.state.selected = item
-        component.emit('itemselected', item)
-      }
-    }
-
-    function renderValue (value, filtred = state.search.filtred) {
-      const distance = '1000km'
-      const { translations, city } = state
-
-      return html`
-        <span class="value">
-          ${getMessage()}
-        </span>
-      `
-
-      function getMessage () {
-        switch (false) {
-          case !(!isEmpty(filtred) && value):
-            return message(translate(translations, { term: 'SEARCH_RESULTS', format: { value, distance, city } }))
-          case !(!isEmpty(filtred) && !value):
-            return message(translate(translations, { term: 'SEARCH_FEEDBACK', format: { distance, city } }))
-          case !(isEmpty(filtred) && value):
-            return message(translate(translations, { term: 'SEARCH_NO_RESULTS', format: { value } }))
-        }
-      }
-    }
-
-    function message (text) {
-      return html`
-        <div class="message">
-          <span class="text">
-            ${text}
-          </span>
         </div>
       `
     }
