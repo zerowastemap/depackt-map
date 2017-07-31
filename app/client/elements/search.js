@@ -125,6 +125,7 @@ function Search () {
             autoFocus
             aria-label="search"
             autocomplete="false"
+            spellcheck="false"
             id="searchinput"
             name="search"
             oninput=${handleInput}

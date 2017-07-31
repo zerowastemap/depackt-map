@@ -1,12 +1,13 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
-const morph = require('nanomorph')
 const css = require('sheetify')
-// const isEmpty = require('lodash/isEmpty')
-// const slug = require('slug/slug-browser')
-// const icon = require('./icon.js')
+const morph = require('nanomorph')
+const moment = require('moment')
 const translate = require('./translate.js')
-// const api = require('../lib/depackt-api.js')
+const api = require('../lib/depackt-api.js')
+const isEmpty = require('lodash/isEmpty')
+const isEqual = require('is-equal-shallow')
+const icon = require('./icon.js')
 
 const prefix = css`
   :host {
@@ -20,14 +21,21 @@ const prefix = css`
       flex: 0 50%;
     }
   }
+  :host .input-box {
+    box-shadow: 0 3px 14px rgba(0,0,0,.4);
+    position: relative;
+  }
+  :host .checkboxes {
+    color: #fff;
+    background: rgba(0, 0, 0, .75);
+  }
   :host form {
     margin-bottom: 2rem;
-    box-shadow: 0 3px 14px rgba(0,0,0,.4);
   }
   :host form button {
-    background: #333;
+    background: #222;
     font-size: 1rem;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     margin: 0;
     text-transform: initial;
     color: #fff;
@@ -74,7 +82,7 @@ const prefix = css`
     box-shadow: none;
     color: #323232;
     font-size: 1rem;
-    padding-left: 1.5rem;
+    padding-left: 3rem;
     width: 100%;
   }
   :host form input[type="search"]:focus {
@@ -96,18 +104,24 @@ const prefix = css`
     top: 50%;
     transform: translateY(-50%);
     background-size: 12px 12px;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PGcgZmlsbD0ibm9uZSI+PGcgZmlsbD0iI0ZGRiI+PHBhdGggZD0iTTU5LjYgNTBMOTggMTEuNkMxMDAuNyA4LjkgMTAwLjcgNC42IDk4IDIgOTUuNC0wLjcgOTEtMC43IDg4LjQgMkw1MCA0MC40IDExLjYgMkM5LTAuNyA0LjYtMC43IDIgMiAtMC43IDQuNi0wLjcgOSAyIDExLjZMNDAuNCA1MCAyIDg4LjRDLTAuNyA5MS0wLjcgOTUuNCAyIDk4IDQuNiAxMDAuNyA5IDEwMC43IDExLjYgOThMNTAgNTkuNiA4OC40IDk4QzkxLjEgMTAwLjcgOTUuNCAxMDAuNyA5OCA5OCAxMDAuNyA5NS40IDEwMC43IDkxIDk4IDg4LjRMNTkuNiA1MFoiLz48L2c+PC9nPjwvc3ZnPg==);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIC4yaDEwMFYxMDBIMCIvPjwvZGVmcz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik05OCA4OC42TDU5LjYgNTAuMiA5OCAxMS44YzIuNy0yLjcgMi43LTcgMC05LjYtMi42LTIuNy03LTIuNy05LjYgMEw1MCA0MC42IDExLjYgMi4yQzktLjUgNC42LS41IDIgMi4yYy0yLjcgMi42LTIuNyA3IDAgOS42bDM4LjQgMzguNEwyIDg4LjZjLTIuNyAyLjctMi43IDcgMCA5LjYgMi42IDIuNyA3IDIuNyA5LjYgMEw1MCA1OS44bDM4LjQgMzguNGMyLjcgMi43IDcgMi43IDkuNiAwIDIuNy0yLjYgMi43LTcgMC05LjYiIGZpbGw9IiMzNjM2MzYiIG1hc2s9InVybCgjYikiLz48L2c+PC9zdmc+);
   }
   :host .content {
     flex: 0 60%;
   }
   :host .cover {
     position: relative;
+    overflow: hidden;
     flex: 1;
     min-height: 400px;
   }
+  :host .cover > .image:hover {
+    transform: scale(1.1);
+    transition: transform 200ms cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  }
   :host .cover > .image {
     position: absolute;
+    transition: transform 200ms cubic-bezier(0.755, 0.05, 0.855, 0.06);
     top: 0;
     width: 100%;
     height: 100%;
@@ -125,7 +139,8 @@ function Search () {
     state: {
       search: {
         input: '',
-        filtred: []
+        filtred: [],
+        selection: []
       },
       name: 'search-typeahead',
       translations: {},
@@ -142,57 +157,143 @@ function Search () {
   return component
 
   function render () {
-    const self = this
     const state = this.state
 
+    state.search.input = this.props.input
     state.name = this.props.name
+    state.search.selection = this.props.selection
     state.translations = this.props.translations
     state.data = component.props.data
 
     return html`
       <div class="layout column ${prefix} ${state.name}">
-        <form class="layout sticky" onsubmit=${(e) => {
+        <form class="layout column sticky" onsubmit=${(e) => {
           e.preventDefault()
+
+          // const oldValue = state.search.input
+          const newValue = e.target.search.value
+          state.search.input = newValue
+
+          const kinds = ['market', 'event', 'association', 'supermarket', 'webshop']
+          const selection = []
+
+          for (let item of kinds) {
+            const elem = document.getElementById(item)
+            if (elem.checked) {
+              selection.push(elem.value)
+            }
+          }
+
+          api.search({query: newValue, selection}).then(function (response) {
+            if (!isEmpty(response.data)) {
+              component.emit('search', {query: newValue, results: response.data})
+            }
+          })
         }}>
-          <input
-            autoFocus
-            aria-label="search"
-            autocomplete="false"
-            name="search"
-            oninput=${handleInput}
-            placeholder=${translate(state.translations, { term: 'DIRECTORY_SEARCH_PLACEHOLDER' })}
-            type="search"
-            value=${state.search.input}
-          />
-          <button class="btn btn-default" type="submit">Search</button>
+          <div class="layout input-box">
+            <input
+              autoFocus
+              aria-label="search"
+              spellcheck="false"
+              required="required"
+              autocomplete="false"
+              name="search"
+              placeholder=${translate(state.translations, { term: 'DIRECTORY_SEARCH_PLACEHOLDER' })}
+              type="search"
+              value=${state.search.input}
+            />
+            ${icon('search', {'class': 'icon icon-input-search'})}
+            <button class="btn btn-default" type="submit">Search</button>
+          </div>
+          ${renderSelection()}
         </form>
         ${renderResults()}
       </div>
     `
 
-    function handleInput (e) {
-      const oldValue = state.search.input
-      const newValue = e.target.value
-      state.search.input = newValue
+    function renderSelection () {
+      return html`
+        <div class="layout row-wrap justify-center checkboxes">
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('market')} name="market" value="market" id="market">
+            <label for="market">Market</label>
+          </div>
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('event')} name="event" value="event" id="event">
+            <label for="event">évènements</label>
+          </div>
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('association')} name="association" value="association" id="association">
+            <label for="association">Associations</label>
+          </div>
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('supermarket')} name="supermarket" value="supermarket" id="supermarket">
+            <label for="supermarket">Supermarchés</label>
+          </div>
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('webshop')} name="webshop" value="webshop" id="webshop">
+            <label for="webshop">Magasin en ligne</label>
+          </div>
+        </div>
+      `
+    }
 
-      if (oldValue !== newValue) {
-        // morph(self._element.querySelector('.value'), renderValue(newValue))
-        morph(self._element.querySelector('.results'), renderResults(newValue))
+    function updateSelection (e) {
+      const index = state.search.selection.indexOf(e.target.value)
+      if (index > -1) {
+        state.search.selection.splice(index, 1)
+      } else {
+        state.search.selection.push(e.target.value)
       }
+      component.emit('selection', state.search.selection)
     }
 
     function renderList () {
       return html`
         <ul class="search-list no-style">
           ${state.data.map((item, index) => {
+            if (!item) return
             const { title } = item
+            const { streetName, streetNumber, zip, city } = item.address
+            const formattedAddress = streetName + ', ' + streetNumber + ' ' + zip + ' ' + city
             return html`
               <li class="layout search-list-item" tabindex="0">
                 <div class="cover">
-                  <div class="image" style="background: url(${item.cover.src}) 50% 50% / cover no-repeat rgb(255, 255, 255);"></div>
+                  <div class="image" style="background: url(${item.cover.src}) 50% 0% / contain no-repeat rgb(255, 255, 255);"></div>
                 </div>
                 <div class="content">
-                  ${title}
+                  <h3 class="result-title">${title}</h3>
+                  <div class="layout row-wrap">
+                    <div class="result-meta flex50">
+                      <span class="label">Adresse</span>
+                      <div>
+                        ${formattedAddress}
+                      </div>
+                    </div>
+                    <div class="result-meta flex50">
+                      <span class="label">Heures</span>
+                    </div>
+                    <div class="result-meta flex50">
+                      <span class="label">Ouvert depuis</span>
+                      <div>
+                        ${moment().format('LL')}
+                      </div>
+                    </div>
+                    ${item.tags.length ? html`
+                      <div class="result-meta flex50">
+                        <span class="label">Tags</span>
+                        <ul class="layout row-wrap no-style tag-list">
+                          ${item.tags.map((tag) => html`<li class="tag">${tag}</li>`)}
+                        </ul>
+                      </div>
+                    ` : ''}
+                    <div class="result-meta flex50">
+                      <span class="label">Url</span>
+                      <div>
+                        <a target="_blank" rel="noopener noreferer" href=${item.url}>${item.url.match('facebook') ? 'Page facebook' : 'Site internet'}</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </li>
             `
@@ -201,11 +302,10 @@ function Search () {
       `
     }
 
-    function renderResults (value = state.search.input) {
-      console.log(value)
-
+    function renderResults () {
       return html`
         <div class="layout column results">
+          <div class="layout justify-center count">${state.data.length} résultats.</div>
           ${renderList()}
         </div>
       `
@@ -223,7 +323,7 @@ function Search () {
 
   function update (props) {
     return props.input !== component.state.search.input ||
-      props.data.length !== component.state.data.length ||
+      !isEqual(component.state.data, props.data) ||
       props.translations !== component.state.translations
   }
 }
