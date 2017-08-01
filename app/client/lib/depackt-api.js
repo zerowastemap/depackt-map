@@ -3,7 +3,7 @@ const extend = require('xtend')
 
 function request (path = '/') {
   const scheme = 'https://'
-  const domain = 'api.depackt.dev'
+  const domain = window.location.host === 'depackt.dev' ? 'api.depackt.dev' : 'api.depackt.be'
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
