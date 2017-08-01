@@ -23,9 +23,7 @@ function Card () {
   const component = microcomponent({
     src: null,
     state: {
-      src: null,
-      width: null,
-      height: null
+      src: null
     }
   })
 
@@ -37,11 +35,10 @@ function Card () {
   function render () {
     const state = this.state
     state.src = this.props.src
-    state.width = this.props.width
-    state.height = this.props.height
     state.href = this.props.href
     state.title = this.props.title
     state.name = this.props.name
+
     return html`
       <div class=${prefix}>
         <a class="layout column" target="_blank" rel="noopener noreferrer" href="${state.href}" title=${state.title}>

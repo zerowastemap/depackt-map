@@ -10,6 +10,10 @@
   flex-direction: column;
 }
 
+.row-wrap {
+  flex-flow: row wrap;
+}
+
 @media(min-width: 960px) {
   .column-row {
     flex-direction: row;

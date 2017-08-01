@@ -1,5 +1,6 @@
 {
   "SEARCH": "Chercher",
+  "DIRECTORY_SEARCH_PLACEHOLDER": "Rechercher un supermarché, une association zéro déchet...",
   "SEARCH_PLACEHOLDER": "Filtrer par nom, code postal, commune",
   "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {distance} autour de {city}",
   "SEARCH_RESULTS": "Résultats pour \"{value}\" dans un rayon de {distance} autour de {city}",
