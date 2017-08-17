@@ -1,8 +1,12 @@
 const html = require('choo/html')
-const icon = require('../elements/icon.js')
+const sideBar = require('../elements/side-bar.js')
 const Nav = require('../elements/nav')
+const Header = require('../elements/header')
+const TITLE = 'Resources'
 
 module.exports = (state, emit) => {
+  if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
+
   const nav = Nav()
 
   const hashes = [
@@ -24,17 +28,16 @@ module.exports = (state, emit) => {
     }
   ]
   return html`
-    <main role="main" class="layout">
-      <div class="flex25">
-        <a class="logo" title="logo" href="/">
-          ${icon('logo', {'class': 'icon icon-logo'})}
-        </a>
-        ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
-      </div>
-      <section id="page" class="layout flex">
+    <main role="main" class="layout flex">
+      ${Header(state, emit)}
+      ${state.sideBarOpen ? sideBar(state, emit) : ''}
+      <section id="page" class="layout column row-l flex">
+        <div class="flex25">
+          ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
+        </div>
         <article role="article" class="flex2 markdown-body">
           <header class="layout">
-            <h1>Resources</h1>
+            <h1>${state.title}</h1>
           </header>
           <section id="content">
             <h3 id="maps">
@@ -69,6 +72,10 @@ module.exports = (state, emit) => {
               Blog zéro déchet: <a target="_blank" rel="noopener noreferrer" href="https://zerocarabistouille.be/2017/01/14/les-magasins-objectif-zero-dechet-vrac/">zerocarabistouille.be</a>
             </li>
             <li>
+              Blog zéro déchet: <a target="_blank" rel="noopener noreferrer" href="http://milenandco.com/">zerocarabistouille.be</a>
+
+            </li>
+            <li>
               Adresses bio à Bruxelles: <a target="_blank" rel="noopener noreferrer" href="https://www.bioguide.be">bioguide.be</a>
             </li>
 
@@ -91,10 +98,10 @@ module.exports = (state, emit) => {
             <li>Zero Waste Home Bulk Finder : <a target="_blank" rel="noopener noreferrer" href="http://zerowastehome.com/app/">zerowastehome.com/app</a></li>
           </section>
         </article>
-        <aside class="flex">
+        <aside class="layout column flex25">
           <div class="box-container" style="height: 100%;">
             <div class="sticky">
-              <div class="box">
+              <div class="box pa3 ma3">
                 <nav>
                   <ul class="layout column no-style">
                     <li>

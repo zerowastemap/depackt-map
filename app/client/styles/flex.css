@@ -59,3 +59,9 @@
 .flex-end {
   justify-content: flex-end;
 }
+
+@media(min-width: 960px) {
+  .row-l {
+    flex-direction: row;
+  }
+}

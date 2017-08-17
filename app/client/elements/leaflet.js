@@ -18,6 +18,8 @@ module.exports = Leaflet
 function Leaflet () {
   const component = microcomponent({
     coords: [50.850340, 4.351710],
+    id: 'map',
+    sideBarOpen: false,
     zoom: 15,
     items: [], // data items used to create markers and popups
     selectedIndex: 0,
@@ -26,6 +28,7 @@ function Leaflet () {
       background: 'light'
     },
     state: {
+      sideBarOpen: false,
       map: null,
       markers: null
     }
@@ -51,8 +54,11 @@ function Leaflet () {
   }
 
   function render () {
+    const state = this.state
+    state.sideBarOpen = this.props.sideBarOpen
+
     if (!component.state.map) {
-      component._element = html`<div id="map"></div>`
+      component._element = html`<div id=${this.props.id}></div>`
       if (component._hasWindow) {
         _createMap()
         _addMarkers()
@@ -68,7 +74,8 @@ function Leaflet () {
 
   function update (props) {
     return props.coords[0] !== component.props.coords[0] ||
-      props.coords[1] !== component.props.coords[1]
+      props.coords[1] !== component.props.coords[1] ||
+      props.sideBarOpen !== component.state.sideBarOpen
   }
 
   function load () {
@@ -83,7 +90,7 @@ function Leaflet () {
 
   function _addMarkers () {
     markersLayer.clearLayers()
-    const { items = [] } = component.props
+    const { items = [], popupDisabled = false } = component.props
 
     const { background = 'light' } = component.props.mapbox
     const colorInvert = background === 'light' ? 'dark' : 'light'
@@ -117,10 +124,13 @@ function Leaflet () {
       popupAnchor: [0, -36]
     })
 
-    const markers = items.map((item) => {
+    const markers = items.map((item, index) => {
       const { lat, lng } = item.address.location
       const marker = L.marker([lat, lng], { icon: item.featured ? featuredIcon : defaultIcon })
-      marker.bindPopup(_customPopup(item), customOptions)
+      if (!popupDisabled) {
+        marker.bindPopup(_customPopup(item), customOptions)
+      }
+      marker._index = index
       markersLayer.addLayer(marker)
       return {
         item,
@@ -238,6 +248,12 @@ function Leaflet () {
      */
 
     map.on('popupopen', (e) => {
+      const index = e.popup._source._index
+
+      if (index !== component.props.selectedIndex) {
+        component.emit('select', component.props.items[index])
+      }
+
       const px = map.project(e.popup._latlng) // find the pixel location on the map where the popup anchor is
       px.y -= e.popup._container.clientHeight / 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
       map.panTo(map.unproject(px), {animate: true}) //
@@ -257,8 +273,10 @@ function Leaflet () {
   }
 
   function _updateMap () {
-    const { coords, zoom } = component.props
+    // const { coords, zoom } = component.props
     _addMarkers()
-    component.state.map.setView(coords, zoom)
+    component.state.map.invalidateSize()
+    _zoomtoselected(component.props.items[component.props.selectedIndex])
+    // component.state.map.setView(coords, zoom)
   }
 }

@@ -3,6 +3,7 @@ const html = require('choo/html')
 const morph = require('nanomorph')
 const css = require('sheetify')
 const isEmpty = require('lodash/isEmpty')
+const isEqual = require('is-equal-shallow')
 const slug = require('slug/slug-browser')
 const icon = require('./icon.js')
 const translate = require('./translate.js')
@@ -51,6 +52,7 @@ const prefix = css`
     background: transparent;
     border-radius: 48px;
     box-shadow: none;
+    height: 48px;
     color: #fff;
     font-size: 1rem;
     padding-left: 1.5rem;
@@ -88,7 +90,9 @@ function Search () {
     name: 'search', // component name used to set a css class
     data: [],
     translations: {},
-    city: '',
+    selected: {},
+    radius: 50,
+    city: 'Bruxelles',
     state: {
       search: {
         input: '',
@@ -96,8 +100,8 @@ function Search () {
       },
       name: 'search',
       translations: {},
-      city: 'Bruxelles',
       data: [],
+      radius: 50,
       selected: {},
       prevSelected: null
     }
@@ -115,8 +119,11 @@ function Search () {
     const state = this.state
 
     state.name = this.props.name
+    state.selected = this.props.selected
     state.translations = this.props.translations
+    state.radius = this.props.radius
     state.data = component.props.data
+    state.city = component.props.city
 
     return html`
       <div class="${prefix} ${state.name}">
@@ -203,12 +210,12 @@ function Search () {
           morph(el.querySelector('.filtred'), renderFiltred(item))
         }
         component.state.selected = item
-        component.emit('itemselected', item)
+        component.emit('select', item)
       }
     }
 
     function renderValue (value, filtred = state.search.filtred) {
-      const distance = '1000km'
+      const distance = `${state.radius}km`
       const { translations, city } = state
 
       return html`
@@ -251,7 +258,8 @@ function Search () {
 
   function update (props) {
     return props.input !== component.state.search.input ||
-      props.data.length !== component.state.data.length ||
+      !isEqual(component.state.data, props.data) ||
+      props.radius !== component.state.radius ||
       props.translations !== component.state.translations
   }
 }
