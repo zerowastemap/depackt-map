@@ -16,22 +16,22 @@ const prefix = css`
     overflow: hidden;
   }
 
-  :host li.image-grid-item {
+  :host li {
     list-style: none;
     position: relative;
   }
 
-  :host li.image-grid-item .image {
+  :host li .image {
     height: calc(100vw / 4);
     width: calc(100vw / 4);
   }
 
-  :host li.image-grid-item .image:hover::after {
+  :host li .image:hover::after {
     background: rgba(0, 0, 0, 0);
     transition: background 200ms ease;
   }
 
-  :host li.image-grid-item .image::after {
+  :host li .image::after {
     content: "";
     transition: background 200ms ease;
     background: rgba(0, 0, 0, .75);
@@ -43,7 +43,7 @@ const prefix = css`
   }
 
   @media(min-width:960px) {
-    :host li.image-grid-item .image {
+    :host li .image {
       height: calc(100vw / 6);
       width: calc(100vw / 6);
     }
@@ -84,7 +84,7 @@ function imageGrid () {
     function gridItem (item) {
       const { src } = item
       return html`
-        <li class="image-grid-item">
+        <li>
           <div class="image" style="background: url(${src}) 50% 50% / cover no-repeat rgb(255, 255, 255);"></div>
         </li>
       `

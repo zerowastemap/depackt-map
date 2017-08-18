@@ -1,7 +1,6 @@
 const html = require('choo/html')
-const sideBar = require('../elements/side-bar.js')
 const Nav = require('../elements/nav')
-const Header = require('../elements/header')
+const PageLayout = require('../elements/page-layout')
 const TITLE = 'Resources'
 
 module.exports = (state, emit) => {
@@ -27,10 +26,8 @@ module.exports = (state, emit) => {
       hash: 'apps'
     }
   ]
-  return html`
-    <main role="main" class="layout flex">
-      ${Header(state, emit)}
-      ${state.sideBarOpen ? sideBar(state, emit) : ''}
+  return PageLayout((state, emit) => {
+    return html`
       <section id="page" class="layout column row-l flex">
         <div class="flex25">
           ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
@@ -118,6 +115,6 @@ module.exports = (state, emit) => {
 
         </aside>
       </section>
-    </main>
-  `
+    `
+  })(state, emit)
 }

@@ -6,6 +6,7 @@ module.exports = (state, emit) => {
   return html`
     <nav class="layout flex25 fixed" id="sidebar">
       ${state.isMobile ? html`<button class="btn-close" onclick=${(e) => emit('toggle:sidebar')}>${icon('close', {'class': 'icon icon-small icon-white icon-close'})}</button>` : ''}
+      <span class="absolute top-1 left-1 f7">depackt-map v.${state.appVersion}</span>
       <ul class="layout column list mt5 pb5 h-max pl0 w-100">
         <li class="lh-copy">
           <a class="db pa3 no-underline" href="/">

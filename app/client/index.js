@@ -12,8 +12,6 @@ const persist = require('choo-persist')
 const expose = require('choo-expose')
 const css = require('sheetify')
 const xhr = require('xhr')
-const Slider = require('./elements/slider')
-const slider = Slider()
 const serialize = require('form-serialize')
 
 /*
@@ -31,26 +29,30 @@ const dpckt = require('./lib/depackt-api')
  * Elements
  */
 
-const icon = require('./elements/icon.js')
-const sideBar = require('./elements/side-bar.js')
+const icon = require('./elements/icon')
+const sideBar = require('./elements/side-bar')
+const Layout = require('./elements/layout') // main layout
+const PageLayout = require('./elements/page-layout') // sub page layout
 
 /*
  * Components
  */
 
-const Leaflet = require('./elements/leaflet.js')
-const Search = require('./elements/search.js')
-const Select = require('./elements/select.js')
+const Leaflet = require('./elements/leaflet')
+const Search = require('./elements/search')
+const Select = require('./elements/select')
+const DirectorySearch = require('./elements/directory-search')
+const Tabs = require('./elements/tabs')
+const ImageGrid = require('./elements/grid')
+const Slider = require('./elements/slider')
+
 const select = Select()
 const leaflet = Leaflet()
 const search = Search()
-const Tabs = require('./elements/tabs.js')
 const tabs = Tabs()
-const SearchTypeahead = require('./elements/search-typeahead.js')
-const searchTypeahead = SearchTypeahead()
-const Header = require('./elements/header.js')
-const ImageGrid = require('./elements/grid')
+const directorySearch = DirectorySearch()
 const imageGrid = ImageGrid()
+const slider = Slider()
 
 css('./styles/reset.css')
 css('tachyons')
@@ -63,7 +65,6 @@ css('./styles/layout.css')
 css('./styles/checkbox.css')
 css('./styles/icons.css')
 
-const Layout = require('./views/layout')
 const NotFound = require('./views/404')
 const AboutView = require('./views/about')
 const ResourcesView = require('./views/resources')
@@ -81,6 +82,11 @@ app.use(require('./lib/translations')())
 
 app.use(persist())
 app.use(store)
+app.use(sendMail)
+
+/*
+ * Routes
+ */
 
 app.route('/', main)
 app.route('/:bounds', main)
@@ -101,6 +107,10 @@ app.mount('#app')
 
 const mainTitle = 'Carte du zéro déchet'
 const directoryTitle = 'Directory'
+
+/*
+ * Main View for map
+ */
 
 function main (state, emit) {
   if (state.title !== mainTitle) emit(state.events.DOMTITLECHANGE, mainTitle)
@@ -244,31 +254,38 @@ function main (state, emit) {
   }
 }
 
+/*
+ * Directory View
+ */
+
 function directory (state, emit) {
   if (state.title !== directoryTitle) emit(state.events.DOMTITLECHANGE, directoryTitle)
 
-  return html`
-    <main role="main" class="layout flex">
-      ${Header(state, emit)}
-      ${state.sideBarOpen ? sideBar(state, emit) : ''}
+  return PageLayout((state, emit) => {
+    return html`
       <section role="section" id="directory" class="layout w-100">
         ${imageGrid.render({
           items: state.grid
         })}
-        ${searchTypeahead.render({
+        ${directorySearch.render({
           input: state.search || '',
-          name: 'search-typeahead',
+          name: 'directory-search',
           selection: state.selection || [],
           translations: state.translations,
           data: state.results // fallback to locations if no results
         })}
       </section>
-    </main>
-  `
+    `
+  })(state, emit)
 }
+
+/*
+ * Data store
+ */
 
 function store (state, emitter) {
   state.title = 'Depackt'
+  state.appVersion = '2.0.0-1'
   state.lang = state.lang || 'fr'
   state.countries = state.countries || []
 
@@ -311,100 +328,35 @@ function store (state, emitter) {
   state.mapBackground = state.mapBackground || 'light'
   state.selection = state.selection || []
 
+  emitter.on(state.events.NAVIGATE, () => {
+    if (!state.params.hash) {
+      window.scrollTo(0, 0)
+    }
+  })
+
   emitter.on(state.events.DOMCONTENTLOADED, () => {
-    /**
-     * Set distanceKm when user move slider in settings
-     */
-    slider.on('progress', (percent) => {
-      const max = 1000 // max distance in km
+    slider.on('progress', sliderProgress) // To set distanceKm when user move slider in settings
+    select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
-      state.settings.distanceKm = Math.round((max / 100) * percent)
+    leaflet.on('select', onLeafletSelect) // Update selected item when user open a popup on map
+    leaflet.on('zoomtoselected', onZoomToSelected) // Set selection when user select a location in search/filter list and auto zoom
 
-      getLocations({ lat: state.coords[0], lng: state.coords[1] })
-    })
+    search.on('select', onSearchSelect)
 
-    /**
-     * Update locations when use select a country/city in list
-     * TODO change name for componenent select
-     */
-
-    select.on('select', (item) => {
-      const { lat, lng } = item.coords
-      state.coords = [lat, lng]
-      state.city = item.name
-
-      getLocations({ lat, lng })
-    })
-
-    /**
-     * Update selected item when user open a popup on map
-     */
-
-    leaflet.on('select', (item) => {
-      const { lat, lng } = item.address.location
-      state.coords = [lat, lng]
-      state.selected = item
-      const index = _findIndex(state.locations, { _id: item._id })
-      state.selectedIndex = index
-
-      emitter.emit('render')
-    })
-
-    /*
-     * Set selection when user select a location in search/filter list
-     * Auto zoom on marker on map
-     */
-
-    leaflet.on('zoomtoselected', (item) => {
-      const { lat, lng } = item.address.location
-      emitter.emit('pushState', `/@${lat},${lng}`)
-    })
-
-    search.on('select', (item) => {
-      const { lat, lng } = item.address.location
-      state.coords = [lat, lng]
-      state.selected = item
-      const index = _findIndex(state.locations, { _id: item._id })
-      state.selectedIndex = index
-
-      leaflet.emit('zoomtoselected', item)
-
-      if (window.matchMedia('(max-width: 960px)').matches) {
-        emitter.emit('toggle:tab', state.tab)
-      }
-    })
-
-    emitter.on('toggle:sidebar', () => {
-      state.sideBarOpen = !state.sideBarOpen
-      emitter.emit('render')
-    })
-
-    /*
-     * TODO change component name
-     */
-
-    searchTypeahead.on('selection', (payload) => {
-      state.selection = payload
-      emitter.emit('render')
-    })
-
-    searchTypeahead.on('search', (payload) => {
-      state.results = payload.results
-      state.search = payload.query
-      emitter.emit('render')
-    })
-
-    searchTypeahead.on('showMap', (payload) => {
-      const {lat, lng} = payload
-      getLocations({ lat, lng })
-      emitter.emit('pushState', `/@${lat},${lng}`)
-    })
+    directorySearch.on('selection', onDirectorySelection)
+    directorySearch.on('search', onDirectorySearch)
+    directorySearch.on('showMap', redirectToMap)
 
     emitter.emit('load:translations', state.lang)
 
     emitter.on('set:coords', setCoords)
     emitter.on('get:locations', getLocations)
     emitter.on('get:countries', getCountries)
+
+    emitter.on('toggle:sidebar', () => {
+      state.sideBarOpen = !state.sideBarOpen
+      emitter.emit('render')
+    })
 
     emitter.on('toggle:lang', () => {
       state.dropdownOpen = !state.dropdownOpen
@@ -415,6 +367,11 @@ function store (state, emitter) {
 
     emitter.on('toggle:tab', toggleTab)
 
+    /*
+     * Get bounds in url params
+     * https://maps.depackt.be/@lat,lng
+     */
+
     const bounds = state.params.bounds
       ? state.params.bounds.split(',').map((item) => item.includes('@') ? item.substring(1) : item)
       : state.defaultBounds
@@ -422,50 +379,120 @@ function store (state, emitter) {
     const lat = isNaN(bounds[0]) ? state.defaultBounds.lat : bounds[0]
     const lng = isNaN(bounds[1]) ? state.defaultBounds.lng : bounds[1]
 
-    getLocations({ lat, lng })
+    getLocations({ lat, lng }) // init locations data
 
-    getCountries()
+    getCountries() // loat country/city list
 
-    getGrid()
+    getGrid() // load image grid in /directory
 
-    /**
-     * Update state.isMobile on window.resize event
-     */
-
-    window.onresize = callback
-
-    function callback () {
-      const prev = Object.assign({}, state)
-      nanobounce(() => {
-        emitter.emit('log:debug', 'Called onResize event')
-        state.isMobile = !window.matchMedia('(min-width:960px)').matches
-        if (prev.isMobile !== state.isMobile) {
-          state.header = !state.isMobile
-        }
-        emitter.emit('render')
-      })
-    }
+    window.onresize = onResize // state.isMobile
   })
 
+  /*
+   * Main filter/search system
+   */
+
+  function onSearchSelect (item) {
+    const { lat, lng } = item.address.location
+    const index = _findIndex(state.locations, { _id: item._id })
+
+    state.coords = [lat, lng]
+    state.selected = item
+    state.selectedIndex = index
+
+    leaflet.emit('zoomtoselected', item)
+
+    if (window.matchMedia('(max-width: 960px)').matches) {
+      emitter.emit('toggle:tab', state.tab)
+    }
+  }
+
+  /*
+   * Leaflet component events
+   */
+
+  function onLeafletSelect (item) {
+    const { lat, lng } = item.address.location
+    const index = _findIndex(state.locations, { _id: item._id })
+
+    state.coords = [lat, lng]
+    state.selected = item
+    state.selectedIndex = index
+
+    emitter.emit('render')
+  }
+
+  function onZoomToSelected (item) {
+    const { lat, lng } = item.address.location
+    emitter.emit('pushState', `/@${lat},${lng}`)
+  }
+
+  /*
+   * Update state.isMobile on window.resize event
+   */
+
+  function onResize () {
+    const prev = Object.assign({}, state)
+    nanobounce(() => {
+      emitter.emit('log:debug', 'Called onResize event')
+      state.isMobile = !window.matchMedia('(min-width:960px)').matches
+      if (prev.isMobile !== state.isMobile) {
+        state.header = !state.isMobile
+      }
+      emitter.emit('render')
+    })
+  }
+
+  /*
+   * Directory component events
+   */
+
+  function onDirectorySelection (payload) {
+    state.selection = payload
+    emitter.emit('render')
+  }
+
+  function onDirectorySearch (payload) {
+    state.results = payload.results
+    state.search = payload.query
+    emitter.emit('render')
+  }
+
+  function redirectToMap (payload) {
+    const {lat, lng} = payload
+    getLocations({ lat, lng })
+    emitter.emit('pushState', `/@${lat},${lng}`)
+  }
+
   function getGrid () {
-    dpckt.search({query: '', selection: ['grocery-store', 'market']}).then((response) => {
+    const payload = {
+      query: '', // get everything
+      selection: ['grocery-store', 'market'] // pics from these should be nicer
+    }
+
+    dpckt.search(payload).then(response => {
       const { data } = response
       if (!data.length) return
 
-      state.grid = data.map((item) => {
-        return { src: item.cover.src }
-      })
+      state.grid = data.map(item => ({ src: item.cover.src }))
 
       emitter.emit('render')
-    }).catch((err) => {
+    }).catch(err => {
       if (err) console.log(err)
     })
   }
 
-  /**
-   * XHR for getting countries list to show in
-   * select city/country list
+  /*
+   * Country/City list
    */
+
+  function onCountrySelected (item) {
+    const { lat, lng } = item.coords
+    state.coords = [lat, lng]
+    state.city = item.name
+
+    getLocations({ lat, lng })
+  }
 
   function getCountries () {
     const options = {
@@ -485,17 +512,41 @@ function store (state, emitter) {
     })
   }
 
+  /*
+   * Settings
+   */
+
+  function sliderProgress (percent) {
+    const max = 1000 // max distance in km
+    state.settings.distanceKm = Math.round((max / 100) * percent)
+    getLocations({
+      lat: state.coords[0],
+      lng: state.coords[1]
+    })
+  }
+
+  /*
+   * Main drawer
+   */
+
   function toggleTab (tab) {
-    const opened = state.tab === tab
-    state.tab = opened ? '' : tab
+    state.tab = state.tab === tab ? '' : tab
     emitter.emit('render')
   }
+
+  /*
+   * Service worker
+   */
 
   function sw (registration) {
     if (registration.active) {
       console.log(registration)
     }
   }
+
+  /*
+   * Locations
+   */
 
   function getLocations (payload) {
     const {
@@ -504,7 +555,7 @@ function store (state, emitter) {
       distanceKm = state.settings.distanceKm
     } = payload
 
-    dpckt.getLocations({lat, lng, distanceKm}).then((response) => {
+    dpckt.getLocations({lat, lng, distanceKm}).then(response => {
       const { data } = response
       if (!data.length) return
 
@@ -518,7 +569,7 @@ function store (state, emitter) {
       state.selectedIndex = index
 
       emitter.emit('render')
-    }).catch((err) => {
+    }).catch(err => {
       if (err) console.log(err)
     })
   }
@@ -530,33 +581,31 @@ function store (state, emitter) {
   }
 }
 
+/*
+ * Settings View
+ */
+
 function settings (state, emit) {
   if (state.title !== 'Settings') emit(state.events.DOMTITLECHANGE, 'Settings')
-  return html`
-    <main role="main" class="layout flex">
-      ${Header(state, emit)}
-      ${state.sideBarOpen ? html`
-        <nav class="layout flex25 fixed" id="sidebar">
-          ${state.isMobile ? html`
-          <button class="btn-close" onclick=${(e) => emit('toggle:sidebar')}>${icon('close', {'class': 'icon icon-small icon-white icon-close'})}</button>` : ''}
-          ${sideBar(state, emit)}
-        </nav>` : ''}
-        <section role="section" id="page" class="layout column flex">
-          <form id="settings" class="pa2 mt3 w-100" onsubmit=${handleSubmit}>
-            <fieldset class="ba b--transparent ph0 mh0">
-              <legend class="mh3 pa3">Carte</legend>
-              <div class="mh3 mb3">
-                <label for="progress" class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 50}, default: 50, max: 1000)</label>
-                ${!module.parent ? slider.render({
-                  progress: ((state.settings.distanceKm || 50) / 1000) * 100,
-                  name: 'slider'
-                }) : ''}
-              </div>
-            </fieldset>
-          </form>
+
+  return PageLayout((state, emit) => {
+    return html`
+      <section role="section" id="page" class="layout column flex">
+        <form id="settings" class="pa2 mt3 w-100" onsubmit=${handleSubmit}>
+          <fieldset class="ba b--transparent ph0 mh0">
+            <legend class="mh3 pa3">Carte</legend>
+            <div class="mh3 mb3">
+              <label for="progress" class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 50}, default: 50, max: 1000)</label>
+              ${!module.parent ? slider.render({
+                progress: ((state.settings.distanceKm || 50) / 1000) * 100,
+                name: 'slider'
+              }) : ''}
+            </div>
+          </fieldset>
+        </form>
       </section>
-    </main>
-  `
+    `
+  })(state, emit)
 
   function handleSubmit (e) {
     e.preventDefault()
@@ -564,4 +613,30 @@ function settings (state, emit) {
 
     console.log(obj)
   }
+}
+
+function sendMail (state, emitter) {
+  emitter.on('send:mail', (data) => {
+    state.submitted = true
+    state.form = data.payload
+    emitter.emit('render')
+
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'max-age=1000'
+      },
+      method: 'POST',
+      json: true,
+      body: data.payload,
+      url: `/new`
+    }
+
+    xhr(options, (err, res, body) => {
+      state.sent = !err
+      state.failed = !!err
+      state.form = data.payload
+      emitter.emit('render')
+    })
+  })
 }

@@ -475,10 +475,10 @@ nav#sidebar a, nav#sidebar button {
  */
 
 @media(min-width: 960px) {
-  .js-sidebar--open .search-typeahead, .js-sidebar--open section#page, .js-sidebar--open header.top-bar {
+  .js-sidebar--open .directory-search, .js-sidebar--open section#page, .js-sidebar--open header.top-bar {
     padding-left: calc(100vw / 4);
   }
-  .js-sidebar--open .search-typeahead {
+  .js-sidebar--open .directory-search {
     flex: 0 80%;
   }
 }

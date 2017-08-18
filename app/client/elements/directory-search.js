@@ -2,11 +2,11 @@ const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const css = require('sheetify')
 const moment = require('moment')
-const translate = require('./translate.js')
-const api = require('../lib/depackt-api.js')
+const translate = require('./translate')
+const api = require('../lib/depackt-api')
 const isEmpty = require('lodash/isEmpty')
 const isEqual = require('is-equal-shallow')
-const icon = require('./icon.js')
+const icon = require('./icon')
 
 const prefix = css`
   :host {
@@ -113,12 +113,11 @@ const prefix = css`
   }
 `
 
-module.exports = Search
+module.exports = DirectorySearch
 
-function Search () {
+function DirectorySearch () {
   const component = microcomponent({
     input: '',
-    name: 'search-typeahead', // component name used to set a css class
     data: [],
     translations: {},
     state: {
@@ -127,7 +126,7 @@ function Search () {
         filtred: [],
         selection: []
       },
-      name: 'search-typeahead',
+      name: 'directory-search',
       translations: {},
       data: [],
       selected: {}
@@ -164,12 +163,10 @@ function Search () {
 
           for (let item of kinds) {
             const elem = document.getElementById(item)
-            if (elem.checked) {
-              selection.push(elem.value)
-            }
+            if (elem.checked) selection.push(elem.value)
           }
 
-          api.search({query: newValue, selection}).then(function (response) {
+          api.search({query: newValue, selection}).then(response => {
             if (!isEmpty(response.data)) {
               component.emit('search', {query: newValue, results: response.data})
             }
