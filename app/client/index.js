@@ -12,6 +12,7 @@ const expose = require('choo-expose')
 const css = require('sheetify')
 const xhr = require('xhr')
 const serialize = require('form-serialize')
+const _random = require('lodash/random')
 
 /*
  * Utilities
@@ -563,7 +564,7 @@ function store (state, emitter) {
       const { data } = response
       if (!data.length) return
 
-      const selected = data[0]
+      const selected = data[_random(0, data.length)]
       const {lat, lng} = selected.address.location
       state.coords = [lat, lng]
       state.locations = data
