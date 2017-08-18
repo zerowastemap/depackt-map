@@ -1,13 +1,12 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const css = require('sheetify')
-const morph = require('nanomorph')
 const moment = require('moment')
-const translate = require('./translate.js')
-const api = require('../lib/depackt-api.js')
+const translate = require('./translate')
+const api = require('../lib/depackt-api')
 const isEmpty = require('lodash/isEmpty')
 const isEqual = require('is-equal-shallow')
-const icon = require('./icon.js')
+const icon = require('./icon')
 
 const prefix = css`
   :host {
@@ -53,20 +52,6 @@ const prefix = css`
     :host .search-list li.search-list-item {
       flex-direction: row;
     }
-  }
-  :host ul li {
-    list-style: none;
-    margin: 0;
-  }
-  :host li {
-    cursor: pointer;
-    line-height: 48px;
-    position: relative;
-    padding-left: 1rem;
-  }
-  :host li:focus {
-    outline: none;
-    background: #f0f0f0;
   }
   :host .sticky {
     position: sticky;
@@ -128,12 +113,11 @@ const prefix = css`
   }
 `
 
-module.exports = Search
+module.exports = DirectorySearch
 
-function Search () {
+function DirectorySearch () {
   const component = microcomponent({
     input: '',
-    name: 'search-typeahead', // component name used to set a css class
     data: [],
     translations: {},
     state: {
@@ -142,7 +126,7 @@ function Search () {
         filtred: [],
         selection: []
       },
-      name: 'search-typeahead',
+      name: 'directory-search',
       translations: {},
       data: [],
       selected: {}
@@ -174,17 +158,15 @@ function Search () {
           const newValue = e.target.search.value
           state.search.input = newValue
 
-          const kinds = ['market', 'event', 'association', 'supermarket', 'webshop']
+          const kinds = ['market', 'supermarket', 'grocery-store', 'coop', 'webshop']
           const selection = []
 
           for (let item of kinds) {
             const elem = document.getElementById(item)
-            if (elem.checked) {
-              selection.push(elem.value)
-            }
+            if (elem.checked) selection.push(elem.value)
           }
 
-          api.search({query: newValue, selection}).then(function (response) {
+          api.search({query: newValue, selection}).then(response => {
             if (!isEmpty(response.data)) {
               component.emit('search', {query: newValue, results: response.data})
             }
@@ -195,7 +177,6 @@ function Search () {
               autoFocus
               aria-label="search"
               spellcheck="false"
-              required="required"
               autocomplete="false"
               name="search"
               placeholder=${translate(state.translations, { term: 'DIRECTORY_SEARCH_PLACEHOLDER' })}
@@ -203,7 +184,7 @@ function Search () {
               value=${state.search.input}
             />
             ${icon('search', {'class': 'icon icon-input-search'})}
-            <button class="btn btn-default" type="submit">Search</button>
+            <button class="btn btn-default" type="submit">${translate(state.translations, {term: 'SEARCH'})}</button>
           </div>
           ${renderSelection()}
         </form>
@@ -216,23 +197,23 @@ function Search () {
         <div class="layout row-wrap justify-center checkboxes">
           <div class="form-group">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('market')} name="market" value="market" id="market">
-            <label for="market">Market</label>
+            <label for="market">${translate(state.translations, {term: 'MARKET'})}</label>
           </div>
           <div class="form-group">
-            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('event')} name="event" value="event" id="event">
-            <label for="event">évènements</label>
-          </div>
-          <div class="form-group">
-            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('association')} name="association" value="association" id="association">
-            <label for="association">Associations</label>
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('grocery-store')} name="grocery-store" value="grocery-store" id="grocery-store">
+            <label for="grocery-store">${translate(state.translations, {term: 'GROCERY_STORE'})}</label>
           </div>
           <div class="form-group">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('supermarket')} name="supermarket" value="supermarket" id="supermarket">
-            <label for="supermarket">Supermarchés</label>
+            <label for="supermarket">${translate(state.translations, {term: 'SUPERMARKET'})}</label>
+          </div>
+          <div class="form-group">
+            <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('coop')} name="coop" value="coop" id="coop">
+            <label for="coop">${translate(state.translations, {term: 'COOP'})}</label>
           </div>
           <div class="form-group">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('webshop')} name="webshop" value="webshop" id="webshop">
-            <label for="webshop">Magasin en ligne</label>
+            <label for="webshop">${translate(state.translations, {term: 'WEBSHOP'})}</label>
           </div>
         </div>
       `
@@ -254,7 +235,7 @@ function Search () {
           ${state.data.map((item, index) => {
             if (!item) return
             const { title } = item
-            const { streetName, streetNumber, zip, city } = item.address
+            const { streetName, streetNumber, zip, city, location } = item.address
             const formattedAddress = streetName + ', ' + streetNumber + ' ' + zip + ' ' + city
             return html`
               <li class="layout search-list-item" tabindex="0">
@@ -262,28 +243,37 @@ function Search () {
                   <div class="image" style="background: url(${item.cover.src}) 50% 0% / contain no-repeat rgb(255, 255, 255);"></div>
                 </div>
                 <div class="content">
-                  <h3 class="result-title">${title}</h3>
+                  <h3 class="result-title">
+                    ${title}
+                    <small class="pa2 b f7">${translate(state.translations, {term: item.kind.replace('-', '_').toUpperCase()})}</small>
+                  </h3>
                   <div class="layout row-wrap">
-                    <div class="result-meta flex50">
-                      <span class="label">Adresse</span>
-                      <div>
-                        ${formattedAddress}
+                    ${item.kind !== 'webshop' ? html`
+                      <div class="result-meta flex50">
+                        <span class="label">Adresse</span>
+                        <div>
+                          ${formattedAddress}
+                        </div>
                       </div>
-                    </div>
+                    ` : ''}
+                    ${item.hours ? html`
                     <div class="result-meta flex50">
                       <span class="label">Heures</span>
                     </div>
+                    ` : ''}
+                    ${item.openingDate ? html`
                     <div class="result-meta flex50">
                       <span class="label">Ouvert depuis</span>
                       <div>
-                        ${moment().format('LL')}
+                        ${moment(item.openingDate).format('LL')}
                       </div>
                     </div>
+                    ` : ''}
                     ${item.tags.length ? html`
                       <div class="result-meta flex50">
                         <span class="label">Tags</span>
-                        <ul class="layout row-wrap no-style tag-list">
-                          ${item.tags.map((tag) => html`<li class="tag">${tag}</li>`)}
+                        <ul class="layout row-wrap list">
+                          ${item.tags.map((tag) => html`<li class="f7 bold ma1 pa2">${translate(state.translations, {term: tag.replace('-', '_').toUpperCase()})}</li>`)}
                         </ul>
                       </div>
                     ` : ''}
@@ -293,6 +283,14 @@ function Search () {
                         <a target="_blank" rel="noopener noreferer" href=${item.url}>${item.url.match('facebook') ? 'Page facebook' : 'Site internet'}</a>
                       </div>
                     </div>
+                    ${item.kind !== 'webshop' ? html`
+                      <div class="result-meta flex50">
+                        <span class="label">Carte</span>
+                        <div>
+                          <button type="button" onclick=${() => component.emit('showMap', location)}>Voir sur la carte</button>
+                        </div>
+                      </div>
+                    ` : ''}
                   </div>
                 </div>
               </li>
@@ -305,7 +303,10 @@ function Search () {
     function renderResults () {
       return html`
         <div class="layout column results">
-          <div class="layout justify-center count">${state.data.length} résultats.</div>
+          <div class="layout justify-center b ma3 white">
+            <span class="ph2">${state.data.length}</span>
+            <span>${translate(state.translations, {term: `RESULT_COUNT${state.data.length > 1 ? '_PLURAL' : ''}`})}.</span>
+          </div>
           ${renderList()}
         </div>
       `

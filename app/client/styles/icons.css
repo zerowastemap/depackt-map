@@ -7,6 +7,10 @@ button.inactive .icon {
   fill: #9A886F;
 }
 
+.icon-white {
+  fill: #fff;
+}
+
 /*
  * Icon sizes
  */

@@ -9,7 +9,7 @@ function translate (translations, opts) {
   // assert.equal(typeof translations, 'object', 'elements/translate: where are translations ?')
   assert.equal(typeof opts, 'object', 'elements/translate: opts should be type object')
 
-  const tr = translations[term]
+  const tr = translations[term] || term
 
   if (format) return formatUnicorn(tr, format)
 

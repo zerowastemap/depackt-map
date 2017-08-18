@@ -2,31 +2,56 @@
   "data": [
     {
       "name": "Belgique",
+      "coords": {
+        "lat": 50.8476954, 
+        "lng": 4.3477324
+      },
       "cities": [
         {
+          "name": "Antwerpen",
+          "coords": {
+            "lat": 51.2605163, 
+            "lng": 4.2304524
+          }
+        },
+        {
           "name": "Arlon",
-          "location": {
+          "coords": {
             "lat": 49.6851364,
             "lng": 5.810480399999999
           }
         },
         {
           "name": "Bruxelles",
-          "location": {
+          "coords": {
             "lat": 50.8476954, 
             "lng": 4.3477324
           }
         },
         {
+          "name": "Gent",
+          "coords": {
+            "lat": 51.0827681, 
+            "lng": 3.5744024
+          }
+        },
+        {
+          "name": "Leuven",
+          "coords": {
+            "lat": 50.8841973, 
+            "lng": 4.6353904
+          }
+        },
+        {
           "name": "Liège",
-          "location": {
+          "coords": {
             "lat": 50.6325574,
             "lng": 5.5796662
           }
         },
         {
           "name": "Mons",
-          "location": {
+          "coords": {
             "lat": 50.4542408,
             "lng": 3.956659,
             "distanceKm": 40
@@ -34,14 +59,14 @@
         },
         {
           "name": "Namur",
-          "location": {
+          "coords": {
             "lat": 50.4673883,
             "lng": 4.8719854
           }
         },
         {
           "name": "Wavre",
-          "location": {
+          "coords": {
             "lat": 50.7158956,
             "lng": 4.6128075
           }
@@ -50,24 +75,28 @@
     },
     {
       "name": "Deutschland",
+      "coords": {
+        "lat": 51.5369165, 
+        "lng": 9.8566415
+      },
       "cities": [
         {
           "name": "Berlin",
-          "location": {
+          "coords": {
             "lat": 52.520007, 
             "lng": 13.404954
           }
         },
         {
           "name": "Kiel",
-          "location": {
+          "coords": {
             "lat": 54.3232927,
             "lng": 10.1227652
           }
         },
         {
           "name": "Konstanz",
-          "location": {
+          "coords": {
             "lat": 47.6779496,
             "lng": 9.173238399999999
           }
@@ -75,32 +104,59 @@
       ]
     },
     {
+      "name": "Netherlands",
+      "coords": {
+        "lat": 52.1951042, 
+        "lng": 3.0368923
+      },
+      "cities": [
+        {
+          "name": "Amsterdam",
+          "coords": {
+            "lat": 52.3746961,
+            "lng": 4.8285747
+          }
+        }
+      ]
+    },
+    {
       "name": "France",
+      "coords": {
+        "lat": 45.7870591, 
+        "lng": 3.0776208
+      },
       "cities": [
         {
           "name": "Bordeaux",
-          "location": {
+          "coords": {
             "lat": 44.837789,
             "lng": -0.57918
           }
         },
         {
           "name": "Marseille",
-          "location": {
+          "coords": {
             "lat": 43.296482,
             "lng": 5.36978
           }
         },
         {
           "name": "Nantes",
-          "location": {
+          "coords": {
             "lat": 47.218371, 
             "lng": -1.553621
           }
         },
         {
+          "name": "Paris",
+          "coords": {
+            "lat": 48.8588376,
+            "lng": 2.2773456
+          }
+        },
+        {
           "name": "Toulouse",
-          "location": {
+          "coords": {
             "lat": 43.604652,
             "lng": 1.444209
           }
