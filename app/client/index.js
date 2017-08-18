@@ -74,13 +74,13 @@ const app = choo()
 if (process.env.APP_ENV !== 'production') {
   app.use(logger())
   app.use(expose())
+  app.use(persist())
   app.use(require('choo-service-worker/clear')())
 }
 
 app.use(require('choo-service-worker')())
 app.use(require('./lib/translations')())
 
-app.use(persist())
 app.use(store)
 app.use(sendMail)
 
