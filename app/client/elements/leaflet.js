@@ -45,8 +45,9 @@ function Leaflet () {
 
   return component
 
-  function _zoomtoselected (item) {
+  function _zoomtoselected (item = {}) {
     const { _id } = item // get objectid
+    if (!_id) return false
     const selected = component.state.markers.find((o) => o.item._id === _id)
     markersLayer.zoomToShowLayer(selected.marker, () => {
       selected.marker.openPopup()

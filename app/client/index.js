@@ -8,7 +8,6 @@
 const choo = require('choo')
 const html = require('choo/html')
 const logger = require('choo-log')
-const persist = require('choo-persist')
 const expose = require('choo-expose')
 const css = require('sheetify')
 const xhr = require('xhr')
@@ -74,7 +73,6 @@ const app = choo()
 if (process.env.APP_ENV !== 'production') {
   app.use(logger())
   app.use(expose())
-  app.use(persist())
   app.use(require('choo-service-worker/clear')())
 }
 
