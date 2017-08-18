@@ -1,5 +1,5 @@
 import choo from 'choo'
-import Layout from '../client/views/layout'
+import Layout from '../client/elements/layout'
 import NotFound from '../client/views/404'
 import AboutView from '../client/views/about'
 import ResourcesView from '../client/views/resources'
