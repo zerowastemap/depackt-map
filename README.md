@@ -39,10 +39,6 @@
 
     $ npm test
 
-## Live website
-
-New version of depackt map is available at [dev.depackt.be](https://dev.depackt.be/).
-
 ## API
 
 API repo is also available on github <https://github.com/depackt/depackt-api>
