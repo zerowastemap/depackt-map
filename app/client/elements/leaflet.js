@@ -80,6 +80,7 @@ function Leaflet () {
 
   function load () {
     component.state.map.invalidateSize()
+    _zoomtoselected(component.props.items[component.props.selectedIndex])
   }
 
   function unload () {

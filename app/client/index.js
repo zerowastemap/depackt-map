@@ -400,7 +400,7 @@ function store (state, emitter) {
     state.selected = item
     state.selectedIndex = index
 
-    leaflet.emit('zoomtoselected', item)
+    emitter.emit('render')
 
     if (window.matchMedia('(max-width: 960px)').matches) {
       emitter.emit('toggle:tab', state.tab)
@@ -424,6 +424,12 @@ function store (state, emitter) {
 
   function onZoomToSelected (item) {
     const { lat, lng } = item.address.location
+    const index = _findIndex(state.locations, { _id: item._id })
+
+    state.coords = [lat, lng]
+    state.selected = item
+    state.selectedIndex = index
+
     emitter.emit('pushState', `/@${lat},${lng}`)
   }
 
