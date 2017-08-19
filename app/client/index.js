@@ -567,6 +567,7 @@ function store (state, emitter) {
       const {lat, lng} = selected.address.location
       state.coords = [lat, lng]
       state.locations = data
+      state.city = selected.address.city
 
       const index = _findIndex(state.locations, { _id: selected._id })
 
