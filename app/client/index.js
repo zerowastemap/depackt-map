@@ -450,10 +450,22 @@ function store (state, emitter) {
     emitter.emit('render')
   }
 
-  function redirectToMap (payload) {
-    const {lat, lng} = payload
-    getLocations({ lat, lng })
-    emitter.emit('pushState', `/@${lat},${lng}`)
+  function redirectToMap (item) {
+    const { lat, lng } = item.address.location
+    const index = _findIndex(state.locations, { _id: item._id })
+
+    if (index !== -1) {
+      state.coords = [lat, lng]
+      state.selected = item
+      state.selectedIndex = index
+
+      emitter.emit('pushState', `/@${lat},${lng}`)
+    } else {
+      getLocations({ lat, lng }, (err) => {
+        if (err) throw err
+        emitter.emit('pushState', `/@${lat},${lng}`)
+      })
+    }
   }
 
   function getGrid () {
@@ -540,7 +552,7 @@ function store (state, emitter) {
    * Locations
    */
 
-  function getLocations (payload) {
+  function getLocations (payload, cb) {
     const {
       lat = 50.850340,
       lng = 4.351710,
@@ -561,6 +573,10 @@ function store (state, emitter) {
       state.selectedIndex = index
 
       emitter.emit('render')
+
+      if (typeof cb === 'function' && cb()) {
+        cb()
+      }
     }).catch(err => {
       if (err) console.log(err)
     })
