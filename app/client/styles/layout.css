@@ -505,3 +505,9 @@ nav#sidebar a, nav#sidebar button {
 .shadow-6 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
 }
+
+@media(max-width: 960px) {
+  section#page {
+    margin-top: 60px;
+  }
+}
