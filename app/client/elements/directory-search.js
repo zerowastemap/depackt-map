@@ -235,7 +235,7 @@ function DirectorySearch () {
           ${state.data.map((item, index) => {
             if (!item) return
             const { title } = item
-            const { streetName, streetNumber, zip, city, location } = item.address
+            const { streetName, streetNumber, zip, city } = item.address
             const formattedAddress = streetName + ', ' + streetNumber + ' ' + zip + ' ' + city
             return html`
               <li class="layout search-list-item" tabindex="0">
@@ -287,7 +287,7 @@ function DirectorySearch () {
                       <div class="result-meta flex50">
                         <span class="label">Carte</span>
                         <div>
-                          <button type="button" onclick=${() => component.emit('showMap', location)}>Voir sur la carte</button>
+                          <button type="button" onclick=${() => component.emit('showMap', item)}>Voir sur la carte</button>
                         </div>
                       </div>
                     ` : ''}
