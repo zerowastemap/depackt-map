@@ -69,7 +69,7 @@ module.exports = (state, emit) => {
               Blog zéro déchet: <a target="_blank" rel="noopener noreferrer" href="https://zerocarabistouille.be/2017/01/14/les-magasins-objectif-zero-dechet-vrac/">zerocarabistouille.be</a>
             </li>
             <li>
-              Blog zéro déchet: <a target="_blank" rel="noopener noreferrer" href="http://milenandco.com/">zerocarabistouille.be</a>
+              Recettes saines et zéro déchet: <a target="_blank" rel="noopener noreferrer" href="http://milenandco.com/">Milena&co</a>
 
             </li>
             <li>
