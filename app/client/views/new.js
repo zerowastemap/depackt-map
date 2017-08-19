@@ -2,19 +2,17 @@ const html = require('choo/html')
 const loadHandler = (state, emit, element) => {
   element.value = state.form[element.name]
 }
-const sideBar = require('../elements/side-bar.js')
-const Header = require('../elements/header')
+
+const TITLE = 'Ajouter un point'
+const PageLayout = require('../elements/page-layout')
 
 module.exports = (state, emit) => {
-  return html`
-    <main role="main" class="layout flex">
-      ${Header(state, emit)}
-      ${state.sideBarOpen ? sideBar(state, emit) : ''}
-      <section role="section" id="page" class="layout column flex ma4">
-        <header role="header">
-          <h2>Ajouter un point</h2>
-        </header>
-        <p class="info">
+  if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
+
+  return PageLayout((state, emit) => {
+    return html`
+      <section role="section" id="page" class="layout column flex mt4">
+        <p class="pa3">
           ${state.sent ? 'Bien reçu!' : state.failed ? 'L\'envoi des données a échoué, merci de réessayer plus tard.' : 'Soumettez maintenant un nouveau point à ajouter sur la carte depackt! C\'est gratuit!'}
         </p>
         <form action="/new" method="POST" onsubmit=${(e) => {
@@ -39,8 +37,8 @@ module.exports = (state, emit) => {
             <button class="btn btn-default" disabled=${state.sent ? true : !!state.submitted} type="submit">Envoyer</button>
           </div>
         </form>
-        <p class="info">Ce formulaire enverra automatiquement un email à hello@depackt.be avec les données reprises ci-dessus. Depackt.be vous garantis que votre addresse e-mail ne sera enregistrée dans aucune base de donnée interne ou externe à ce site.</p>
+        <p class="pa3">Ce formulaire enverra automatiquement un email à hello@depackt.be avec les données reprises ci-dessus. Depackt.be vous garantis que votre addresse e-mail ne sera enregistrée dans aucune base de donnée interne ou externe à ce site.</p>
       </section>
-    </main>
-  `
+    `
+  })(state, emit)
 }

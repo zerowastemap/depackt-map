@@ -595,7 +595,7 @@ function settings (state, emit) {
   return PageLayout((state, emit) => {
     return html`
       <section role="section" id="page" class="layout column flex">
-        <form id="settings" class="pa2 mt3 w-100" onsubmit=${handleSubmit}>
+        <form id="settings" class="pa2 mt4 w-100" onsubmit=${handleSubmit}>
           <fieldset class="ba b--transparent ph0 mh0">
             <legend class="mh3 pa3">Carte</legend>
             <div class="mh3 mb3">
