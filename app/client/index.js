@@ -283,7 +283,7 @@ function directory (state, emit) {
 
 function store (state, emitter) {
   state.title = 'Depackt'
-  state.appVersion = '2.0.0-2'
+  state.appVersion = '2.0.0-3'
   state.lang = state.lang || 'fr'
   state.countries = state.countries || []
 
@@ -567,6 +567,7 @@ function store (state, emitter) {
       const {lat, lng} = selected.address.location
       state.coords = [lat, lng]
       state.locations = data
+      state.city = selected.address.city
 
       const index = _findIndex(state.locations, { _id: selected._id })
 

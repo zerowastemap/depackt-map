@@ -259,6 +259,7 @@ function Search () {
   function update (props) {
     return props.input !== component.state.search.input ||
       !isEqual(component.state.data, props.data) ||
+      props.city !== component.state.city ||
       props.radius !== component.state.radius ||
       props.translations !== component.state.translations
   }
