@@ -48,7 +48,9 @@ function Leaflet () {
   function _zoomtoselected (item = {}) {
     const { _id } = item // get objectid
     if (!_id) return false
+    const { lat, lng } = item.address.location
     const selected = component.state.markers.find((o) => o.item._id === _id)
+    window.history.pushState({}, 'location', `/@${lat},${lng}`)
     markersLayer.zoomToShowLayer(selected.marker, () => {
       selected.marker.openPopup()
     })
@@ -81,7 +83,7 @@ function Leaflet () {
 
   function load () {
     component.state.map.invalidateSize()
-    _zoomtoselected(component.props.items[component.props.selectedIndex])
+    component.emit('zoomtoselected', component.props.items[component.props.selectedIndex])
   }
 
   function unload () {
@@ -278,7 +280,7 @@ function Leaflet () {
     // const { coords, zoom } = component.props
     _addMarkers()
     component.state.map.invalidateSize()
-    _zoomtoselected(component.props.items[component.props.selectedIndex])
+    component.emit('zoomtoselected', component.props.items[component.props.selectedIndex])
     // component.state.map.setView(coords, zoom)
   }
 }

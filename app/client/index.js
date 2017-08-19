@@ -337,7 +337,6 @@ function store (state, emitter) {
     select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
     leaflet.on('select', onLeafletSelect) // Update selected item when user open a popup on map
-    leaflet.on('zoomtoselected', onZoomToSelected) // Set selection when user select a location in search/filter list and auto zoom
 
     search.on('select', onSearchSelect)
 
@@ -418,17 +417,6 @@ function store (state, emitter) {
     state.selectedIndex = index
 
     emitter.emit('render')
-  }
-
-  function onZoomToSelected (item) {
-    const { lat, lng } = item.address.location
-    const index = _findIndex(state.locations, { _id: item._id })
-
-    state.coords = [lat, lng]
-    state.selected = item
-    state.selectedIndex = index
-
-    emitter.emit('pushState', `/@${lat},${lng}`)
   }
 
   /*
