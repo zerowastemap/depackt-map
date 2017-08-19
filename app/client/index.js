@@ -283,7 +283,7 @@ function directory (state, emit) {
 
 function store (state, emitter) {
   state.title = 'Depackt'
-  state.appVersion = '2.0.0-2'
+  state.appVersion = '2.0.0-3'
   state.lang = state.lang || 'fr'
   state.countries = state.countries || []
 
