@@ -173,7 +173,7 @@ function Leaflet () {
         <div class="title">
           ${title}
           <svg viewBox="0 0 16 16" class="icon icon-small icon-arrow-north-east">
-            <use xlink:href="#icon-arrow-north-east" />
+            <use xlink:href="${url.includes('facebook') ? '#icon-facebook' : '#icon-arrow-north-east'}" />
           </svg>
         </div>
         <div class="address">
