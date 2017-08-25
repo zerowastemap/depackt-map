@@ -1,8 +1,8 @@
 {
   "SEARCH": "Chercher",
-  "DIRECTORY_SEARCH_PLACEHOLDER": "Rechercher un supermarché, une association zéro déchet...",
+  "DIRECTORY_SEARCH_PLACEHOLDER": "Chercher par ville, code postal, commune",
   "SEARCH_PLACEHOLDER": "Filtrer par nom, code postal, commune",
-  "SEARCH_FEEDBACK": "Epiceries zéro déchet dans un rayon de {distance} autour de {city}",
+  "SEARCH_FEEDBACK": "Epiceries et marchés bio à objectif zéro déchet dans un rayon de {distance} autour de {city}",
   "SEARCH_RESULTS": "Résultats pour \"{value}\" dans un rayon de {distance} autour de {city}",
   "SEARCH_NO_RESULTS": "Aucun résultats pour \"{value}\". ",
   "ABOUT": "A propos",
