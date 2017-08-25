@@ -3,6 +3,7 @@
   width: 100%; /* Specific width is required for Firefox. */
   z-index: 10;
   margin: 0;
+  cursor: pointer;
   background: transparent; /* Otherwise white in Chrome */
 }
 :host input[type=range]::-webkit-slider-thumb {
@@ -70,19 +71,21 @@ input[type=range]::-moz-range-thumb {
 :host .range-slider {
   width: 100%;
   display: flex;
-  border-radius: 12px;
-  background: #333;
-  height: 12px;
+  height: 48px;
+  border-radius: 16px;
   position: relative;
 }
 :host .range-slider--fill {
   height: 100%;
-  border-radius: 12px;
+  border-radius: 16px;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   width: 0%;
-  left: 0;
-  background: #0366D6;
+  right: 0;
+  height: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #333;
 }
 
 :host .range-slider--handle {
@@ -90,8 +93,8 @@ input[type=range]::-moz-range-thumb {
   border-radius: 50%;
   cursor: pointer;
   left: 0;
-  height: 24px;
-  width: 24px;
+  height: 36px;
+  width: 36px;
   box-shadow: 0 2px 2px rgba(0,0,0,.2), 0 0 2px rgba(0,0,0,.2);
   margin-top: -1px;
   position: absolute;
@@ -101,3 +104,18 @@ input[type=range]::-moz-range-thumb {
   z-index: 5;
 }
 
+:host .range-slider--background {
+  position: absolute;
+  width: 100%;
+  background: #0366D6;
+  height: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 16px;
+  z-index: 1;
+}
+
+:host .range-slider--inner {
+  width: 100%;
+  position: relative;
+}
