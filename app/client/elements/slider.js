@@ -16,6 +16,7 @@ module.exports = Slider
 function Slider () {
   const component = microcomponent({
     progress: 0,
+    isMobile: false,
     value: 100,
     state: {
       progress: 0,
@@ -39,11 +40,12 @@ function Slider () {
     state.name = this.props.name
     state.translations = this.props.translations
     state.progress = this.props.progress
+    state.isMobile = this.props.isMobile
 
     function rangeSlider () {
       return html`
         <div class="range-slider">
-          <input type="range" id="progress" name="percent" onmousedown=${_mouseDown} onmouseup=${_mouseUp} onmouseout=${_mouseOut} onclick=${_seek} step='0.01' class="seek-bar" value=${state.progress} />
+          <input type="range" id="progress" name="percent" ontouchmove=${_onTouchMove} onmousedown=${_mouseDown} onmouseup=${_mouseUp} onmouseout=${_mouseOut} onclick=${_seek} step='0.01' class="seek-bar" value=${state.progress} />
           <div class="range-slider--fill" style=${_computeCss('width', 100 - state.progress)}></div>
           <div class="range-slider--handle" style=${_computeCss('left', state.progress)}></div>
           <div class="range-slider--background"></div>
@@ -53,9 +55,23 @@ function Slider () {
 
     return html`
       <div class="${prefix} ma3 ${state.name}">
-        ${rangeSlider()}
+        ${!state.isMobile ? rangeSlider() : html`
+          <div class="slider--fallback">
+            <input min="0" max="1000" class="w-100" type="number" onchange=${_distanceKmToProgress} value=${Math.round(10 * state.progress)} />
+          </div>
+        `}
       </div>
     `
+  }
+
+  function _distanceKmToProgress (e) {
+    const value = e.target.value
+    const percent = (value / 1000) * 100
+    component.emit('progress', percent)
+  }
+
+  function _onTouchMove (e) {
+    e.target.addEventListener('touchmove', _seek)
   }
 
   function _mouseDown (e) {
@@ -104,6 +120,7 @@ function Slider () {
   }
 
   function update (props) {
-    return props.progress !== component.state.progress
+    return props.progress !== component.state.progress ||
+      props.isMobile !== component.props.isMobile
   }
 }
