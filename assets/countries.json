@@ -82,6 +82,13 @@
       },
       "cities": [
         {
+          "name": "Avignon",
+          "coords": {
+            "lat": 43.947929500000000758 ,
+            "lng": 4.8074417000000009281
+          }
+        },
+        {
           "name": "Bordeaux",
           "coords": {
             "lat": 44.837789,
