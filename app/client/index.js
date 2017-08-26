@@ -522,7 +522,7 @@ function store (state, emitter) {
 
   function sliderProgress (percent) {
     const max = 1000 // max distance in km
-    state.settings.distanceKm = Math.round((max / 150) * percent)
+    state.settings.distanceKm = Math.round((max / 100) * percent)
     getLocations({
       lat: state.coords[0],
       lng: state.coords[1]
