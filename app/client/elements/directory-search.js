@@ -303,13 +303,19 @@ function DirectorySearch () {
     function renderResults () {
       return html`
         <div class="layout column results">
+          ${state.data.length ? renderCount() : ''}
+          ${renderList()}
+        </div>
+      `
+
+      function renderCount () {
+        return html`
           <div class="layout justify-center b ma3 white">
             <span class="ph2">${state.data.length}</span>
             <span>${translate(state.translations, {term: `RESULT_COUNT${state.data.length > 1 ? '_PLURAL' : ''}`})}.</span>
           </div>
-          ${renderList()}
-        </div>
-      `
+        `
+      }
     }
   }
 
