@@ -1,6 +1,7 @@
 const css = require('sheetify')
 const html = require('choo/html')
-const icon = require('../elements/icon.js')
+const icon = require('../elements/icon')
+const translate = require('../elements/translate')
 const prefix = css`
   :host {
     padding: 1rem 2rem;
@@ -20,13 +21,13 @@ module.exports = (state, emit) => {
         <h2>Liens</h2>
 
         <li>
-          <a href="/resources">Resources</a>
+          <a href="/resources">${translate(state.translations, {term: 'RESOURCES'})}</a>
         </li>
         <li>
-          <a href="/legal">Legal</a>
+          <a href="/impressum">Impressum</a>
         </li>
         <li>
-          <a href="/privacy">Privacy</a>
+          <a href="/privacy">${translate(state.translations, {term: 'PRIVACY'})}</a>
         </li>
 
       <h2>Ailleurs</h2>
