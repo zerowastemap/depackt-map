@@ -288,7 +288,7 @@ function store (state, emitter) {
   state.countries = state.countries || []
 
   state.settings = state.settings || {
-    distanceKm: 50
+    distanceKm: 150
   }
 
   state.form = {
@@ -604,9 +604,9 @@ function settings (state, emit) {
           <fieldset class="ba b--transparent ph0 mh0">
             <legend class="mh3 pa3">Carte</legend>
             <div class="mh3 mb3">
-              <label for="progress" class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 50}, default: 50, max: 1000)</label>
+              <label for="progress" class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 150}, default: 150, max: 1000)</label>
               ${!module.parent ? slider.render({
-                progress: ((state.settings.distanceKm || 50) / 1000) * 100,
+                progress: ((state.settings.distanceKm || 150) / 1000) * 100,
                 isMobile: state.isMobile,
                 name: 'slider'
               }) : ''}

@@ -46,7 +46,8 @@
           "name": "Liège",
           "coords": {
             "lat": 50.6325574,
-            "lng": 5.5796662
+            "lng": 5.5796662,
+            "distanceKm": 100
           }
         },
         {
@@ -54,7 +55,7 @@
           "coords": {
             "lat": 50.4542408,
             "lng": 3.956659,
-            "distanceKm": 40
+            "distanceKm": 100
           }
         },
         {
@@ -69,6 +70,64 @@
           "coords": {
             "lat": 50.7158956,
             "lng": 4.6128075
+          }
+        }
+      ]
+    },
+    {
+      "name": "France",
+      "coords": {
+        "lat": 45.7870591, 
+        "lng": 3.0776208
+      },
+      "cities": [
+        {
+          "name": "Avignon",
+          "coords": {
+            "lat": 43.947929500000000758 ,
+            "lng": 4.8074417000000009281
+          }
+        },
+        {
+          "name": "Bordeaux",
+          "coords": {
+            "lat": 44.837789,
+            "lng": -0.57918
+          }
+        },
+        {
+          "name": "Grenoble",
+          "coords": {
+            "lat": 45.1889032,
+            "lng": 5.728880699999999
+          }
+        },
+        {
+          "name": "Marseille",
+          "coords": {
+            "lat": 43.296482,
+            "lng": 5.36978
+          }
+        },
+        {
+          "name": "Nantes",
+          "coords": {
+            "lat": 47.218371, 
+            "lng": -1.553621
+          }
+        },
+        {
+          "name": "Paris",
+          "coords": {
+            "lat": 48.8588376,
+            "lng": 2.2773456
+          }
+        },
+        {
+          "name": "Toulouse",
+          "coords": {
+            "lat": 43.604652,
+            "lng": 1.444209
           }
         }
       ]
@@ -100,65 +159,19 @@
             "lat": 47.6779496,
             "lng": 9.173238399999999
           }
-        }
-      ]
-    },
-    {
-      "name": "Netherlands",
-      "coords": {
-        "lat": 52.1951042, 
-        "lng": 3.0368923
-      },
-      "cities": [
+        },
         {
-          "name": "Amsterdam",
+          "name": "Trier",
           "coords": {
-            "lat": 52.3746961,
-            "lng": 4.8285747
-          }
-        }
-      ]
-    },
-    {
-      "name": "France",
-      "coords": {
-        "lat": 45.7870591, 
-        "lng": 3.0776208
-      },
-      "cities": [
-        {
-          "name": "Bordeaux",
-          "coords": {
-            "lat": 44.837789,
-            "lng": -0.57918
+            "lat": 49.7628139,
+            "lng": 6.6488868
           }
         },
         {
-          "name": "Marseille",
+          "name": "Nürnberg",
           "coords": {
-            "lat": 43.296482,
-            "lng": 5.36978
-          }
-        },
-        {
-          "name": "Nantes",
-          "coords": {
-            "lat": 47.218371, 
-            "lng": -1.553621
-          }
-        },
-        {
-          "name": "Paris",
-          "coords": {
-            "lat": 48.8588376,
-            "lng": 2.2773456
-          }
-        },
-        {
-          "name": "Toulouse",
-          "coords": {
-            "lat": 43.604652,
-            "lng": 1.444209
+            "lat": 49.44861539999999,
+            "lng": 11.058692
           }
         }
       ]

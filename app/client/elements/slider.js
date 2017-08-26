@@ -45,7 +45,7 @@ function Slider () {
     function rangeSlider () {
       return html`
         <div class="range-slider">
-          <input type="range" id="progress" name="percent" ontouchmove=${_onTouchMove} onmousedown=${_mouseDown} onmouseup=${_mouseUp} onmouseout=${_mouseOut} onclick=${_seek} step='0.01' class="seek-bar" value=${state.progress} />
+          <input type="range" id="progress" name="percent" onmousedown=${_mouseDown} onmouseup=${_mouseUp} onmouseout=${_mouseOut} onclick=${_seek} step='0.01' class="seek-bar" value=${state.progress} />
           <div class="range-slider--fill" style=${_computeCss('width', 100 - state.progress)}></div>
           <div class="range-slider--handle" style=${_computeCss('left', state.progress)}></div>
           <div class="range-slider--background"></div>
@@ -68,10 +68,6 @@ function Slider () {
     const value = e.target.value
     const percent = (value / 1000) * 100
     component.emit('progress', percent)
-  }
-
-  function _onTouchMove (e) {
-    e.target.addEventListener('touchmove', _seek)
   }
 
   function _mouseDown (e) {
