@@ -7,7 +7,7 @@ module.exports = PageLayout
 function PageLayout (View) {
   return (state, emit) => {
     return html`
-      <main role="main" class="layout flex">
+      <main role="main" class="layout column flex">
         ${Header(state, emit)}
         ${state.sideBarOpen ? sideBar(state, emit) : ''}
         ${View(state, emit)}
