@@ -83,8 +83,9 @@ function Leaflet () {
   }
 
   function load () {
+    const { selectedIndex, items } = component.props
     component.state.map.invalidateSize()
-    component.emit('zoomtoselected', component.props.items[component.props.selectedIndex])
+    component.emit('zoomtoselected', items[selectedIndex])
   }
 
   function unload () {
@@ -96,7 +97,6 @@ function Leaflet () {
   function _addMarkers () {
     markersLayer.clearLayers()
     const { items = [], popupDisabled = false } = component.props
-
     const { background = 'light' } = component.props.mapbox
     const colorInvert = background === 'light' ? 'dark' : 'light'
 
@@ -130,8 +130,9 @@ function Leaflet () {
     })
 
     const markers = items.map((item, index) => {
-      const { lat, lng } = item.address.location
-      const marker = L.marker([lat, lng], { icon: item.featured ? featuredIcon : defaultIcon })
+      const { featured, address } = item
+      const { lat, lng } = address.location
+      const marker = L.marker([lat, lng], { icon: featured ? featuredIcon : defaultIcon })
       if (!popupDisabled) {
         marker.bindPopup(_customPopup(item), customOptions)
       }
@@ -164,8 +165,8 @@ function Leaflet () {
   }
 
   function _customPopup (item) {
-    const { url, title, cover } = item
-    const { streetName, streetNumber, zip, city } = item.address
+    const { url, title, cover, address } = item
+    const { streetName, streetNumber, zip, city } = address
     const template = `
       <a href=${url} target="_blank" rel="noopener" class="external">
         <div class="cover">
@@ -182,18 +183,23 @@ function Leaflet () {
         </div>
       </a>
     `
-
     return template
   }
 
   function _createMap () {
     const element = component._element
-    const { coords, zoom } = component.props
-    const { background = 'light', accessToken } = component.props.mapbox
+    const { coords, zoom, mapbox } = component.props
+    const { background = 'light', accessToken } = mapbox
     const defaultTiles = `https://api.mapbox.com/styles/v1/mapbox/${background}-v9/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`
     const defaultTilesAttribution = '&copy; <a href="https://www.mapbox.com/map-feedback/">Mapbox</a>'
     const { tiles = defaultTiles, tilesAttribution = defaultTilesAttribution } = component.props
-    const mapboxFeedback = '<strong><a href="https://www.mapbox.com/map-feedback/" target="_blank" rel="noopener noreferrer">Improve this map</a></strong>'
+    const mapboxFeedback = `
+      <strong>
+        <a href="https://www.mapbox.com/map-feedback/" target="_blank" rel="noopener noreferrer">
+          Improve this map
+        </a>
+      </strong>'
+    `
 
     const options = {
       center: coords,
@@ -205,7 +211,13 @@ function Leaflet () {
     const map = L.map(element, options)
 
     const tileLayer = L.tileLayer(tiles, {
-      attribution: `${tilesAttribution} &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ${!component.props.tiles ? mapboxFeedback : ''}`,
+      attribution: `
+        ${tilesAttribution} &copy;
+        <a href="https://www.openstreetmap.org/copyright">
+          OpenStreetMap
+        </a>
+        ${!component.props.tiles ? mapboxFeedback : ''}
+      `,
       minZoom: 0,
       maxZoom: 20,
       ext: 'png'
@@ -217,11 +229,7 @@ function Leaflet () {
       _updateMap()
     })
 
-    /**
-     * Enable/disable scrollWheelZoom
-     */
-
-    map.once('focus', () => map.scrollWheelZoom.enable())
+    map.once('focus', () => map.scrollWheelZoom.enable()) // Enable/disable scrollWheelZoom
 
     map.on('click', () => {
       if (map.scrollWheelZoom.enabled()) {
@@ -247,9 +255,7 @@ function Leaflet () {
 
     L.control.scale({position: 'verticalcenterright'}).addTo(map)
 
-    /*
-     * Add locate control
-     */
+    // Add locate.control
     L.control.locate({
       position: 'verticalcenterright',
       setView: 'once',
@@ -271,14 +277,19 @@ function Leaflet () {
      */
 
     map.on('popupopen', (e) => {
-      const index = e.popup._source._index
+      const { popup } = e.popup
+      const index = popup._source._index
+      const { items, selectedIndex } = component.props
 
-      if (index !== component.props.selectedIndex) {
-        component.emit('select', component.props.items[index])
+      if (index !== selectedIndex) {
+        component.emit('select', items[index])
       }
 
-      const px = map.project(e.popup._latlng) // find the pixel location on the map where the popup anchor is
-      px.y -= e.popup._container.clientHeight / 2 // find the height of the popup container, divide by 2, subtract from the Y axis of marker location
+      // find the pixel location on the map where the popup anchor is
+      const px = map.project(popup._latlng)
+      // find the height of the popup container,
+      // and divide by 2, subtract from the Y axis of marker location
+      px.y -= popup._container.clientHeight / 2
       map.panTo(map.unproject(px), {animate: true}) //
     })
 
@@ -291,15 +302,13 @@ function Leaflet () {
     })
 
     zoomHome.addTo(map)
-
     component.state.map = map
   }
 
   function _updateMap () {
-    // const { coords, zoom } = component.props
+    const { items, selectedIndex } = component.props
     _addMarkers()
     component.state.map.invalidateSize()
-    component.emit('zoomtoselected', component.props.items[component.props.selectedIndex])
-    // component.state.map.setView(coords, zoom)
+    component.emit('zoomtoselected', items[selectedIndex])
   }
 }
