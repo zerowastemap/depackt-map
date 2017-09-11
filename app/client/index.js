@@ -338,6 +338,8 @@ function store (state, emitter) {
 
     leaflet.on('select', onLeafletSelect) // Update selected item when user open a popup on map
 
+    leaflet.on('locationfound', onLocationFound)
+
     search.on('select', onSearchSelect)
 
     directorySearch.on('selection', onDirectorySelection)
@@ -384,6 +386,14 @@ function store (state, emitter) {
 
     window.onresize = onResize // state.isMobile
   })
+
+  function onLocationFound (bounds) {
+    const { lat, lng } = bounds
+    getLocations({ lat, lng }, (err) => {
+      if (err) throw err
+      emitter.emit('pushState', `/@${lat},${lng}`)
+    })
+  }
 
   /*
    * Main filter/search system

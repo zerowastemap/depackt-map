@@ -68,7 +68,7 @@ module.exports = (state, emit) => {
 
             <h4>Une carte</h4>
 
-            <p>Depackt, c'est une carte des des épiceries et marchés bios à objectif zéro déchet en Belgique, aux Luxembourg, en Allemagne et en France.</p>
+            <p>Depackt, c'est une carte des des épiceries et marchés bios à objectif zéro déchet en Belgique, au Luxembourg, en Allemagne et en France.</p>
 
             <h4>Un index (directory)</h4>
 
