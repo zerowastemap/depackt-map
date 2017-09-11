@@ -9,6 +9,7 @@
 const microcomponent = require('microcomponent')
 const L = require('leaflet')
 require('leaflet.markercluster')
+require('leaflet.locatecontrol')
 require('../lib/leaflet.zoomhome')
 const onIdle = require('on-idle')
 const html = require('choo/html')
@@ -245,6 +246,24 @@ function Leaflet () {
     _addControlPlaceholders(map) // How to locate leaflet zoom control in a desired position
 
     L.control.scale({position: 'verticalcenterright'}).addTo(map)
+
+    /*
+     * Add locate control
+     */
+    L.control.locate({
+      position: 'verticalcenterright',
+      setView: 'once',
+      icon: 'icon icon-marker',
+      iconLoading: 'icon icon-marker icon-marker--loading',
+      locateOptions: {
+        maxZoom: 10
+      }
+    }).addTo(map)
+
+    map.on('locationfound', (e) => {
+      const {latitude: lat, longitude: lng} = e
+      component.emit('locationfound', {lat, lng})
+    })
 
     /**
      * Center leaflet popup AND marker to the map
