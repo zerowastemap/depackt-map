@@ -1,6 +1,5 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
-const isEqual = require('is-equal-shallow')
 const morph = require('nanomorph')
 
 module.exports = dropdownMenu
@@ -35,11 +34,13 @@ function dropdownMenu () {
     state.open = false
     state.title = this.props.title
 
-    return html`
-      <li>
+    component._element = html`
+      <li tabindex=0>
         ${renderMenu(state)}
       </li>
     `
+
+    return component._element
   }
 
   function renderMenu (state) {
@@ -77,17 +78,15 @@ function dropdownMenu () {
   }
 
   function update (props) {
-    return !isEqual(component.state.items, props.items) ||
-      props.open !== component.state.open ||
-      props.title !== component.props.title
+    return props.title !== component.props.title
   }
 
   function load () {
-    console.log('mounted on DOM')
+    console.log('dropdown mounted on DOM')
   }
 
   function unload () {
-    console.log('removed from DOM')
+    console.log('dropdown removed from DOM')
     component._element = null
   }
 }
