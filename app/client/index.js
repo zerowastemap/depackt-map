@@ -117,9 +117,11 @@ function main (state, emit) {
 
   return html`
     <div id="app" class="layout ${state.sideBarOpen ? 'js-sidebar--open' : 'js-sidebar--closed'}">
-      <div style=${state.sideBarOpen ? 'display:flex;' : 'display:none;'} class="layout flex25 fixed static-l">
-        ${sideBar(state, emit)}
-      </div>
+      ${state.sideBarOpen ? html`
+        <div class="layout flex25 fixed static-l">
+           ${sideBar(state, emit)}
+        </div>
+      ` : ''}
       <main class="layout column flex" style="width:100%;position:relative;" role="main">
         ${!state.isMobile ? header() : ''}
         <div id="searchbox" class="${state.tab ? 'js-tab--open' : 'js-tab--closed'}">
@@ -312,6 +314,10 @@ function store (state, emitter) {
     if (!state.params.hash) {
       window.scrollTo(0, 0)
     }
+  })
+
+  emitter.on(state.events.NAVIGATE, () => {
+    state.sideBarOpen = false
   })
 
   emitter.on(state.events.DOMCONTENTLOADED, () => {
