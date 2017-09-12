@@ -472,7 +472,7 @@ nav#sidebar a.btn-dropdown {
   text-align: center;
 }
 
-nav#sidebar a, button.btn  {
+nav#sidebar a, nav#sidebar button.btn  {
   width: 100%;
   color: #fff;
   margin: 0;
