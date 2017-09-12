@@ -277,7 +277,7 @@ function Leaflet () {
      */
 
     map.on('popupopen', (e) => {
-      const { popup } = e.popup
+      const { popup } = e
       const index = popup._source._index
       const { items, selectedIndex } = component.props
 
