@@ -44,6 +44,8 @@ const DirectorySearch = require('./elements/directory-search')
 const Tabs = require('./elements/tabs')
 const ImageGrid = require('./elements/grid')
 const Slider = require('./elements/slider')
+const DropdownMenu = require('./elements/dropdown-menu')
+const dropdownMenu = DropdownMenu()
 
 const select = Select()
 const leaflet = Leaflet()
@@ -199,8 +201,8 @@ function main (state, emit) {
 
   function header () {
     return html`
-      <header class="layout">
-        <nav role="navigation" class="layout">
+      <header class="layout right-top-bar">
+        <nav role="navigation" class="layout secondary-navigation">
           <ul class="layout no-style">
             <li>
               <a class="btn btn-social" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
@@ -222,33 +224,14 @@ function main (state, emit) {
                 ${icon('keybase', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
-            <li>
-              <button class="btn btn-default btn-dropdown${state.dropdownOpen ? ' open' : ''}" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
-              ${state.dropdownOpen ? html`
-                <ul class="dropdown-menu bg-white shadow-6" style="right:0;">
-                  ${state.langs.map(langItem)}
-                </ul>
-              ` : ''}
-            </li>
+            ${!module.parent ? dropdownMenu.render({
+              title: state.lang || 'fr',
+              items: state.langs
+            }) : ''}
           </ul>
         </nav>
       </header>
     `
-
-    function langItem (item) {
-      if (state.lang !== item.code) {
-        return html`
-          <li>
-            <button class="btn btn-default" onclick=${(e) => lang(item.code)}>${item.lang}</button>
-          </li>
-        `
-      }
-    }
-
-    function lang (lang) {
-      emit('load:translations', lang)
-      emit('toggle:lang', lang)
-    }
   }
 }
 
@@ -307,7 +290,6 @@ function store (state, emitter) {
     }
   ]
 
-  state.dropdownOpen = false
   state.sideBarOpen = false
   state.selected = state.selected || {}
   state.defaultBounds = {lat: 50.850340, lng: 4.351710} // bruxelles
@@ -336,6 +318,11 @@ function store (state, emitter) {
     slider.on('progress', sliderProgress) // To set distanceKm when user move slider in settings
     select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
+    dropdownMenu.on('select', (props) => {
+      const { code } = props
+      emitter.emit('load:translations', code)
+    })
+
     leaflet.on('select', onLeafletSelect) // Update selected item when user open a popup on map
 
     leaflet.on('locationfound', onLocationFound)
@@ -354,11 +341,6 @@ function store (state, emitter) {
 
     emitter.on('toggle:sidebar', () => {
       state.sideBarOpen = !state.sideBarOpen
-      emitter.emit('render')
-    })
-
-    emitter.on('toggle:lang', () => {
-      state.dropdownOpen = !state.dropdownOpen
       emitter.emit('render')
     })
 

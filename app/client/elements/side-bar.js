@@ -1,12 +1,20 @@
 const html = require('choo/html')
 const translate = require('./translate')
 const icon = require('./icon')
+const DropdownMenu = require('../elements/dropdown-menu')
+const dropdownMenu = DropdownMenu()
 
 module.exports = (state, emit) => {
+  dropdownMenu.on('select', (props) => {
+    const { code } = props
+    emit('load:translations', code)
+  })
   return html`
     <nav class="layout flex25 fixed" id="sidebar">
-      ${state.isMobile ? html`<button class="btn-close" onclick=${(e) => emit('toggle:sidebar')}>${icon('close', {'class': 'icon icon-small icon-white icon-close'})}</button>` : ''}
-      <span class="absolute top-1 left-1 f7">depackt-map v.${state.appVersion}</span>
+      ${state.isMobile ? toggleSidebar() : ''}
+      <span class="absolute top-1 left-1 f7">
+        ${'depackt-map v.' + state.appVersion}
+      </span>
       <ul class="layout column list mt5 pb5 h-max pl0 w-100">
         <li class="lh-copy">
           <a class="db pa3 no-underline" href="/">
@@ -59,30 +67,19 @@ module.exports = (state, emit) => {
         <li class="lh-copy pa2 f6">
           ${translate(state.translations, {term: 'UPDATE_LANG'})}
         </li>
-        <li style="position:relative;">
-            <button class="w-100 tc btn-dropdown ${state.dropdownOpen ? ' open' : ''}" onclick=${(e) => emit('toggle:lang', state.lang)}>${state.lang}</button>
-            ${state.dropdownOpen ? html`
-              <ul class="list pl0">
-                ${state.langs.map(langItem)}
-              </ul>
-            ` : ''}
-          </li>
-
+        ${!module.parent ? dropdownMenu.render({
+          title: state.lang || 'fr',
+          items: state.langs
+        }) : ''}
       </ul>
     </nav>
   `
-  function langItem (item) {
-    if (state.lang !== item.code) {
-      return html`
-        <li>
-          <button class="w-100 tc" onclick=${(e) => lang(item.code)}>${item.lang}</button>
-        </li>
-      `
-    }
-  }
 
-  function lang (lang) {
-    emit('load:translations', lang)
-    emit('toggle:lang', lang)
+  function toggleSidebar () {
+    return html`
+      <button class="btn-close" onclick=${(e) => emit('toggle:sidebar')}>
+        ${icon('close', {'class': 'icon icon-small icon-white icon-close'})}
+      </button>
+    `
   }
 }
