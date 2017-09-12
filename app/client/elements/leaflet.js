@@ -269,6 +269,7 @@ function Leaflet () {
     map.on('locationfound', (e) => {
       const {latitude: lat, longitude: lng} = e
       component.emit('locationfound', {lat, lng})
+      map.stopLocate()
     })
 
     /**
