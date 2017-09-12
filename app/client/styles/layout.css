@@ -318,6 +318,7 @@ ul.no-style, ul.no-style > li {
 
 nav#sidebar .btn-dropdown::after, header.top-bar .btn-dropdown::after {
   border-color: #fff transparent transparent;
+  right: 24px;
 }
 
 nav#sidebar .btn-dropdown--open::after, header.top-bar .btn-dropdown--open::after {
@@ -463,9 +464,14 @@ nav#sidebar a:hover {
   background: #222;
 }
 
-nav#sidebar a, nav#sidebar button {
-  color: #fff;
+nav#sidebar a.btn-dropdown {
+  display: block;
+  text-align: center;
+}
+
+nav#sidebar a, button.btn  {
   width: 100%;
+  color: #fff;
   margin: 0;
 }
 
