@@ -12,10 +12,6 @@ img {
   max-width: 100%;
 }
 
-button {
-  outline: none;
-}
-
 /**
  * Map related styles
  */
@@ -85,6 +81,17 @@ header.top-bar {
   z-index: 600;
 }
 
+header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
+  position: absolute;
+  background: #fff;
+  right: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+
+header.top-bar .dropdown-menu {
+  margin-right: 1rem;
+}
+
 header.top-bar .btn-dropdown {
   color: #fff;
 }
@@ -110,14 +117,6 @@ header.top-bar a.btn-default {
 
 header.top-bar a.btn-default:hover {
   color: #f0f0f0;
-}
-
-header.top-bar .btn-dropdown.open:after {
-  border-color: transparent transparent #fff;
-}
-
-header.top-bar .btn-dropdown:after {
-  border-color: #fff transparent transparent;
 }
 
 header.top-bar a.logo {
@@ -295,14 +294,6 @@ ul.no-style, ul.no-style > li {
   padding: 0;
 }
 
-.dropdown-menu {
-  position: absolute;
-}
-
-.dropdown-menu button {
-  width: 100%;
-}
-
 .btn-dropdown {
   position: relative;
 }
@@ -320,9 +311,21 @@ ul.no-style, ul.no-style > li {
   transform: translateY(-50%);
 }
 
-.btn-dropdown.open:after {
+.btn-dropdown--open:after {
   border-width: 0 3px 6px 3px;
   border-color: transparent transparent #000000 transparent;
+}
+
+nav#sidebar .btn-dropdown::after, header.top-bar .btn-dropdown::after {
+  border-color: #fff transparent transparent;
+}
+
+nav#sidebar .btn-dropdown::after {
+  right: 24px;
+}
+
+nav#sidebar .btn-dropdown--open::after, header.top-bar .btn-dropdown--open::after {
+  border-color: transparent transparent #fff;
 }
 
 .btn-social:hover .icon {
@@ -441,7 +444,7 @@ button[disabled] {
 
 .static-l {
   @media(min-width: 960px) {
-    position: relative; 
+    position: relative;
   }
 }
 
@@ -464,8 +467,15 @@ nav#sidebar a:hover {
   background: #222;
 }
 
-nav#sidebar a, nav#sidebar button {
+nav#sidebar a.btn-dropdown {
+  display: block;
+  text-align: center;
+}
+
+nav#sidebar a, nav#sidebar button.btn  {
+  width: 100%;
   color: #fff;
+  margin: 0;
 }
 
 /**
@@ -483,7 +493,7 @@ nav#sidebar a, nav#sidebar button {
 
 @media(min-width: 1280px) {
   .js-sidebar--open #searchbox {
-    width: 33%; 
+    width: 33%;
   }
 }
 

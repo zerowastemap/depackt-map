@@ -169,15 +169,17 @@ function initialize (callback) {
   callback(app)
 }
 
-export const start = (done) => {
-  const host = process.env.APP_HOST || '127.0.0.1'
-  const port = process.env.APP_PORT || 8084
-  const environment = process.env.APP_ENV || 'development'
-  initialize((app) => {
+export const start = done => {
+  const {
+    APP_PORT: port = 8084,
+    APP_HOST: host = '127.0.0.1',
+    APP_ENV: env = 'development'
+  } = process.env
+  initialize(app => {
     const server = http.createServer(app.start())
-    server.listen(port, (err) => {
+    server.listen(port, err => {
       if (err) return done(err, null)
-      return done(null, (`Server online and listening at ${host}:${port} in ${environment}`))
+      return done(null, `Server online and listening at ${host}:${port} in ${env}`)
     })
   })
 }
