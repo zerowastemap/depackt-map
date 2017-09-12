@@ -258,7 +258,7 @@ function Leaflet () {
     // Add locate.control
     L.control.locate({
       position: 'verticalcenterright',
-      setView: 'once',
+      setView: false,
       icon: 'icon icon-marker',
       iconLoading: 'icon icon-marker icon-marker--loading',
       locateOptions: {
@@ -269,6 +269,7 @@ function Leaflet () {
     map.on('locationfound', (e) => {
       const {latitude: lat, longitude: lng} = e
       component.emit('locationfound', {lat, lng})
+      map.stopLocate()
     })
 
     /**

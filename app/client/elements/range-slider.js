@@ -1,6 +1,5 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
-const onIdle = require('on-idle')
 const rangesliderJs = require('rangeslider-js')
 
 module.exports = RangeSlider
