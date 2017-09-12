@@ -63,6 +63,7 @@
     "postcss-cssnext": "^2.10.0",
     "postcss-csso": "^2.0.0",
     "pump": "^1.0.2",
+    "rangeslider-js": "^3.0.2",
     "rev-path": "^1.0.0",
     "sheetify": "^6.0.2",
     "sheetify-cssnext": "^1.0.7",

@@ -11,7 +11,6 @@ const logger = require('choo-log')
 const expose = require('choo-devtools')
 const css = require('sheetify')
 const xhr = require('xhr')
-const serialize = require('form-serialize')
 
 /*
  * Utilities
@@ -43,7 +42,7 @@ const Select = require('./elements/select')
 const DirectorySearch = require('./elements/directory-search')
 const Tabs = require('./elements/tabs')
 const ImageGrid = require('./elements/grid')
-const Slider = require('./elements/slider')
+const RangeSlider = require('./elements/range-slider')
 const DropdownMenu = require('./elements/dropdown-menu')
 const dropdownMenu = DropdownMenu()
 
@@ -53,7 +52,7 @@ const search = Search()
 const tabs = Tabs()
 const directorySearch = DirectorySearch()
 const imageGrid = ImageGrid()
-const slider = Slider()
+const rangeSlider = RangeSlider()
 
 css('./styles/reset.css')
 css('tachyons')
@@ -289,6 +288,14 @@ function store (state, emitter) {
     {
       code: 'en',
       lang: 'English'
+    },
+    {
+      code: 'de',
+      lang: 'Deutsch'
+    },
+    {
+      code: 'nl',
+      lang: 'Nederlands'
     }
   ]
 
@@ -321,7 +328,7 @@ function store (state, emitter) {
   })
 
   emitter.on(state.events.DOMCONTENTLOADED, () => {
-    slider.on('progress', sliderProgress) // To set distanceKm when user move slider in settings
+    rangeSlider.on('progress', sliderProgress) // To set distanceKm when user move slider in settings
     select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
     dropdownMenu.on('select', (props) => {
@@ -518,9 +525,9 @@ function store (state, emitter) {
    * Settings
    */
 
-  function sliderProgress (percent) {
-    const max = 1000 // max distance in km
-    state.settings.distanceKm = Math.round((max / 100) * percent)
+  function sliderProgress (props) {
+    const { value } = props
+    state.settings.distanceKm = value
     getLocations({
       lat: state.coords[0],
       lng: state.coords[1]
@@ -598,29 +605,14 @@ function settings (state, emit) {
   return PageLayout((state, emit) => {
     return html`
       <section role="section" id="page" class="layout column flex">
-        <form id="settings" class="pa2 mt4 w-100" onsubmit=${handleSubmit}>
-          <fieldset class="ba b--transparent ph0 mh0">
-            <legend class="mh3 pa3">Carte</legend>
-            <div class="mh3 mb3">
-              <label for="progress" class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 150}, default: 150, max: 1000)</label>
-              ${!module.parent ? slider.render({
-                progress: ((state.settings.distanceKm || 150) / 1000) * 100,
-                isMobile: state.isMobile,
-                name: 'slider'
-              }) : ''}
-            </div>
-          </fieldset>
-        </form>
+        <h3 class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 150}, default: 150, max: 1000)</h3>
+        ${!module.parent ? rangeSlider.render({
+          value: state.settings.distanceKm,
+          name: 'slider'
+        }) : ''}
       </section>
     `
   })(state, emit)
-
-  function handleSubmit (e) {
-    e.preventDefault()
-    const obj = serialize(document.querySelector('#settings'), { hash: true })
-
-    console.log(obj)
-  }
 }
 
 function sendMail (state, emitter) {
