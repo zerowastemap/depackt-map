@@ -57,8 +57,12 @@ module.exports = (state, emit) => {
               <a target="_blank" rel="noopener noreferrer" href="https://mundraub.org/map">mundraub.org/map</a>
             </li>
             <li>
-              The world-wide map for dumpster diving (en)
+              The world-wide map for dumpster diving
               <a target="_blank" rel="noopener noreferrer" href="http://dumpstermap.org/">dumpstermap.org</a>
+            </li>
+            <li>
+              Teile Lebensmittel, anstatt sie wegzuwerfen!
+              <a target="_blank" rel="noopener noreferrer" href="https://foodsharing.de/#map">foodsharing.de</a>
             </li>
 
             <h3 id="blogs">
@@ -93,6 +97,28 @@ module.exports = (state, emit) => {
             <li>Consovrac : <a target="_blank" rel="noopener noreferrer" href="http://www.consovrac.com/">www.consovrac.com</a></li>
             <li>Bepakt : <a target="_blank" rel="noopener noreferrer" href="http://bepakt.com/packaging-free-supermarkets/list-of-packaging-free-supermarkets">bepakt.com</a></li>
             <li>Zero Waste Home Bulk Finder : <a target="_blank" rel="noopener noreferrer" href="http://zerowastehome.com/app/">zerowastehome.com/app</a></li>
+
+            <h3 id="supermarchés">Supermarchés</h3>
+
+            Actuellement la map et l'index depackt n'incluent pas encore tous les nombreux supermarchés présents sur le territoire Français, Belge, Allemand. Il n'est pas encore décidé si ils s'y trouveront un jour. Le problème c'est qu'à l'heure actuelle, ces supermarchés, bien qu'ils proposent souvent des produits en vrac n'ont pas une politique pro zéro déchet précise.
+
+            <ul>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="http://origino.be/fr/">Origin'O</a>
+              </li>
+              <li>
+                day by day
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="http://www.bio-c-bon.eu/">Bio c'bon</a>
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.biocompany.de/">Biocompany</a>
+              </li>
+              <li>
+                <a target="_blank" rel="noopener noreferrer" href="https://www.alnatura.de/">Alnatura</a>
+              </li>
+            </ul>
           </section>
         </article>
         <aside class="layout column flex25">
