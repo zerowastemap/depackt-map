@@ -359,11 +359,11 @@ ul.social-icons li {
   margin: 0 1rem;
 }
 
-input[type="text"], input[type="number"], input[type="email"] {
+[type="text"], [type="number"], [type="email"], [type="password"] {
   height: 60px;
 }
 
-input[type="text"], input[type="number"], input[type="email"], textarea {
+[type="text"], [type="number"], [type="email"], [type="password"], textarea {
   appearance: none;
   box-shadow: none;
   border: none;
