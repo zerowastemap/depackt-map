@@ -47,7 +47,7 @@ API repo is also available on github <https://github.com/depackt/depackt-api>
 
 **Get locations**
 ----
-  Returns json data for locations 
+  Returns json data for locations
 
 * **URL**
 
@@ -56,7 +56,7 @@ API repo is also available on github <https://github.com/depackt/depackt-api>
 * **Method:**
 
   `GET`
-  
+
 *  **URL Params**
 
    **Optional:**
