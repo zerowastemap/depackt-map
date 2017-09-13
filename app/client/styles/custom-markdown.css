@@ -1,0 +1,4 @@
+.markdown-body h3 {
+  padding-top: calc(60px + 1rem); /* offset header + 1rem */
+  margin-top: 0;
+}

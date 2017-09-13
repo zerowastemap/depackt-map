@@ -14,9 +14,9 @@ function PageLayout (View) {
     })
     return html`
       <main role="main" class="layout column flex">
-        <header class="layout top-bar">
+        <header class="layout top-bar white">
           <div class="layout flex">
-            <button onclick=${(e) => emit('toggle:sidebar')} class="btn btn-burger" aria-label="open panel">
+            <button type="button" onclick=${(e) => emit('toggle:sidebar')} class="ph3" aria-label="open panel">
               ${!state.sideBarOpen ? icon('burger', {'class': 'icon icon-medium icon-burger'}) : icon('close', {'class': 'icon icon-small icon-white icon-close'})}
             </button>
             <h1 class="layout page-title">
@@ -29,7 +29,7 @@ function PageLayout (View) {
             </a>
           </div>
           <div class="layout flex flex-end">
-            <ul class="layout list">
+            <ul class="layout list ma0 pa0">
               ${!module.parent ? dropdownMenu.render({
                 title: state.lang || 'fr',
                 items: state.langs

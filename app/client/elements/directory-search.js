@@ -184,7 +184,7 @@ function DirectorySearch () {
               value=${state.search.input}
             />
             ${icon('search', {'class': 'icon icon-input-search'})}
-            <button class="btn btn-default" type="submit">${translate(state.translations, {term: 'SEARCH'})}</button>
+            <button type="submit">${translate(state.translations, {term: 'SEARCH'})}</button>
           </div>
           ${renderSelection()}
         </form>
@@ -231,7 +231,7 @@ function DirectorySearch () {
 
     function renderList () {
       return html`
-        <ul class="search-list no-style">
+        <ul class="search-list ma0 pa0 list">
           ${state.data.map((item, index) => {
             if (!item) return
             const { title } = item

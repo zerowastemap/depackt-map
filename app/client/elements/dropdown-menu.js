@@ -46,8 +46,8 @@ function dropdownMenu () {
   function renderMenu (state) {
     const { title, items, open } = state
     return html`
-      <div class="dropdown-menu${open ? ' dropdown-menu--open' : ''}">
-        <a href="" title="Change lang" class="btn btn-dropdown${open ? ' btn-dropdown--open' : ''}" onkeypress=${handleKeyPress} onclick=${(e) => component.emit('toggle')}>
+      <div class="h-100 dropdown-menu${open ? ' dropdown-menu--open' : ''}">
+        <a href="" title="Change lang" class="layout justify-center vertical-center h-100 pa3 color-inherit relative no-underline btn-dropdown${open ? ' btn-dropdown--open' : ''}" onkeypress=${handleKeyPress} onclick=${(e) => component.emit('toggle')}>
           ${title.toUpperCase()}
         </a>
         ${open ? renderList() : ''}
@@ -62,7 +62,7 @@ function dropdownMenu () {
 
     function renderList () {
       return html`
-        <ul class="list menu">
+        <ul class="list ma0 pa0 menu">
           ${items.filter((item) => item.code !== title).map(menuItem)}
         </ul>
       `
@@ -71,7 +71,7 @@ function dropdownMenu () {
     function menuItem (item) {
       return html`
         <li>
-          <button type="button" class="btn" onclick=${(e) => component.emit('select', item)}>${item.lang}</button>
+          <button type="button" class="db color-inherit w-100 pa3 tc" onclick=${(e) => component.emit('select', item)}>${item.lang}</button>
         </li>
       `
     }

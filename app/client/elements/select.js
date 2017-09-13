@@ -102,7 +102,7 @@ function Select () {
 
   function renderSubItems (items) {
     return html`
-      <ul>
+      <ul class="list ma0 pa0">
         ${items.map(item => {
           return html`
             <li tabindex=0 class="focusable lh-copy pa0" onclick=${(e) => component.emit('select', item)}>
@@ -122,7 +122,7 @@ function Select () {
     })
 
     return html`
-      <ul class="selectItems">
+      <ul class="list ma0 pa0 selectItems">
         ${filtred.map(item => {
           return html`
             <li tabindex=0 class="focusable lh-copy pa3">

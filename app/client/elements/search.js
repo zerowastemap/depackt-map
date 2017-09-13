@@ -178,7 +178,7 @@ function Search () {
 
       function renderFiltred (selected) {
         return html`
-          <ul class="filtred">
+          <ul class="list ma0 pa0 filtred">
             ${filtred.map((item, index) => {
               const { title, featured } = item
               return html`

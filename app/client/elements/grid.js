@@ -76,7 +76,7 @@ function imageGrid () {
     state.items = this.props.items
 
     return html`
-      <ul class="${prefix} layout row-wrap list">
+      <ul class="${prefix} layout row-wrap ma0 pa0 list">
         ${_take(state.items, state.max).map(gridItem)}
       </ul>
     `

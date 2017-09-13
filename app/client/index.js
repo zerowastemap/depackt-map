@@ -54,15 +54,53 @@ const directorySearch = DirectorySearch()
 const imageGrid = ImageGrid()
 const rangeSlider = RangeSlider()
 
-css('./styles/reset.css')
-css('tachyons')
+css('normalize.css')
+
+/*
+ * Tachyons css components
+ */
+
+css('tachyons-base')
+css('tachyons-box-sizing')
+// css('tachyons-border-colors')
+// css('tachyons-border-style')
+// css('tachyons-border-widths')
+// css('tachyons-borders')
+css('tachyons-display')
+css('tachyons-coordinates')
+// css('tachyons-flexbox')
+css('tachyons-font-weight')
+css('tachyons-images')
+css('tachyons-line-height')
+css('tachyons-links')
+css('tachyons-lists')
+css('tachyons-heights')
+css('tachyons-skins')
+css('tachyons-spacing')
+css('tachyons-position')
+css('tachyons-text-align')
+css('tachyons-text-decoration')
+css('tachyons-typography')
+css('tachyons-type-scale')
+css('tachyons-utilities')
+css('tachyons-widths')
+
+/*
+ * Leaflet css
+ */
 css('./styles/leaflet.css')
 css('./styles/MarkerCluster.css')
 css('./styles/MarkerCluster.Default.css')
-css('./styles/github-markdown.css')
-css('./styles/flex.css')
-css('./styles/layout.css')
+
+// css('./styles/github-markdown.css')
+
+css('./styles/flex.css') // Small flex grid system
+css('./styles/range-slider.css')
+css('./styles/custom-markdown.css')
 css('./styles/checkbox.css')
+
+css('./styles/layout.css')
+
 css('./styles/icons.css')
 
 const NotFound = require('./views/404')
@@ -121,27 +159,27 @@ function main (state, emit) {
            ${sideBar(state, emit)}
         </div>
       ` : ''}
-      <main class="layout column flex" style="width:100%;position:relative;" role="main">
+      <main class="layout column flex relative w-100" role="main">
         ${!state.isMobile ? header() : ''}
         <div id="searchbox" class="${state.tab ? 'js-tab--open' : 'js-tab--closed'}">
           <div class="layout column">
             <div id="topbar" class="layout sticky">
-              <button onclick=${(e) => emit('toggle:sidebar')} class="layout justify-center flex40 logo" title="depackt logo">
+              <button type="button" onclick=${(e) => emit('toggle:sidebar')} class="layout justify-center flex40 logo" title="depackt logo">
                 ${icon('logo-burger', {'class': 'icon icon-logo'})}
               </button>
               <ul class="layout flex space-around">
                 <li>
-                  <button class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
+                  <button type="button" class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
                     ${icon('search', {'class': 'icon icon-large icon-search'})}
                   </button>
                 </li>
                 <li>
-                  <button class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
+                  <button type="button" class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
                     ${icon('world-search', {'class': 'icon icon-large icon-search'})}
                   </b>
                 </li>
                 <li>
-                  <button class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
+                  <button type="button" class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
                     ${icon('book', {'class': 'icon icon-large icon-book'})}
                   </button>
                 </li>
@@ -204,24 +242,24 @@ function main (state, emit) {
     return html`
       <header class="layout right-top-bar">
         <nav role="navigation" class="layout secondary-navigation">
-          <ul class="layout no-style">
+          <ul class="layout list ma0 pa0">
             <li>
-              <a class="btn btn-social" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
+              <a class="db pa3" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
                 ${icon('facebook', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <a class="btn btn-social" title="tweets" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
+              <a class="db pa3" title="tweets" href="https://twitter.com/depackt_" rel="noopener noreferrer" target="_blank">
                 ${icon('twitter', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <a class="btn btn-social" title="contribute" href="https://github.com/depackt" rel="noopener noreferrer" target="_blank">
+              <a class="db pa3" title="contribute" href="https://github.com/depackt" rel="noopener noreferrer" target="_blank">
                 ${icon('github', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
             <li>
-              <a class="btn btn-social" title="crypto" href="https://keybase.io/auggod" rel="noopener noreferrer" target="_blank">
+              <a class="db pa3" title="crypto" href="https://keybase.io/auggod" rel="noopener noreferrer" target="_blank">
                 ${icon('keybase', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
