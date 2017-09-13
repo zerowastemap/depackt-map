@@ -12,8 +12,8 @@ module.exports = (state, emit) => {
   return PageLayout((state, emit) => {
     const template = flow === 'signup' ? signup : login
     return html`
-      <section role="section" id="page" class="layout justify-center flex50 mt4">
-        <form action=${action} method="POST" onsubmit=${handleSubmit}>
+      <section role="section" id="page" class="flex justify-center flex50 mt4 pa4 black-80">
+        <form class="measure center" action=${action} method="POST" onsubmit=${handleSubmit}>
           ${template()}
         </form>
       </section>
@@ -21,19 +21,19 @@ module.exports = (state, emit) => {
 
     function signup () {
       return html`
-        <fieldset class="ma3 bg-white shadow-6">
+        <fieldset class="ba b--transparent ph0 mh0 bg-white shadow-6">
           <legend class="fl pa3 ma0 w-100 tc b">Create a new account</legend>
           <div class="ma3">
             <label for="email" class="b f6">E-mail <small class="normal">We won't ever spam you!</small></label>
-            <input type="email" name="email" id="email" placeholder="✉" required />
+            <input class="db w-100 pa3" type="email" name="email" id="email" placeholder="✉" required />
           </div>
           <div class="ma3">
             <label for="password" class="b f6">Password <small>We suggest using a strong password</small></label>
-            <input type="password" name="password" id="password" placeholder="••••••••••••" required />
+            <input class="db w-100 pa3" type="password" name="password" id="password" placeholder="••••••••••••" required />
           </div>
           <div class="ma3">
-            <button class="btn btn-default" type="submit">Sign up</button>
-            <small class="ml3">Already a member? <a href="/auth/login">Login</a></small>
+            <button class="pa3 ba white bg-black-80 b--transparent" type="submit">Sign up</button>
+            <small class="ml3">Already a member? <a class="pa1" href="/auth/login">Login</a></small>
           </div>
         </fieldset>
       `
@@ -41,19 +41,19 @@ module.exports = (state, emit) => {
 
     function login () {
       return html`
-        <fieldset class="ma3 bg-white shadow-6">
+        <fieldset class="ba b--transparent ph0 mh0 bg-white shadow-6">
           <legend class="fl pa3 ma0 w-100 tc b">Connect to your account</legend>
           <div class="ma3">
             <label for="email" class="b f6">E-mail</label>
-            <input type="email" name="email" id="email" placeholder="✉" required />
+            <input class="db w-100 pa3" type="email" name="email" id="email" placeholder="✉" required />
           </div>
           <div class="ma3">
             <label for="password" class="b f6">Password</label>
-            <input type="password" name="password" id="password" placeholder="•••••••••••" required />
+            <input class="db w-100 pa3" type="password" name="password" id="password" placeholder="•••••••••••" required />
           </div>
           <div class="ma3">
-            <button class="btn btn-default" type="submit">Login</button>
-            <small class="ml3">Not a member yet ? <a href="/auth/signup">Sign up</a></small>
+            <button class="pa3 ba white bg-black-80 b--transparent" type="submit">Login</button>
+            <small class="ml3">Not a member yet ? <a class="pa1" href="/auth/signup">Sign up</a></small>
           </div>
         </fieldset>
       `

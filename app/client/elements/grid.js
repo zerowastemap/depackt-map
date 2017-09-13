@@ -7,7 +7,6 @@ const _take = require('lodash/take')
 const prefix = css`
   :host {
     width: 100%;
-    height: calc(100vh - 60px);
     position: fixed;
     top: 60px;
     right: 0;
@@ -76,7 +75,7 @@ function imageGrid () {
     state.items = this.props.items
 
     return html`
-      <ul class="${prefix} layout row-wrap ma0 pa0 list">
+      <ul class="${prefix} flex flex-wrap list ma0 pa0">
         ${_take(state.items, state.max).map(gridItem)}
       </ul>
     `

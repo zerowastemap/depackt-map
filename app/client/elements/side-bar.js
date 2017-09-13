@@ -10,12 +10,14 @@ module.exports = (state, emit) => {
     emit('load:translations', code)
   })
   return html`
-    <nav class="layout flex25 fixed white" id="sidebar">
-      ${state.isMobile ? toggleSidebar() : ''}
+    <nav class="flex flex-column flex25 fixed white" id="sidebar">
+      <div id="sidebar-topbar" class="flex flex-end sticky">
+        ${state.isMobile ? toggleSidebar() : ''}
+      </div>
       <span class="absolute top-1 left-1 f7">
         ${'depackt-map v.' + state.appVersion}
       </span>
-      <ul class="layout column list mt5 pb5 h-max pl0 w-100">
+      <ul class="flex flex-column list mt5 pb5 h-max pl0 w-100">
         <li class="lh-copy">
           <a class="db color-inherit pa3 no-underline" href="/">
             <h4 class="f4 normal mv1 lh-copy">${translate(state.translations, {term: 'MAP'})}</h4>
@@ -59,14 +61,14 @@ module.exports = (state, emit) => {
           Compte
         </li>
         <li class="lh-copy">
-          <a class="db pa3 no-underline" href="/auth/login">
-            <h4>Se connecter</h4>
+          <a class="db pa3 color-inherit no-underline" href="/auth/login">
+            <h4 class="f4 normal mv1 lh-copy">Se connecter</h4>
             <small>Accéder à votre compte depackt</small>
           </a>
         </li>
         <li class="lh-copy">
-          <a class="db pa3 no-underline" href="/auth/signup">
-            <h4>S'enregistrer</h4>
+          <a class="db color-inherit pa3 no-underline" href="/auth/signup">
+            <h4 class="f4 normal mv1 lh-copy">S'enregistrer</h4>
             <small>Créer un nouveau compte depackt</small>
           </a>
         </li>
@@ -74,10 +76,10 @@ module.exports = (state, emit) => {
           Legal
         </li>
         <li class="lh-copy">
-          <a class="db f6 color-inherit pa3 no-underline" href="/privacy">${translate(state.translations, {term: 'PRIVACY'})}</a>
+          <a class="db f4 color-inherit pa3 no-underline" href="/privacy">${translate(state.translations, {term: 'PRIVACY'})}</a>
         </li>
         <li class="lh-copy">
-          <a class="db f6 color-inherit pa3 no-underline" href="/impressum">Impressum</a>
+          <a class="db f4 color-inherit pa3 no-underline" href="/impressum">Impressum</a>
         </li>
         <li class="lh-copy pa2 f6">
           ${translate(state.translations, {term: 'UPDATE_LANG'})}
@@ -92,7 +94,7 @@ module.exports = (state, emit) => {
 
   function toggleSidebar () {
     return html`
-      <button class="btn-close" onclick=${(e) => emit('toggle:sidebar')}>
+      <button class="flex pa3 h-100 ba white bg-transparent b--transparent" onclick=${(e) => emit('toggle:sidebar')}>
         ${icon('close', {'class': 'icon icon-small icon-white icon-close'})}
       </button>
     `

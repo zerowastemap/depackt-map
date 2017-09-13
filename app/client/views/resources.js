@@ -28,12 +28,12 @@ module.exports = (state, emit) => {
   ]
   return PageLayout((state, emit) => {
     return html`
-      <section id="page" class="layout column row-l flex">
+      <section id="page" class="flex mt4 pt4 flex-column flex-auto row-l">
         <div class="flex25">
           ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
         </div>
         <article role="article" class="flex2 markdown-body">
-          <header class="layout">
+          <header class="flex">
             <h1>${state.title}</h1>
           </header>
           <section id="content">
@@ -121,17 +121,17 @@ module.exports = (state, emit) => {
             </ul>
           </section>
         </article>
-        <aside class="layout column flex25">
+        <aside class="flex flex-column flex25">
           <div class="box-container" style="height: 100%;">
             <div class="sticky">
               <div class="box pa3 ma3">
                 <nav>
-                  <ul class="layout column no-style">
+                  <ul class="flex flex-column list ma0 pa0">
                     <li>
-                      <a href="/">Map</a>
+                      <a class="db pa3" href="/">Map</a>
                     </li>
                     <li>
-                      <a href="/about">About</a>
+                      <a class="db pa3" href="/about">About</a>
                     </li>
                   </ul>
                 </nav>

@@ -7,7 +7,7 @@ module.exports = (state, emit) => {
 
   return PageLayout((state, emit) => {
     return html`
-      <section class="mt4" role="section" id="page">
+      <section class="flex mt4 pt4 flex-column flex-auto" role="section" id="page">
         <article role="article" class="markdown-body">
         <h2>Angaben gemäß § 5 TMG:</h2>
         <p>Augustin Godiscal<br /> Bosporusstrasse 31-C<br /> 12109 Berlin </p>

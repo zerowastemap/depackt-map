@@ -1,6 +1,8 @@
 body {
   background: #FFF9F1;
-  font: 1rem / 1.2 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  line-height: 1.2;
 }
 
 #app[unresolved] {
@@ -12,18 +14,12 @@ body {
   z-index: 1;
 }
 
-.filterInput {
-  height: 48px;
+button {
+  cursor: pointer;
 }
 
-/*
- * Resets
- */
-
-[type="button"], [type="submit"] {
-  background: none;
-  cursor: pointer;
-  border: none;
+.filterInput {
+  height: 48px;
 }
 
 /**
@@ -70,12 +66,16 @@ body {
 }
 
 header.top-bar {
-  background: #161616;
-  position: sticky;
-  width: 100%;
   height: 60px;
-  top: 0;
   z-index: 600;
+}
+
+header.right-top-bar {
+  z-index: 600;
+}
+
+header.top-bar .dropdown-menu {
+  margin-right: 1rem;
 }
 
 header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
@@ -84,6 +84,10 @@ header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
   color: #333;
   right: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+}
+
+header.top-bar .dropdown-menu .menu {
+  right: 1rem;
 }
 
 header.top-bar .page-title {
@@ -134,7 +138,6 @@ header.top-bar .icon {
 
 @media(min-width: 960px) {
   #topbar {
-    justify-content: center;
     min-height: 100px;
     height: 100px;
   }
@@ -143,64 +146,6 @@ header.top-bar .icon {
 .sticky {
   position: sticky;
   top: 0;
-}
-
-main {
-  width: 100%;
-}
-
-main > header {
-  width: 100%;
-  justify-content: center;
-}
-
-@media(min-width: 960px) {
-  main > header {
-    position: absolute;
-    z-index: 500; /* leaflet pane is at 400 */
-    width: auto;
-    left: auto;
-    top: 1rem;
-    right: 1rem;
-  }
-}
-
-header nav li {
-  list-style: none;
-}
-
-#docnav.sticky {
-  top: 80px;
-}
-
-#docnav {
-  margin: 4rem 0;
-}
-
-#docnav li, #docnav ul {
-  list-style: none;
-  margin: 0;
-}
-
-#docnav li {
-  position: relative;
-  margin: .5rem 0;
-}
-
-#docnav li.active::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  background-color: #333;
-  left: 0;
-  height: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#docnav li a {
-  display: flex;
-  padding-left: 1rem;
 }
 
 section#page aside {
@@ -239,22 +184,6 @@ b.bold {
   }
 }
 
-#topbar ul {
-  margin: 0;
-}
-
-#topbar ul li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.no-style, ul.no-style > li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 .btn-dropdown:after {
   content: "";
   position: absolute;
@@ -283,35 +212,6 @@ nav#sidebar .btn-dropdown::after {
 
 nav#sidebar .btn-dropdown--open::after, header.top-bar .btn-dropdown--open::after {
   border-color: transparent transparent #fff;
-}
-
-input[type="text"], input[type="number"], input[type="email"] {
-  height: 60px;
-}
-
-input[type="text"], input[type="number"], input[type="email"], textarea {
-  appearance: none;
-  box-shadow: none;
-  border: none;
-  font-size: 1rem;
-  padding-right: 24px;
-  outline: 2px solid;
-  outline-color: #bbb;
-  outline-offset: -2px;
-  padding: 1rem;
-  width: 100%;
-}
-
-input:focus, textarea:focus {
-  border: none;
-  box-shadow: none;
-  outline-color: #333;
-  z-index: 1;
-}
-
-button[disabled] {
-  color: #ddd;
-  cursor: not-allowed;
 }
 
 .form-group label {

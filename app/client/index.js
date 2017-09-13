@@ -62,14 +62,18 @@ css('normalize.css')
 
 css('tachyons-base')
 css('tachyons-box-sizing')
-// css('tachyons-border-colors')
-// css('tachyons-border-style')
+css('tachyons-border-colors')
+css('tachyons-border-style')
+css('tachyons-border-radius')
 // css('tachyons-border-widths')
-// css('tachyons-borders')
+css('tachyons-borders')
 css('tachyons-display')
 css('tachyons-coordinates')
+css('./styles/tachyons-extract.css')
 // css('tachyons-flexbox')
+// css('tachyons-floats')
 css('tachyons-font-weight')
+css('tachyons-forms')
 css('tachyons-images')
 css('tachyons-line-height')
 css('tachyons-links')
@@ -92,7 +96,7 @@ css('./styles/leaflet.css')
 css('./styles/MarkerCluster.css')
 css('./styles/MarkerCluster.Default.css')
 
-// css('./styles/github-markdown.css')
+css('./styles/github-markdown.css')
 
 css('./styles/flex.css') // Small flex grid system
 css('./styles/range-slider.css')
@@ -154,39 +158,38 @@ function main (state, emit) {
   if (state.title !== mainTitle) emit(state.events.DOMTITLECHANGE, mainTitle)
 
   return html`
-    <div id="app" class="layout ${state.sideBarOpen ? 'js-sidebar--open' : 'js-sidebar--closed'}">
+    <div id="app" class="flex ${state.sideBarOpen ? 'js-sidebar--open' : 'js-sidebar--closed'}">
       ${state.sideBarOpen ? html`
-        <div class="layout flex25 fixed static-l">
+        <div class="flex flex25 fixed static-l">
            ${sideBar(state, emit)}
         </div>
       ` : ''}
-      <main class="layout column flex relative w-100" role="main">
-        ${!state.isMobile ? header() : ''}
+      <main class="flex flex-column flex-auto flex-even relative w-100" role="main">
         <div id="searchbox" class="${state.tab ? 'js-tab--open' : 'js-tab--closed'}">
-          <div class="layout column">
-            <div id="topbar" class="layout sticky">
-              <button type="button" onclick=${(e) => emit('toggle:sidebar')} class="layout justify-center flex40 logo" title="depackt logo">
+          <div class="flex flex-column">
+            <div id="topbar" class="flex sticky">
+              <button class="flex justify-center flex40 logo pa0 ba white bg-transparent b--transparent" type="button" onclick=${(e) => emit('toggle:sidebar')} title="depackt logo">
                 ${icon('logo-burger', {'class': 'icon icon-logo'})}
               </button>
-              <ul class="layout flex space-around">
-                <li>
-                  <button type="button" class="${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
+              <ul class="list ma0 pa0 flex flex-auto">
+                <li class="flex flex-auto justify-center">
+                  <button type="button" class="pa0 ba white bg-transparent b--transparent ${state.tab === 'search' ? 'active' : 'inactive'}" aria-label="search" onclick=${(e) => emit('toggle:tab', 'search')}>
                     ${icon('search', {'class': 'icon icon-large icon-search'})}
                   </button>
                 </li>
-                <li>
-                  <button type="button" class="${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
+                <li class="flex flex-auto justify-center">
+                  <button type="button" class="pa0 ba white bg-transparent b--transparent ${state.tab === 'countries' ? 'active' : 'inactive'}" aria-label="countries" onclick=${(e) => emit('toggle:tab', 'countries')}>
                     ${icon('world-search', {'class': 'icon icon-large icon-search'})}
                   </b>
                 </li>
-                <li>
-                  <button type="button" class="${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
+                <li class="flex flex-auto justify-center">
+                  <button type="button" class="pa0 ba white bg-transparent b--transparent ${state.tab === 'info' ? 'active' : 'inactive'}" aria-label="info" onclick=${(e) => emit('toggle:tab', 'info')}>
                     ${icon('book', {'class': 'icon icon-large icon-book'})}
                   </button>
                 </li>
               </ul>
             </div>
-            <div class="layout column">
+            <div class="flex flex-column">
               ${tabs.render({
                 tab: state.tab,
                 tabs: [
@@ -235,15 +238,16 @@ function main (state, emit) {
           mapbox: {},
           tilesAttribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         })}
+        ${!state.isMobile ? header() : ''}
       </main>
     </div>
   `
 
   function header () {
     return html`
-      <header class="layout right-top-bar">
-        <nav role="navigation" class="layout secondary-navigation">
-          <ul class="layout list ma0 pa0">
+      <header class="flex absolute top-1 right-1 right-top-bar">
+        <nav role="navigation" class="flex secondary-navigation">
+          <ul class="flex list ma0 pa0">
             <li>
               <a class="db pa3" title="facebook" href="https://www.facebook.com/depackt" rel="noopener noreferrer" target="_blank">
                 ${icon('facebook', {'class': 'icon icon-small icon-social'})}
@@ -284,7 +288,7 @@ function directory (state, emit) {
 
   return PageLayout((state, emit) => {
     return html`
-      <section role="section" id="directory" class="layout w-100">
+      <section role="section" id="directory" class="flex w-100">
         ${imageGrid.render({
           items: state.grid
         })}
@@ -643,8 +647,8 @@ function settings (state, emit) {
 
   return PageLayout((state, emit) => {
     return html`
-      <section role="section" id="page" class="layout column flex">
-        <h3 class="f6 b db mb2">Rayon en km (actuel: ${state.settings.distanceKm || 150}, default: 150, max: 1000)</h3>
+      <section role="section" id="page" class="flex mt4 pt4 flex-column flex-auto">
+        <h3 class="f6 b db ml4 mb2">Rayon en km (actuel: ${state.settings.distanceKm || 150}, default: 150, max: 1000)</h3>
         ${!module.parent ? rangeSlider.render({
           value: state.settings.distanceKm,
           name: 'slider'

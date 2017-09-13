@@ -41,7 +41,7 @@ function Card () {
 
     return html`
       <div class=${prefix}>
-        <a class="layout column" target="_blank" rel="noopener noreferrer" href="${state.href}" title=${state.title}>
+        <a class="flex flex-column" target="_blank" rel="noopener noreferrer" href="${state.href}" title=${state.title}>
           <img src=${state.src} alt=${state.name} />
         </a>
       </div>

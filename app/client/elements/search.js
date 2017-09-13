@@ -194,7 +194,7 @@ function Search () {
 
       function renderIcon (featured) {
         return html`
-          <div class="layout list-icon">
+          <div class="flex list-icon">
             ${icon(featured ? 'marker-star' : 'marker', {'class': 'icon icon-medium icon-marker'})}
           </div>
         `

@@ -2,7 +2,7 @@ const html = require('choo/html')
 const Nav = require('../elements/nav')
 const Card = require('../elements/card')
 const TITLE = 'A propos'
-const PageLayout = require('../elements/page-layout')
+const Pageflex = require('../elements/page-layout')
 
 module.exports = (state, emit) => {
   if (state.title !== TITLE) emit(state.events.DOMTITLECHANGE, TITLE)
@@ -48,14 +48,14 @@ module.exports = (state, emit) => {
       hash: 'credits'
     }
   ]
-  return PageLayout((state, emit) => {
+  return Pageflex((state, emit) => {
     return html`
-      <section id="page" class="layout column flex row-l">
+      <section id="page" class="flex mt4 pt4 flex-column flex-auto row-l">
         <div class="flex25">
           ${module.parent ? '' : nav.render({items: hashes, hash: state.params.hash})}
         </div>
         <article role="article" class="flex2 markdown-body">
-          <header class="layout">
+          <header class="flex">
             <h1>${state.title}</h1>
           </header>
           <blockquote>
@@ -149,7 +149,7 @@ module.exports = (state, emit) => {
             </ul>
           </section>
         </article>
-        <aside class="layout column flex25">
+        <aside class="flex flex-column flex25">
           <div class="box-container" style="height: 100%;">
             <div class="sticky">
               <div class="box pa3 ma3">

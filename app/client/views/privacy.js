@@ -7,7 +7,7 @@ module.exports = (state, emit) => {
 
   return PageLayout((state, emit) => {
     return html`
-      <section class="mt4" role="section" id="page">
+      <section class="flex mt4 pt4 flex-column flex-auto" role="section" id="page">
         <article role="article" class="markdown-body">
           <h2>Datenschutz</h2>
           <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>

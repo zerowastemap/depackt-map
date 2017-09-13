@@ -32,24 +32,24 @@ module.exports = (state, emit) => {
 
       <h2>Ailleurs</h2>
 
-      <ul class="layout no-style social-icons">
+      <ul class="flex flex-wrap list ma0 pa0 vertical-center social-icons">
         <li>
-          <a class="btn btn-social" href="https://www.facebook.com/depackt" title="facebook" rel="noopener" target="_blank">
+          <a class="flex pa3" href="https://www.facebook.com/depackt" title="facebook" rel="noopener" target="_blank">
             ${icon('facebook', {'class': 'icon icon-large icon-social'})}
           </a>
         </li>
         <li>
-          <a class="btn btn-social" href="https://twitter.com/depackt_" title="tweets" rel="noopener" target="_blank">
+          <a class="flex pa3" href="https://twitter.com/depackt_" title="tweets" rel="noopener" target="_blank">
             ${icon('twitter', {'class': 'icon icon-large icon-social'})}
           </a>
         </li>
         <li>
-          <a class="btn btn-social" href="https://github.com/depackt" title="contribute" rel="noopener" target="_blank">
+          <a class="flex pa3" href="https://github.com/depackt" title="contribute" rel="noopener" target="_blank">
             ${icon('github', {'class': 'icon icon-large icon-social'})}
           </a>
         </li>
         <li>
-          <a class="btn btn-social" href="https://keybase.io/auggod" title="crypto" rel="noopener" target="_blank">
+          <a class="db pa3" href="https://keybase.io/auggod" title="crypto" rel="noopener" target="_blank">
             ${icon('keybase', {'class': 'icon icon-large icon-social'})}
           </a>
         </li>
