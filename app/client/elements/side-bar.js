@@ -56,6 +56,21 @@ module.exports = (state, emit) => {
           </a>
         </li>
         <li class="lh-copy pa2 f6">
+          Compte
+        </li>
+        <li class="lh-copy">
+          <a class="db pa3 no-underline" href="/auth/login">
+            <h4>Se connecter</h4>
+            <small>Accéder à votre compte depackt</small>
+          </a>
+        </li>
+        <li class="lh-copy">
+          <a class="db pa3 no-underline" href="/auth/signup">
+            <h4>S'enregistrer</h4>
+            <small>Créer un nouveau compte depackt</small>
+          </a>
+        </li>
+        <li class="lh-copy pa2 f6">
           Legal
         </li>
         <li class="lh-copy">
