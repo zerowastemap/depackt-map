@@ -1,17 +1,23 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const morph = require('nanomorph')
+const css = require('sheetify')
 
-module.exports = dropdownMenu
+const prefix = css`
+  :host button {
+    text-align: inherit;
+  }
+`
 
-function dropdownMenu () {
+module.exports = TranslateChooser
+
+function TranslateChooser () {
   const component = microcomponent({
     props: {
       items: []
     },
     state: {
-      open: false,
-      items: []
+      open: false
     }
   })
   component.on('render', render)
@@ -23,8 +29,8 @@ function dropdownMenu () {
   return component
 
   function toggle () {
-    component.state.open = !component.state.open
-    morph(component._element.querySelector('.dropdown-menu'), renderMenu(component.state))
+    this.state.open = !this.state.open
+    morph(this._element.querySelector('.dropdown-menu'), renderMenu(component.state))
   }
 
   function render () {
@@ -35,7 +41,7 @@ function dropdownMenu () {
     state.title = this.props.title
 
     component._element = html`
-      <li tabindex=0>
+      <li class=${prefix} tabindex=0>
         ${renderMenu(state)}
       </li>
     `
@@ -71,7 +77,7 @@ function dropdownMenu () {
     function menuItem (item) {
       return html`
         <li>
-          <button type="button" class="db ba b--transparent bg-transparent color-inherit w-100 pa3 tc" onclick=${(e) => component.emit('select', item)}>${item.lang}</button>
+          <button type="button" class="db ba b--transparent bg-transparent color-inherit w-100 pa3" onclick=${(e) => component.emit('choice', item)}>${item.lang}</button>
         </li>
       `
     }
@@ -87,6 +93,6 @@ function dropdownMenu () {
 
   function unload () {
     console.log('dropdown removed from DOM')
-    component._element = null
+    this._element = null
   }
 }

@@ -1,19 +1,19 @@
 const html = require('choo/html')
 const sideBar = require('../elements/side-bar')
 const icon = require('./icon.js')
-const DropdownMenu = require('../elements/dropdown-menu')
-const dropdownMenu = DropdownMenu()
+const TranslateChooser = require('../elements/translate-chooser')
+const translateChooser = TranslateChooser()
 
 module.exports = Pageflex
 
 function Pageflex (View) {
   return (state, emit) => {
-    dropdownMenu.on('select', (props) => {
+    translateChooser.on('choice', (props) => {
       const { code } = props
       emit('load:translations', code)
     })
     return html`
-      <main role="main" class="flex column flex-auto">
+      <main role="main" class="flex flex-column flex-auto">
         <header class="flex bg-black fixed top-0 left-0 right-0 w-100 top-bar white">
           <div class="flex flex-auto flex-even">
             <button type="button" class="flex pa3 ba white bg-black-80 b--transparent" onclick=${(e) => emit('toggle:sidebar')} aria-label="open panel">
@@ -30,7 +30,7 @@ function Pageflex (View) {
           </div>
           <div class="flex flex-auto flex-even flex-end">
             <ul class="flex list ma0 pa0">
-              ${!module.parent ? dropdownMenu.render({
+              ${!module.parent ? translateChooser.render({
                 title: state.lang || 'fr',
                 items: state.langs
               }) : ''}

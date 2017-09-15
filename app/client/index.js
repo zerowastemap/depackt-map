@@ -43,8 +43,8 @@ const DirectorySearch = require('./elements/directory-search')
 const Tabs = require('./elements/tabs')
 const ImageGrid = require('./elements/grid')
 const RangeSlider = require('./elements/range-slider')
-const DropdownMenu = require('./elements/dropdown-menu')
-const dropdownMenu = DropdownMenu()
+const TranslateChooser = require('./elements/translate-chooser')
+const translateChooser = TranslateChooser()
 
 const select = Select()
 const leaflet = Leaflet()
@@ -268,7 +268,7 @@ function main (state, emit) {
                 ${icon('keybase', {'class': 'icon icon-small icon-social'})}
               </a>
             </li>
-            ${!module.parent ? dropdownMenu.render({
+            ${!module.parent ? translateChooser.render({
               title: state.lang || 'fr',
               items: state.langs
             }) : ''}
@@ -374,7 +374,7 @@ function store (state, emitter) {
     rangeSlider.on('progress', sliderProgress) // To set distanceKm when user move slider in settings
     select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
-    dropdownMenu.on('select', (props) => {
+    translateChooser.on('choice', (props) => {
       const { code } = props
       emitter.emit('load:translations', code)
     })

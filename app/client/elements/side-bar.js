@@ -1,11 +1,11 @@
 const html = require('choo/html')
 const translate = require('./translate')
 const icon = require('./icon')
-const DropdownMenu = require('../elements/dropdown-menu')
-const dropdownMenu = DropdownMenu()
+const TranslateChooser = require('../elements/translate-chooser')
+const translateChooser = TranslateChooser()
 
 module.exports = (state, emit) => {
-  dropdownMenu.on('select', (props) => {
+  translateChooser.on('choice', (props) => {
     const { code } = props
     emit('load:translations', code)
   })
@@ -84,7 +84,7 @@ module.exports = (state, emit) => {
         <li class="lh-copy pa2 f6">
           ${translate(state.translations, {term: 'UPDATE_LANG'})}
         </li>
-        ${!module.parent ? dropdownMenu.render({
+        ${!module.parent ? translateChooser.render({
           title: state.lang || 'fr',
           items: state.langs
         }) : ''}

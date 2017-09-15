@@ -84,6 +84,7 @@ header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
   color: #333;
   right: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+  text-align: left;
 }
 
 header.top-bar .dropdown-menu .menu {
@@ -200,6 +201,10 @@ b.bold {
 .btn-dropdown--open:after {
   border-width: 0 3px 6px 3px;
   border-color: transparent transparent #000000 transparent;
+}
+
+nav#sidebar .dropdown-menu {
+  text-align: center;
 }
 
 nav#sidebar .btn-dropdown::after, header.top-bar .btn-dropdown::after {
