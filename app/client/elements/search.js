@@ -115,7 +115,6 @@ function Search () {
   return component
 
   function render () {
-    const self = this
     const state = this.state
 
     state.name = this.props.name
@@ -151,8 +150,8 @@ function Search () {
       state.search.input = newValue
 
       if (oldValue !== newValue) {
-        morph(self._element.querySelector('.value'), renderValue(newValue))
-        morph(self._element.querySelector('.results'), renderResults(newValue))
+        morph(component.element.querySelector('.value'), renderValue(newValue))
+        morph(component.element.querySelector('.results'), renderResults(newValue))
       }
     }
 
@@ -206,7 +205,7 @@ function Search () {
 
       function select (e, item) {
         if (item._id !== component.state.selected) {
-          let el = self._element
+          let el = component.element
           morph(el.querySelector('.filtred'), renderFiltred(item))
         }
         component.state.selected = item
@@ -253,7 +252,6 @@ function Search () {
 
   function unload () {
     console.log('unloaded')
-    component._element = null
   }
 
   function update (props) {

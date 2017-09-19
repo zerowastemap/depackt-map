@@ -166,7 +166,7 @@ function Select () {
     function handleInput (e) {
       const value = e.target.value
 
-      morph(component._element.querySelector('.selectItems'), renderItems(value))
+      morph(component.element.querySelector('.selectItems'), renderItems(value))
     }
   }
 
@@ -176,7 +176,6 @@ function Select () {
 
   function unload () {
     console.log('unloaded')
-    component._element = null
   }
 
   function update (props) {

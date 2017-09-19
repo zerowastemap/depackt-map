@@ -328,7 +328,6 @@ function DirectorySearch () {
 
   function unload () {
     console.log('unloaded')
-    component._element = null
   }
 
   function update (props) {

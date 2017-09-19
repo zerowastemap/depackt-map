@@ -64,7 +64,6 @@ function Tabs () {
   function unload () {
     console.log('unloaded')
     component.state.tabs = []
-    component._element = null
   }
 
   function update (props) {

@@ -100,6 +100,5 @@ function imageGrid () {
 
   function unload () {
     console.log('removed from DOM')
-    component._element = null
   }
 }

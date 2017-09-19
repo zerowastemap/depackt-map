@@ -57,7 +57,7 @@ function listComponent () {
       state.filter.input = newValue
 
       if (oldValue !== newValue) {
-        morph(self._element.querySelector('.results'), renderResults(newValue))
+        morph(component.element.querySelector('.results'), renderResults(newValue))
       }
     }
 
@@ -139,6 +139,5 @@ function listComponent () {
 
   function unload () {
     console.log('removed from DOM')
-    component._element = null
   }
 }
