@@ -79,8 +79,7 @@ module.exports = (components) => {
       select.on('select', onCountrySelected) // Update locations when use select a country/city in list
 
       translateChooser.on('choice', (props) => {
-        const { code } = props
-        emitter.emit('load:translations', code)
+        emitter.emit('load:translations', props.code)
       })
 
       leaflet.on('select', onLeafletSelect) // Update selected item when user open a popup on map

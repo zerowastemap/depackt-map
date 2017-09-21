@@ -1,7 +1,6 @@
 require('babel-polyfill')
 
-const choo = require('choo')
-
+const app = require('choo')()
 const components = {
   leaflet: require('./elements/leaflet')(),
   search: require('./elements/search')(),
@@ -12,8 +11,6 @@ const components = {
   rangeSlider: require('./elements/range-slider')(),
   translateChooser: require('./elements/translate-chooser')()
 }
-
-const app = choo()
 
 if (process.env.APP_ENV !== 'production') {
   app.use(require('choo-log')())
