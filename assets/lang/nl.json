@@ -34,5 +34,18 @@
   "DEPACKT_DESC": "Zero Waste shops in Belgium and more",
   "ADD_POINT_DESC": "Got a new point to add to the map?",
   "RESOURCES_DESC": "More infos and links about zero waste",
-  "UPDATE_LANG": "Update language"
+  "UPDATE_LANG": "Update language",
+  "BIO": "Bio",
+  "GROCERY_STORE": "Grocery store",
+  "CLEANING_PRODUCTS": "Cleaning products",
+  "CHEESE": "Cheese",
+  "BREAD": "Bread",
+  "COSMETICS": "Cosmetics",
+  "COFFEE": "Coffee",
+  "TEA": "Tea",
+  "VEGAN": "Vegan",
+  "BULK": "Bulk",
+  "WINE": "Wine",
+  "BRUSSELS": "Brussels",
+  "SHORT_SUPPLY_CHAINS": "Short supply chains"
 }
