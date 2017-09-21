@@ -1,4 +1,5 @@
 require('babel-polyfill')
+require('./html-imports')
 
 const app = require('choo')()
 const components = {

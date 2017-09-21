@@ -55,14 +55,5 @@
       Pour accéder aux fonctionnalités de cartographie de depackt, vous devez activer JavaScript.
       Voici les <a href="http://www.enable-javascript.com/fr/" target="_blank">instructions pour activer JavaScript dans votre navigateur Web</a>
     </noscript>
-    <script>   
-      window.addEventListener('HTMLImportsLoaded', function (e) {
-        var link = document.querySelector('link[id="icons"]');
-        var content = link.import;
-        var el = content.querySelector('#svg-icons');
-        var clone = document.importNode(el.content, true);
-        document.body.append(clone)  
-      });
-    </script>
   </body>
 </html>
