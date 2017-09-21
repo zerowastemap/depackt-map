@@ -4,9 +4,9 @@ const icon = require('./icon.js')
 const TranslateChooser = require('../elements/translate-chooser')
 const translateChooser = TranslateChooser()
 
-module.exports = Pageflex
+module.exports = PageLayout
 
-function Pageflex (View) {
+function PageLayout (View) {
   return (state, emit) => {
     translateChooser.on('choice', (props) => {
       const { code } = props
