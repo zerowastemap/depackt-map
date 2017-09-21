@@ -41,6 +41,7 @@ export default (hash) => {
         _prependHtml: inner,
         _appendHtml: `
           <script type="text/javascript" src="${revPath('/bundle.js', hash)}" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@1.0.12/webcomponents-lite.min.js"></script>
         `
       }
     })
