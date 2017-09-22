@@ -2,7 +2,9 @@ const xhr = require('xhr')
 const nanobounce = require('nanobounce')()
 const dpckt = require('./lib/depackt-api')
 
-module.exports = (components) => {
+module.exports = Store
+
+function Store (components) {
   const {
     select,
     leaflet,
