@@ -23,6 +23,10 @@
   </a>
 </div>
 
+## What is this project about ?
+
+Depackt is an interactive map for zero waste grocery shops and more.
+
 ## Installation
 
     $ npm install
@@ -42,36 +46,6 @@
 ## API
 
 API repo is also available on github <https://github.com/depackt/depackt-api>
-
-## REST API ENDPOINTS
-
-**Get locations**
-----
-  Returns json data for locations
-
-* **URL**
-
-  https://api.depackt.be/locations
-
-* **Method:**
-
-  `GET`
-
-*  **URL Params**
-
-   **Optional:**
-
-   `longitude=[integer]`
-
-   `latitude=[integer]`
-
-   `distanceKm=[integer]`
-
-   `limit=[integer]`
-
-* **Data Params**
-
-  None
 
 ## Contributors
 
