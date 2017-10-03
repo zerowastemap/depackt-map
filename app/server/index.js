@@ -21,6 +21,7 @@ const assets = bankai(clientPath, {
     fullPaths: false,
     transform: [
       ['envify'],
+      ['brfs'],
       ['sheetify/transform', {
         'use': [
           [
