@@ -1,6 +1,7 @@
 const microcomponent = require('microcomponent')
 const html = require('choo/html')
 const css = require('sheetify')
+const slug = require('slug/slug-browser')
 
 const prefix = css`
   :host li.active::after {
@@ -52,11 +53,11 @@ function Nav () {
       </nav>
     `
 
-    function navItem (item) {
-      const { hash, text } = item
+    function navItem (title) {
+      const hash = slug(title, {replacement: '-', lower: true})
       return html`
         <li class="relative navitem${isActive(hash) ? ' active' : ''}">
-          <a class="flex db pv2 pl3 no-underline color-inherit" href="${state.pathname}#${hash}">${text}</a>
+          <a class="flex db pv2 pl3 no-underline color-inherit" href="${state.pathname}#${hash}">${title}</a>
         </li>
       `
     }

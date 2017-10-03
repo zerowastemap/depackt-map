@@ -19,6 +19,7 @@ export default (hash) => {
 
     const state = {
       coords: [50.850340, 4.351710],
+      lang: 'fr',
       zoom: 13,
       locations: []
     }

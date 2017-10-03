@@ -1,6 +1,7 @@
 const xhr = require('xhr')
 const nanobounce = require('nanobounce')()
 const dpckt = require('./lib/depackt-api')
+const config = require('./config')
 
 module.exports = Store
 
@@ -29,24 +30,7 @@ function Store (components) {
       text: ''
     }
 
-    state.langs = [
-      {
-        code: 'fr',
-        lang: 'Français'
-      },
-      {
-        code: 'en',
-        lang: 'English'
-      },
-      {
-        code: 'de',
-        lang: 'Deutsch'
-      },
-      {
-        code: 'nl',
-        lang: 'Nederlands'
-      }
-    ]
+    state.langs = config.langs
 
     state.sideBarOpen = false
     state.selected = state.selected || {}
@@ -65,6 +49,10 @@ function Store (components) {
     state.tilesAttribution = state.tilesAttribution || undefined
     state.mapBackground = state.mapBackground || 'light'
     state.selection = state.selection || []
+
+    emitter.on('log:debug', function (msg) {
+      console.log(msg)
+    })
 
     emitter.on(state.events.NAVIGATE, () => {
       if (!state.params.hash) {

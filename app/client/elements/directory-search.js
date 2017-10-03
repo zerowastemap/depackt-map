@@ -229,6 +229,69 @@ function DirectorySearch () {
       component.emit('selection', state.search.selection)
     }
 
+    function renderFooter (state, emit) {
+      return html`
+        <footer class="flex flex-wrap bg-black-90 pa3 mt6 white">
+          <div class="flex-auto">
+            <a href="/" title="home page">
+              ${icon('logo', {'class': 'icon icon-white icon-logo pa3'})}
+            </a>
+          </div>
+
+          <div class="flex-auto">
+            <h4>About</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="/about#depackt" class="flex pv1 no-underline color-inherit" title="Learn more about depackt">What is depackt?</a>
+              </li>
+              <li tabindex=0>
+                <a href="/about#collaborate" class="flex pv1 no-underline color-inherit" title="Collaborer">Collaborer</a>
+              </li>
+              <li tabindex=0>
+                <a href="/about#api" class="flex pv1 no-underline color-inherit" title="API">API</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex-auto">
+            <h4>Community</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="https://github.com/depackt" class="flex pv1 no-underline color-inherit" title="Github">Github</a>
+              </li>
+              <li tabindex=0>
+                <a href="https://facebook.com/depackt" class="flex pv1 no-underline color-inherit" title="Facebook">Facebook</a>
+              </li>
+              <li tabindex=0>
+                <a href="https://twitter.com/_depackt" class="flex pv1 no-underline color-inherit" title="Twitter">Twitter</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex-auto">
+            <h4>Resources</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="/resources#maps" class="flex pv1 no-underline color-inherit">Cartes</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Blogs</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Services</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Apps</a>
+              </li>
+            </ul>
+          </div>
+        </footer>
+      `
+    }
+
     function renderList () {
       return html`
         <ul class="search-list ma0 pa0 list">
@@ -308,6 +371,7 @@ function DirectorySearch () {
         <div class="flex flex-column results">
           ${state.data.length ? renderCount() : ''}
           ${renderList()}
+          ${renderFooter()}
         </div>
       `
 
