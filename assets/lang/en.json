@@ -1,7 +1,7 @@
 {
   "SEARCH": "Search",
-  "DIRECTORY_SEARCH_PLACEHOLDER": "Search for a zero waste shop...",
   "SEARCH_PLACEHOLDER": "Filter by name, zip code or place",
+  "DIRECTORY_SEARCH_PLACEHOLDER": "Search for a zero waste shop...",
   "SEARCH_FEEDBACK": "Zero Waste shops in a range of {distance} around {city}",
   "SEARCH_RESULTS": "Results for \"{value}\" in a range of {distance} around {city}",
   "SEARCH_NO_RESULTS": "No results for \"{value}\". ",
@@ -40,7 +40,7 @@
   "ADD_POINT_DESC": "Got a new point to add to the map?",
   "RESOURCES_DESC": "More infos and links about zero waste",
   "UPDATE_LANG": "Update language",
-  "BIO": "Bio",
+  "BIO": "Organic",
   "GROCERY_STORE": "Grocery store",
   "CLEANING_PRODUCTS": "Cleaning products",
   "CHEESE": "Cheese",
@@ -50,5 +50,7 @@
   "TEA": "Tea",
   "VEGAN": "Vegan",
   "BULK": "Bulk",
-  "WINE": "Wine"
+  "WINE": "Wine",
+  "BRUSSELS": "Brussels",
+  "SHORT_SUPPLY_CHAINS": "Short supply chains"
 }

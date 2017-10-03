@@ -19,6 +19,7 @@ export default (hash) => {
 
     const state = {
       coords: [50.850340, 4.351710],
+      lang: 'fr',
       zoom: 13,
       locations: []
     }
@@ -41,6 +42,7 @@ export default (hash) => {
         _prependHtml: inner,
         _appendHtml: `
           <script type="text/javascript" src="${revPath('/bundle.js', hash)}" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@1.0.12/webcomponents-lite.min.js"></script>
         `
       }
     })

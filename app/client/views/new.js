@@ -11,7 +11,7 @@ module.exports = (state, emit) => {
 
   return PageLayout((state, emit) => {
     return html`
-      <section role="section" id="page" class="layout column flex mt4">
+      <section role="section" id="page" class="flex flex-column flex-auto mt4">
         <p class="pa3">
           ${state.sent ? 'Bien reçu!' : state.failed ? 'L\'envoi des données a échoué, merci de réessayer plus tard.' : 'Soumettez maintenant un nouveau point à ajouter sur la carte depackt! C\'est gratuit!'}
         </p>

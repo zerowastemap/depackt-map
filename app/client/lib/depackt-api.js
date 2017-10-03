@@ -30,5 +30,6 @@ module.exports = {
   getLocations: (params) => {
     const {lat, lng, distanceKm} = params
     return request(`/locations?latitude=${lat}&longitude=${lng}&distanceKm=${distanceKm}`)
-  }
+  },
+  request
 }

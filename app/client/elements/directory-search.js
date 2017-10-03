@@ -150,8 +150,8 @@ function DirectorySearch () {
     state.data = component.props.data
 
     return html`
-      <div class="layout column ${prefix} ${state.name}">
-        <form class="layout column sticky" onsubmit=${(e) => {
+      <div class="flex flex-column ${prefix} ${state.name}">
+        <form class="flex flex-column sticky" onsubmit=${(e) => {
           e.preventDefault()
 
           // const oldValue = state.search.input
@@ -172,7 +172,7 @@ function DirectorySearch () {
             }
           })
         }}>
-          <div class="layout input-box">
+          <div class="flex input-box">
             <input
               autoFocus
               aria-label="search"
@@ -184,7 +184,7 @@ function DirectorySearch () {
               value=${state.search.input}
             />
             ${icon('search', {'class': 'icon icon-input-search'})}
-            <button class="btn btn-default" type="submit">${translate(state.translations, {term: 'SEARCH'})}</button>
+            <button class="pa3 ba white bg-black-80 b--transparent" type="submit">${translate(state.translations, {term: 'SEARCH'})}</button>
           </div>
           ${renderSelection()}
         </form>
@@ -194,26 +194,26 @@ function DirectorySearch () {
 
     function renderSelection () {
       return html`
-        <div class="layout row-wrap justify-center checkboxes">
-          <div class="form-group">
+        <div class="flex flex-wrap justify-center checkboxes">
+          <div class="ma2 pa2">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('market')} name="market" value="market" id="market">
-            <label for="market">${translate(state.translations, {term: 'MARKET'})}</label>
+            <label class="pv1" for="market">${translate(state.translations, {term: 'MARKET'})}</label>
           </div>
-          <div class="form-group">
+          <div class="ma2 pa2">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('grocery-store')} name="grocery-store" value="grocery-store" id="grocery-store">
-            <label for="grocery-store">${translate(state.translations, {term: 'GROCERY_STORE'})}</label>
+            <label class="pv1" for="grocery-store">${translate(state.translations, {term: 'GROCERY_STORE'})}</label>
           </div>
-          <div class="form-group">
+          <div class="ma2 pa2">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('supermarket')} name="supermarket" value="supermarket" id="supermarket">
-            <label for="supermarket">${translate(state.translations, {term: 'SUPERMARKET'})}</label>
+            <label class="pv1" for="supermarket">${translate(state.translations, {term: 'SUPERMARKET'})}</label>
           </div>
-          <div class="form-group">
+          <div class="ma2 pa2">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('coop')} name="coop" value="coop" id="coop">
-            <label for="coop">${translate(state.translations, {term: 'COOP'})}</label>
+            <label class="pv1" for="coop">${translate(state.translations, {term: 'COOP'})}</label>
           </div>
-          <div class="form-group">
+          <div class="ma2 pa2">
             <input onchange=${updateSelection} type="checkbox" checked=${state.search.selection.includes('webshop')} name="webshop" value="webshop" id="webshop">
-            <label for="webshop">${translate(state.translations, {term: 'WEBSHOP'})}</label>
+            <label class="pv1" for="webshop">${translate(state.translations, {term: 'WEBSHOP'})}</label>
           </div>
         </div>
       `
@@ -229,16 +229,79 @@ function DirectorySearch () {
       component.emit('selection', state.search.selection)
     }
 
+    function renderFooter (state, emit) {
+      return html`
+        <footer class="flex flex-wrap bg-black-90 pa3 mt6 white">
+          <div class="flex-auto">
+            <a href="/" title="home page">
+              ${icon('logo', {'class': 'icon icon-white icon-logo pa3'})}
+            </a>
+          </div>
+
+          <div class="flex-auto">
+            <h4>About</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="/about#depackt" class="flex pv1 no-underline color-inherit" title="Learn more about depackt">What is depackt?</a>
+              </li>
+              <li tabindex=0>
+                <a href="/about#collaborate" class="flex pv1 no-underline color-inherit" title="Collaborer">Collaborer</a>
+              </li>
+              <li tabindex=0>
+                <a href="/about#api" class="flex pv1 no-underline color-inherit" title="API">API</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex-auto">
+            <h4>Community</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="https://github.com/depackt" class="flex pv1 no-underline color-inherit" title="Github">Github</a>
+              </li>
+              <li tabindex=0>
+                <a href="https://facebook.com/depackt" class="flex pv1 no-underline color-inherit" title="Facebook">Facebook</a>
+              </li>
+              <li tabindex=0>
+                <a href="https://twitter.com/_depackt" class="flex pv1 no-underline color-inherit" title="Twitter">Twitter</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="flex-auto">
+            <h4>Resources</h4>
+
+            <ul class="list ma0 pa0">
+              <li tabindex=0>
+                <a href="/resources#maps" class="flex pv1 no-underline color-inherit">Cartes</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Blogs</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Services</a>
+              </li>
+              <li tabindex=0>
+                <a href="/resources#blogs" class="flex pv1 no-underline color-inherit">Apps</a>
+              </li>
+            </ul>
+          </div>
+        </footer>
+      `
+    }
+
     function renderList () {
       return html`
-        <ul class="search-list no-style">
+        <ul class="search-list ma0 pa0 list">
           ${state.data.map((item, index) => {
             if (!item) return
             const { title } = item
             const { streetName, streetNumber, zip, city } = item.address
             const formattedAddress = streetName + ', ' + streetNumber + ' ' + zip + ' ' + city
             return html`
-              <li class="layout search-list-item" tabindex="0">
+              <li class="flex search-list-item" tabindex="0">
                 <div class="cover">
                   <div class="image" style="background: url(${item.cover.src}) 50% 0% / contain no-repeat rgb(255, 255, 255);"></div>
                 </div>
@@ -247,7 +310,7 @@ function DirectorySearch () {
                     ${title}
                     <small class="pa2 b f7">${translate(state.translations, {term: item.kind.replace('-', '_').toUpperCase()})}</small>
                   </h3>
-                  <div class="layout row-wrap">
+                  <div class="flex flex-wrap">
                     ${item.kind !== 'webshop' ? html`
                       <div class="result-meta flex50">
                         <span class="label">Adresse</span>
@@ -272,7 +335,7 @@ function DirectorySearch () {
                     ${item.tags.length ? html`
                       <div class="result-meta flex50">
                         <span class="label">Tags</span>
-                        <ul class="layout row-wrap list">
+                        <ul class="flex flex-wrap list ma0 pa0">
                           ${item.tags.map((tag) => html`<li class="f7 bold ma1 pa2">${translate(state.translations, {term: tag.replace('-', '_').toUpperCase()})}</li>`)}
                         </ul>
                       </div>
@@ -287,7 +350,10 @@ function DirectorySearch () {
                       <div class="result-meta flex50">
                         <span class="label">Carte</span>
                         <div>
-                          <button type="button" onclick=${() => component.emit('showMap', item)}>Voir sur la carte</button>
+                          <button class="flex pv2 ph3 ba white bg-black-80 br-pill b--transparent" type="button" onclick=${() => component.emit('showMap', item)}>
+                            ${icon('marker', {'class': 'icon icon-small icon-marker icon-white pr1'})}
+                            Voir sur la carte
+                          </button>
                         </div>
                       </div>
                     ` : ''}
@@ -302,15 +368,16 @@ function DirectorySearch () {
 
     function renderResults () {
       return html`
-        <div class="layout column results">
+        <div class="flex flex-column results">
           ${state.data.length ? renderCount() : ''}
           ${renderList()}
+          ${renderFooter()}
         </div>
       `
 
       function renderCount () {
         return html`
-          <div class="layout justify-center b ma3 white">
+          <div class="flex justify-center b ma3 white">
             <span class="ph2">${state.data.length}</span>
             <span>${translate(state.translations, {term: `RESULT_COUNT${state.data.length > 1 ? '_PLURAL' : ''}`})}.</span>
           </div>
@@ -325,7 +392,6 @@ function DirectorySearch () {
 
   function unload () {
     console.log('unloaded')
-    component._element = null
   }
 
   function update (props) {

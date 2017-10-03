@@ -1,8 +1,20 @@
-.layout {
-  display: flex;
+.flex { display: flex; }
+.inline-flex { display: inline-flex; }
+
+/* 1. Fix for Chrome 44 bug.
+ * https://code.google.com/p/chromium/issues/detail?id=506893 */
+.flex-auto {
+  flex: 1 1 auto;
+  min-width: 0; /* 1 */
+  min-height: 0; /* 1 */
 }
 
-.column {
+.flex-even {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+.flex-column {
   flex-direction: column;
 }
 
@@ -10,18 +22,14 @@
   flex-direction: column;
 }
 
-.row-wrap {
-  flex-flow: row wrap;
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 @media(min-width: 960px) {
   .column-row {
     flex-direction: row;
   }
-}
-
-.flex {
-  flex: 1;
 }
 
 .flex25 {
@@ -58,6 +66,10 @@
 
 .flex-end {
   justify-content: flex-end;
+}
+
+.vertical-center {
+  align-items: center;
 }
 
 @media(min-width: 960px) {

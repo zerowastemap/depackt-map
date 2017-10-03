@@ -10,7 +10,7 @@ import fs from 'fs'
 import { log } from 'winston'
 
 import renderHtml from './render-html'
-import renderPage from './render-page'
+import renderMarkdown from './render-markdown'
 
 const hash = Date.now()
 const clientPath = path.join(__dirname, '../client/index.js')
@@ -21,6 +21,7 @@ const assets = bankai(clientPath, {
     fullPaths: false,
     transform: [
       ['envify'],
+      ['brfs'],
       ['sheetify/transform', {
         'use': [
           [
@@ -107,46 +108,42 @@ function initialize (callback) {
     ['/sw.js', (req, res, ctx, done) => {
       res.setHeader('Content-Type', 'application/javascript')
       done(null, `
-        self.addEventListener('install', function(event) {
-          // Perform install steps
-        });
-
-        var CACHE_NAME = 'depackt-cache-v1';
-        var urlsToCache = [
+        var VERSION = String(Date.now())
+        var URLS = [
+          '/',
           '${revPath('/bundle.js', hash)}',
           '${revPath('/bundle.css', hash)}'
-        ];
+        ]
 
-        self.addEventListener('install', function(event) {
-          // Perform install steps
-          event.waitUntil(
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
-              })
-          );
-        });
+        // Respond with cached resources
+        self.addEventListener('fetch', function (e) {
+          e.respondWith(self.caches.match(e.request).then(function (request) {
+            if (request) return request
+            else return self.fetch(e.request)
+          }))
+        })
 
-        self.addEventListener('fetch', function(event) {
-          event.respondWith(
-            caches.match(event.request)
-              .then(function(response) {
-                // Cache hit - return response
-                if (response) {
-                  return response;
-                }
-                return fetch(event.request);
-              }
-            )
-          );
-        });
+        // Register worker
+        self.addEventListener('install', function (e) {
+          e.waitUntil(self.caches.open(VERSION).then(function (cache) {
+            return cache.addAll(URLS)
+          }))
+        })
+
+        // Remove outdated resources
+        self.addEventListener('activate', function (e) {
+          e.waitUntil(self.caches.keys().then(function (keyList) {
+            return Promise.all(keyList.map(function (key, i) {
+              if (keyList[i] !== VERSION) return self.caches.delete(keyList[i])
+            }))
+          }))
+        })
       `)
     }],
     ['/assets/:file', render('static')],
     ['/assets/icons/:icon', render('static')],
     ['/assets/lang/:lang', render('static')],
-    ['/assets/markdown/:file', renderPage()],
+    ['/pages/:lang/:name', renderMarkdown()],
     [ '/new', {
       post: (req, res, ctx, done) => {
         merry.parse.json(req, (err, body) => {

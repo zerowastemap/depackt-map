@@ -31,6 +31,7 @@
   "FRANCE": "Frankreich",
   "NETHERLANDS": "Niederlande",
   "ITALY": "Italien",
+  "RESULT_COUNT": "résult",
   "RESULT_COUNT_PLURAL": "résults",
   "ADD_POINT": "Add a new point",
   "UPDATE_MAX_DISTANCE": "Update max distance radius",
@@ -47,5 +48,9 @@
   "COSMETICS": "Kosmetik",
   "COFFEE": "Kaffee",
   "TEA": "Tee",
-  "VEGAN": "Vegan"
+  "VEGAN": "Vegan",
+  "BULK": "Bulk",
+  "WINE": "Wein",
+  "BRUSSELS": "Brüssel",
+  "SHORT_SUPPLY_CHAINS": "Short supply chains"
 }

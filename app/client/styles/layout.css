@@ -1,28 +1,21 @@
 body {
   background: #FFF9F1;
-  font: 1rem / 1.2 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  margin: 0;
+  font-family: BlinkMacSystemFont,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font-size: 1rem;
+  line-height: 1.2;
 }
 
 #app[unresolved] {
   display: none;
 }
 
-img {
-  max-width: 100%;
-}
-
-/**
- * Map related styles
- */
-
 #map {
   height: 100vh;
   z-index: 1;
 }
 
-#miniMap {
-  height: 200px;
+button {
+  cursor: pointer;
 }
 
 .filterInput {
@@ -73,27 +66,29 @@ img {
 }
 
 header.top-bar {
-  background: #161616;
-  position: sticky;
-  width: 100%;
   height: 60px;
-  top: 0;
   z-index: 600;
 }
 
-header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
-  position: absolute;
-  background: #fff;
-  right: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+header.right-top-bar {
+  z-index: 600;
 }
 
 header.top-bar .dropdown-menu {
   margin-right: 1rem;
 }
 
-header.top-bar .btn-dropdown {
-  color: #fff;
+header.right-top-bar .dropdown-menu .menu, header.top-bar .dropdown-menu .menu {
+  position: absolute;
+  background: #fff;
+  color: #333;
+  right: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+  text-align: left;
+}
+
+header.top-bar .dropdown-menu .menu {
+  right: 1rem;
 }
 
 header.top-bar .page-title {
@@ -144,7 +139,6 @@ header.top-bar .icon {
 
 @media(min-width: 960px) {
   #topbar {
-    justify-content: center;
     min-height: 100px;
     height: 100px;
   }
@@ -153,93 +147,6 @@ header.top-bar .icon {
 .sticky {
   position: sticky;
   top: 0;
-}
-
-main {
-  width: 100%;
-}
-
-main > header {
-  width: 100%;
-  justify-content: center;
-}
-
-@media(min-width: 960px) {
-  main > header {
-    position: absolute;
-    z-index: 500; /* leaflet pane is at 400 */
-    width: auto;
-    left: auto;
-    top: 1rem;
-    right: 1rem;
-  }
-}
-
-a.btn, button.btn {
-  line-height: 60px;
-  margin-left: 1rem;
-  height: 60px;
-}
-
-a.btn:hover {
-  color: #333;
-}
-
-header nav li {
-  list-style: none;
-}
-
-header .btn {
-  color: #333;
-  cursor: pointer;
-  line-height: 48px;
-  margin: 0;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-}
-
-.btn-default {
-  font-size: 1rem;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: .8rem;
-  letter-spacing: .05rem;
-}
-
-#docnav.sticky {
-  top: 80px;
-}
-
-#docnav {
-  margin: 4rem 0;
-}
-
-#docnav li, #docnav ul {
-  list-style: none;
-  margin: 0;
-}
-
-#docnav li {
-  position: relative;
-  margin: .5rem 0;
-}
-
-#docnav li.active::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  background-color: #333;
-  left: 0;
-  height: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#docnav li a {
-  display: flex;
-  padding-left: 1rem;
 }
 
 section#page aside {
@@ -278,26 +185,6 @@ b.bold {
   }
 }
 
-#topbar ul {
-  margin: 0;
-}
-
-#topbar ul li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.no-style, ul.no-style > li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.btn-dropdown {
-  position: relative;
-}
-
 .btn-dropdown:after {
   content: "";
   position: absolute;
@@ -316,6 +203,10 @@ ul.no-style, ul.no-style > li {
   border-color: transparent transparent #000000 transparent;
 }
 
+nav#sidebar .dropdown-menu {
+  text-align: center;
+}
+
 nav#sidebar .btn-dropdown::after, header.top-bar .btn-dropdown::after {
   border-color: #fff transparent transparent;
 }
@@ -326,66 +217,6 @@ nav#sidebar .btn-dropdown::after {
 
 nav#sidebar .btn-dropdown--open::after, header.top-bar .btn-dropdown--open::after {
   border-color: transparent transparent #fff;
-}
-
-.btn-social:hover .icon {
-  transform: scale(1.25);
-  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
-}
-
-.btn-social:active .icon {
-  transform: scale(1);
-  transition: transform 200ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
-}
-
-.btn-close {
-  position: absolute;
-  right: 0;
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-}
-
-ul.social-icons li {
-  margin-right: 1rem;
-}
-
-/**
- * Forms
- */
-
-.form-group {
-  padding: .5rem 0;
-  margin: 0 1rem;
-}
-
-input[type="text"], input[type="number"], input[type="email"] {
-  height: 60px;
-}
-
-input[type="text"], input[type="number"], input[type="email"], textarea {
-  appearance: none;
-  box-shadow: none;
-  border: none;
-  font-size: 1rem;
-  padding-right: 24px;
-  outline: 2px solid;
-  outline-color: #bbb;
-  outline-offset: -2px;
-  padding: 1rem;
-  width: 100%;
-}
-
-input:focus, textarea:focus {
-  border: none;
-  box-shadow: none;
-  outline-color: #333;
-  z-index: 1;
-}
-
-button[disabled] {
-  color: #ddd;
-  cursor: not-allowed;
 }
 
 .form-group label {
@@ -467,17 +298,6 @@ nav#sidebar a:hover {
   background: #222;
 }
 
-nav#sidebar a.btn-dropdown {
-  display: block;
-  text-align: center;
-}
-
-nav#sidebar a, nav#sidebar button.btn  {
-  width: 100%;
-  color: #fff;
-  margin: 0;
-}
-
 /**
  * Sidebar state
  */
@@ -518,55 +338,4 @@ nav#sidebar a, nav#sidebar button.btn  {
   section#page {
     margin-top: 60px;
   }
-}
-
-.markdown-body h3 {
-  padding-top: calc(60px + 1rem); /* offset header + 1rem */
-  margin-top: 0;
-}
-
-.rangeslider {
-    position: relative;
-    display: block;
-    cursor: pointer;
-    height: 25px;
-    width: 100%;
-}
-.rangeslider__fill,
-.rangeslider__fill__bg {
-    display: block;
-    position: absolute;
-    top: 50%;
-    height: 24px;
-    z-index: 2;
-    background: #0366D6;
-    border-radius: 12px;
-    will-change: width;
-}
-.rangeslider__handle {
-    will-change: width, height, top;
-    width: 36px;
-    height: 36px;
-    position: absolute;
-    top: 23px;
-    background: #fff;
-    box-shadow: 0 0 4px 3px rgba(0, 0, 0, .1);
-    background: #fff;
-    display: inline-block;
-    z-index: 3;
-    cursor: pointer;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    -webkit-transition: width 0.1s ease-in-out, height 0.1s ease-in-out, top 0.1s ease-in-out;
-    transition: width 0.1s ease-in-out, height 0.1s ease-in-out, top 0.1s ease-in-out;
-}
-.rangeslider__handle:active {
-    background: #0366D6;
-}
-.rangeslider__fill__bg {
-    background: #424242;
-    width: 100%;
-}
-.rangeslider--disabled {
-    opacity: 0.4;
 }

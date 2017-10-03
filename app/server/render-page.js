@@ -5,6 +5,11 @@ import trumpet from 'trumpet'
 import pump from 'pump'
 import markedStream from 'marked-stream'
 import { waterfall } from 'async'
+import fs from 'fs'
+
+const MarkdownIt = require('markdown-it')
+const markdownItTocAndAnchor = require('markdown-it-toc-and-anchor').default
+const md = new MarkdownIt().use(markdownItTocAndAnchor)
 
 export default () => {
   return (req, res, ctx, done) => {
@@ -14,7 +19,7 @@ export default () => {
       page,
       images
     ], (err, result) => {
-      if (err || !result.page) {
+      if (err) {
         res.statusCode = 404 // assume 404
         return done()
       }
@@ -29,13 +34,9 @@ export default () => {
     }
 
     function page (callback) {
-      const source = markedStream(path.join(__dirname, `../../assets/${name}.md`)) // create initial marked stream
+      const source = markedStream(path.join(__dirname, `../../assets/markdown/${name}.md`)) // create initial marked stream
       const tr = trumpet()
       const chunks = []
-
-      source.on('error', (e) => {
-        callback(e)
-      })
 
       // Replace all images with empty div
       tr.selectAll('img', (img) => {
@@ -46,19 +47,15 @@ export default () => {
         chunks.push(chunk)
       })
 
-      // Send the buffer or you can put it into a var
-      tr.on('end', () => {
-        const page = Buffer.concat(chunks).toString('utf8')
-        callback(null, page)
-      })
-
       from(pump(source, tr, (err) => {
-        console.log('pipe finished', err)
+        if (err) return callback(err)
+        const page = Buffer.concat(chunks).toString('utf8')
+        return callback(null, page)
       }))
     }
 
     function images (page, callback) {
-      const source = markedStream(path.join(__dirname, `../../assets/${name}.md`)) // need to create a new stream
+      const source = markedStream(path.join(__dirname, `../../assets/markdown/${name}.md`)) // need to create a new stream
       const tr = trumpet()
       const chunks = []
 
@@ -77,20 +74,14 @@ export default () => {
         })
       })
 
-      tr.on('end', () => {
+      from(pump(source, tr, (err) => {
+        if (err) return callback(err)
         const images = Buffer.concat(chunks).toString('utf8')
-        callback(null, {
-          page,
+        return callback(null, {
+          // page,
+          markdown: md.render(fs.readFileSync(path.join(__dirname, '../../assets/markdown/about-fr.md'), 'utf8')),
           images
         })
-      })
-
-      source.on('error', (e) => {
-        callback(e)
-      })
-
-      from(pump(source, tr, (err) => {
-        console.log('pipe finished', err)
       }))
     }
   }
