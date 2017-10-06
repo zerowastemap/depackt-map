@@ -1,7 +1,6 @@
 const xhr = require('xhr')
 const nanobounce = require('nanobounce')()
 const dpckt = require('./lib/depackt-api')
-const config = require('./config')
 
 module.exports = Store
 
@@ -30,7 +29,24 @@ function Store (components) {
       text: ''
     }
 
-    state.langs = config.langs
+    state.langs = [
+      {
+        code: 'fr',
+        lang: 'Français'
+      },
+      {
+        code: 'en',
+        lang: 'English'
+      },
+      {
+        code: 'de',
+        lang: 'Deutsch'
+      },
+      {
+        code: 'nl',
+        lang: 'Nederlands'
+      }
+    ] || state.langs
 
     state.sideBarOpen = false
     state.selected = state.selected || {}
