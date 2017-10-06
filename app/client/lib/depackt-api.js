@@ -3,7 +3,7 @@ const extend = require('xtend')
 
 function request (path = '/') {
   const scheme = 'https://'
-  const domain = window.location.host === 'depackt.dev' ? 'api.depackt.dev' : 'api.depackt.be'
+  const domain = process.env.API_DOMAIN
   const defaultOptions = {
     headers: {
       'Content-Type': 'application/json',
@@ -22,13 +22,11 @@ function request (path = '/') {
 }
 
 module.exports = {
-  search: (params) => {
-    const { query: q, selection } = params
+  search: ({query: q, selection}) => {
     if (!selection.length) return request(`/locations/search?q=${q}`)
     return request(`/locations/search?q=${q}&selection=${selection.join(' ')}`)
   },
-  getLocations: (params) => {
-    const {lat, lng, distanceKm} = params
+  getLocations: ({lat, lng, distanceKm}) => {
     return request(`/locations?latitude=${lat}&longitude=${lng}&distanceKm=${distanceKm}`)
   },
   request
